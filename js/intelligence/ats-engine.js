@@ -24,29 +24,104 @@ window.ResumeIntel.AtsEngine = {
     const resumeTokenSet = new Set(resumeTokens);
 
     // 1. Keyword Match (30 points)
-    let matchCount = 0;
     let stuffedKeywords = [];
-    
+    const synonyms = {
+      "react": ["react", "reactjs", "react.js", "react-js"],
+      "reactjs": ["react", "reactjs", "react.js", "react-js"],
+      "react.js": ["react", "reactjs", "react.js", "react-js"],
+      "react-js": ["react", "reactjs", "react.js", "react-js"],
+      "node": ["node", "nodejs", "node.js"],
+      "nodejs": ["node", "nodejs", "node.js"],
+      "node.js": ["node", "nodejs", "node.js"],
+      "javascript": ["javascript", "js", "es6", "ecmascript"],
+      "js": ["javascript", "js", "es6", "ecmascript"],
+      "es6": ["javascript", "js", "es6", "ecmascript"],
+      "ecmascript": ["javascript", "js", "es6", "ecmascript"],
+      "typescript": ["typescript", "ts"],
+      "ts": ["typescript", "ts"],
+      "ui": ["ui", "user interface", "interface design", "user-interface", "ui design"],
+      "user interface": ["ui", "user interface", "interface design", "user-interface", "ui design"],
+      "interface design": ["ui", "user interface", "interface design", "user-interface", "ui design"],
+      "user-interface": ["ui", "user interface", "interface design", "user-interface", "ui design"],
+      "ui design": ["ui", "user interface", "interface design", "user-interface", "ui design"],
+      "ux": ["ux", "user experience", "ux design", "user-experience"],
+      "user experience": ["ux", "user experience", "ux design", "user-experience"],
+      "ux design": ["ux", "user experience", "ux design", "user-experience"],
+      "user-experience": ["ux", "user experience", "ux design", "user-experience"],
+      "machine learning": ["machine learning", "ml"],
+      "ml": ["machine learning", "ml"],
+      "design systems": ["design systems", "design system"],
+      "design system": ["design systems", "design system"],
+      "project management": ["project management", "pm"],
+      "pm": ["project management", "pm"],
+      "single page applications": ["single page applications", "single page application", "spa"],
+      "single page application": ["single page applications", "single page application", "spa"],
+      "spa": ["single page applications", "single page application", "spa"]
+    };
+
+    const isTechSkill = (keyword) => {
+      return /react|node|javascript|typescript|js|ts|figma|css|html|aws|docker|sql|seo|analytics|design|ui|ux|machine learning|ml|design system|single page application|spa|software engineering|web development|cloud computing|data science|ci\/cd|continuous integration|continuous deployment|responsive design|mobile development/i.test(keyword);
+    };
+
     if (jdKeywords && jdKeywords.length > 0) {
+      let matchedWeight = 0;
+      let totalWeight = 0;
+
+      const normalizedResumeText = resumeText.toLowerCase().replace(/[\s-]+/g, ' ');
+
       jdKeywords.forEach(keyword => {
         const kw = keyword.toLowerCase();
-        if (resumeTokenSet.has(kw)) {
-          matchCount++;
-          
-          // Anti-stuffing: check if frequency is > 4% of total tokens
-          const occurrences = resumeTokens.filter(t => t === kw).length;
-          const density = occurrences / resumeTokens.length;
-          if (density > 0.04) {
-            stuffedKeywords.push(keyword);
+        const weight = isTechSkill(kw) ? 2.0 : 1.0;
+        totalWeight += weight;
+
+        const syns = synonyms[kw] || [kw];
+        let isMatched = false;
+
+        for (let s of syns) {
+          const normalizedSyn = s.toLowerCase().replace(/[\s-]+/g, ' ');
+          if (normalizedSyn.includes(' ')) {
+            if (normalizedResumeText.includes(normalizedSyn)) {
+              isMatched = true;
+              break;
+            }
+          } else {
+            if (resumeTokenSet.has(s)) {
+              isMatched = true;
+              break;
+            }
           }
         }
+
+        if (isMatched) {
+          matchedWeight += weight;
+        }
       });
-      scoreDetails.breakdown.keywordMatch = Math.round((matchCount / jdKeywords.length) * 30);
+
+      scoreDetails.breakdown.keywordMatch = totalWeight > 0 ? Math.round((matchedWeight / totalWeight) * 30) : 0;
     } else {
       // Default baseline match using generic ATS tokens
       const keywordsFound = this.countCommonAtsKeywords(resumeTokenSet);
       scoreDetails.breakdown.keywordMatch = Math.min(30, Math.round((keywordsFound / 10) * 30));
     }
+
+    // General Keyword Stuffing check (>4% density limit of non-stop-word tokens)
+    const stopWords = window.ResumeIntel.JdAnalyzer ? window.ResumeIntel.JdAnalyzer.stopWords : new Set();
+    const tokenCounts = {};
+    resumeTokens.forEach(t => {
+      if (t.length > 1 && !stopWords.has(t)) {
+        tokenCounts[t] = (tokenCounts[t] || 0) + 1;
+      }
+    });
+
+    Object.keys(tokenCounts).forEach(word => {
+      const count = tokenCounts[word];
+      const density = count / Math.max(1, resumeTokens.length);
+      if (density > 0.04 && count > 3) {
+        if (!stuffedKeywords.includes(word)) {
+          stuffedKeywords.push(word);
+        }
+      }
+    });
 
     // 2. Completeness (25 points)
     let completePoints = 0;

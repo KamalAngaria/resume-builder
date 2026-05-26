@@ -49,6 +49,7 @@ const DEFAULT_SAMPLE_RESUME = {
 };
 
 const S = JSON.parse(JSON.stringify(DEFAULT_BLANK_RESUME));
+window.S = S;
 
 // ══════════════════════════════════════════════════════════
 // CONSTANTS

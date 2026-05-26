@@ -24,8 +24,39 @@ window.ResumeIntel.JdAnalyzer = {
   analyze(jdText) {
     if (!jdText) return [];
 
-    // Clean text and extract lowercase words
-    const words = jdText.toLowerCase()
+    const phraseGroups = [
+      "machine learning",
+      "design systems",
+      "project management",
+      "single page applications",
+      "user interface",
+      "user experience",
+      "software engineering",
+      "web development",
+      "cloud computing",
+      "data science",
+      "continuous integration",
+      "continuous deployment",
+      "responsive design",
+      "mobile development",
+      "product management",
+      "agile development"
+    ];
+
+    let textLower = jdText.toLowerCase();
+    const extractedPhrases = [];
+
+    // 1. Scan and extract phrase groups
+    phraseGroups.forEach(phrase => {
+      const regex = new RegExp(`\\b${phrase}\\b`, 'g');
+      if (regex.test(textLower)) {
+        extractedPhrases.push({ keyword: phrase, count: 1 });
+        textLower = textLower.replace(regex, ' ');
+      }
+    });
+
+    // 2. Clean remaining text and extract lowercase words
+    const words = textLower
       .replace(/[^a-z0-9\s#\+-]/g, ' ') // Keep # (C#) and + (C++)
       .split(/\s+/)
       .map(w => w.trim())
@@ -37,16 +68,26 @@ window.ResumeIntel.JdAnalyzer = {
       freq[w] = (freq[w] || 0) + 1;
     });
 
+    const isTechSkill = (key) => {
+      return /react|node|javascript|typescript|python|figma|css|html|aws|docker|sql|seo|analytics|design|ui|ux|machine learning|design systems|single page applications|user interface|user experience|software engineering|web development|cloud computing|data science|ci\/cd|continuous integration|continuous deployment|responsive design|mobile development/i.test(key);
+    };
+
+    // Combine
+    const allKeywords = [...extractedPhrases];
+    Object.keys(freq).forEach(key => {
+      allKeywords.push({ keyword: key, count: freq[key] });
+    });
+
     // Sort descending by frequency and weight
-    const sortedKeywords = Object.keys(freq).map(key => {
-      let weight = freq[key];
+    const sortedKeywords = allKeywords.map(item => {
+      let weight = item.count;
       
-      // Technical skill boosts (e.g., matching common programming/design keywords)
-      if (/react|node|javascript|typescript|python|figma|css|html|aws|docker|sql|seo|analytics|design/i.test(key)) {
+      // Technical skill boosts
+      if (isTechSkill(item.keyword)) {
         weight *= 2.0;
       }
       
-      return { keyword: key, weight };
+      return { keyword: item.keyword, weight };
     }).sort((a, b) => b.weight - a.weight);
 
     // Return top 15 parsed keywords

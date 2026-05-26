@@ -1,7 +1,7 @@
 // ══════════════════════════════════════════════════════════
 // TABS & NAV
 // ══════════════════════════════════════════════════════════
-const TAB_IDS = ['info','work','edu','skills','sections','design'];
+const TAB_IDS = ['info','work','edu','skills','sections','design','assist'];
 let currentTab = 0;
 
 function switchTab(i){
@@ -401,3 +401,243 @@ document.addEventListener('click', (e) => {
     resDropdown.classList.remove('open');
   }
 });
+
+// ══════════════════════════════════════════════════════════
+// SMART RESUME INTELLIGENCE SYSTEM HANDLERS
+// ══════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  setupIntelligenceHandlers();
+});
+
+function setupIntelligenceHandlers() {
+  const fTitle = document.getElementById('f_title');
+  const suggestionsBox = document.getElementById('role-suggestions');
+  if (fTitle && suggestionsBox) {
+    let activeIndex = -1;
+    let matches = [];
+
+    const closeSuggestions = () => {
+      suggestionsBox.style.display = 'none';
+      fTitle.setAttribute('aria-expanded', 'false');
+      activeIndex = -1;
+    };
+
+    const handleInput = async () => {
+      const val = fTitle.value.trim();
+      if (!val) {
+        closeSuggestions();
+        return;
+      }
+
+      // Determine category and lazy-load data
+      const cat = window.ResumeIntel.LazyLoader.getCategoryForQuery(val);
+      if (cat) {
+        try {
+          await window.ResumeIntel.LazyLoader.loadCategory(cat);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      matches = window.ResumeIntel.RoleMatcher.matchRole(val);
+      if (matches.length === 0) {
+        closeSuggestions();
+        return;
+      }
+
+      suggestionsBox.innerHTML = matches.map((m, idx) => `
+        <div class="role-suggestion-item" role="option" id="opt-${idx}" tabindex="0" data-key="${m.key}" data-cat="${m.category}" style="padding: 10px 14px; font-size: 0.82rem; color: #fff; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; transition: background 0.15s;">
+          <span style="font-weight: 500;">${window.ResumeIntel.Utils.esc(m.role.title)}</span>
+          <span style="font-size: 0.65rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid var(--accent); padding: 2px 6px; border-radius: 4px; background: rgba(233, 69, 96, 0.05);">${m.category}</span>
+        </div>
+      `).join('');
+
+      suggestionsBox.style.display = 'block';
+      fTitle.setAttribute('aria-expanded', 'true');
+      activeIndex = -1;
+
+      // Attach click events
+      suggestionsBox.querySelectorAll('.role-suggestion-item').forEach((item, idx) => {
+        item.addEventListener('click', () => {
+          selectRole(matches[idx]);
+          closeSuggestions();
+        });
+      });
+    };
+
+    const debouncedInput = window.ResumeIntel.Utils.debounce(handleInput, 200);
+    fTitle.addEventListener('input', debouncedInput);
+
+    fTitle.addEventListener('keydown', (e) => {
+      const items = suggestionsBox.querySelectorAll('.role-suggestion-item');
+      if (suggestionsBox.style.display === 'block') {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          activeIndex = (activeIndex + 1) % items.length;
+          highlightItem(items);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          activeIndex = (activeIndex - 1 + items.length) % items.length;
+          highlightItem(items);
+        } else if (e.key === 'Enter') {
+          if (activeIndex >= 0 && activeIndex < matches.length) {
+            e.preventDefault();
+            selectRole(matches[activeIndex]);
+            closeSuggestions();
+          }
+        } else if (e.key === 'Escape') {
+          closeSuggestions();
+          fTitle.focus();
+        }
+      }
+    });
+
+    const highlightItem = (items) => {
+      items.forEach((item, idx) => {
+        if (idx === activeIndex) {
+          item.classList.add('highlighted');
+          item.style.background = 'rgba(255,255,255,0.08)';
+          item.focus();
+          fTitle.setAttribute('aria-activedescendant', `opt-${idx}`);
+        } else {
+          item.classList.remove('highlighted');
+          item.style.background = 'transparent';
+        }
+      });
+    };
+
+    // Close dropdown on click outside
+    document.addEventListener('click', (e) => {
+      if (e.target !== fTitle && !suggestionsBox.contains(e.target)) {
+        closeSuggestions();
+      }
+    });
+  }
+}
+
+function selectRole(match) {
+  const panel = document.getElementById('smart-role-panel');
+  if (!panel) return;
+
+  const role = match.role;
+  const roleKey = match.key;
+  
+  // Render summary suggestions
+  const levels = ['fresher', 'mid', 'senior'];
+  let summariesHtml = levels.map(level => {
+    const variations = window.ResumeIntel.SummaryGenerator.generate(roleKey, level);
+    return `
+      <div style="margin-top: 8px;">
+        <span style="font-size: 0.68rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${level} Level</span>
+        ${variations.map((v) => `
+          <div class="summary-suggest-card" onclick="applySummaryText(this.textContent.trim())" style="background: #ffffff; border: 1px solid rgba(0,0,0,0.06); border-radius: 8px; padding: 10px; font-size: 0.78rem; color: #475569; line-height: 1.45; margin-top: 5px; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.02);" onmouseover="this.style.borderColor='var(--accent)'; this.style.color='#0f172a'; this.style.background='#f8fafc';" onmouseout="this.style.borderColor='rgba(0,0,0,0.06)'; this.style.color='#475569'; this.style.background='#ffffff';">
+            ${v}
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }).join('');
+
+  // Render skills suggestions
+  const skillsHtml = role.skills.map(s => `
+    <span class="kw-pill missing" onclick="addSkillFromSuggestions('${s.replace(/'/g, "\\'")}')" style="cursor: pointer; display: inline-flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.06); border-radius: 20px; padding: 4px 10px; font-size: 0.75rem; color: #475569; margin: 2px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'; this.style.color='#0f172a';" onmouseout="this.style.background='rgba(0,0,0,0.02)'; this.style.color='#475569';"><i class="ti ti-plus" style="font-size:10px; color:var(--accent)"></i> ${s}</span>
+  `).join('');
+
+  panel.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 6px; margin-bottom: 8px;">
+      <span style="font-size: 0.78rem; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 4px;"><i class="ti ti-sparkles" style="color:var(--accent); font-size: 13px;"></i> Assistant: ${role.title}</span>
+      <button class="ic-btn" onclick="document.getElementById('smart-role-panel').style.display='none'" style="padding: 2px 6px; font-size: 0.65rem; background: rgba(0,0,0,0.03); border-radius: 4px; border: 1px solid rgba(0,0,0,0.08); color: #475569; cursor: pointer;"><i class="ti ti-x"></i> Hide</button>
+    </div>
+    <div>
+      <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Recommended Skills</span>
+      <div style="display:flex; flex-wrap:wrap; gap: 4px; margin-bottom: 12px;">
+        ${skillsHtml}
+      </div>
+      <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Recommended Summaries <span style="font-weight: normal; text-transform: none; opacity: 0.6;">(Click to insert)</span></span>
+      <div style="max-height: 180px; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 4px;">
+        ${summariesHtml}
+      </div>
+    </div>
+  `;
+  panel.style.display = 'block';
+
+  // Render skill suggestions
+  renderSkillSuggestions();
+}
+
+function applySummaryText(text) {
+  const summaryEl = document.getElementById('f_summary');
+  if (summaryEl) {
+    summaryEl.value = text;
+    render();
+  }
+}
+
+function addSkillFromSuggestions(skillName) {
+  if (!S.skills.includes(skillName)) {
+    S.skills.push(skillName);
+    buildSkillTags();
+    render();
+    renderSkillSuggestions();
+  }
+}
+
+function addSkillFromJd(skillName) {
+  if (!S.skills.includes(skillName)) {
+    S.skills.push(skillName);
+    buildSkillTags();
+    render();
+    if (window.ResumeIntel && window.ResumeIntel.Core) {
+      window.ResumeIntel.Core.analyzeResume();
+    }
+  }
+}
+
+function renderSkillSuggestions() {
+  const wrapper = document.getElementById('skills-suggestions-wrapper');
+  const listEl = document.getElementById('skillsSuggestionsList');
+  if (!wrapper || !listEl) return;
+
+  if (!window.ResumeIntel || !window.ResumeIntel.SkillEngine) return;
+
+  const recommendations = window.ResumeIntel.SkillEngine.recommend(S.skills);
+  if (recommendations.length === 0) {
+    wrapper.style.display = 'none';
+  } else {
+    listEl.innerHTML = recommendations.map(s => `
+      <span class="kw-pill missing" onclick="addSkillFromSuggestions('${s.replace(/'/g, "\\'")}')" style="cursor: pointer; display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 4px 10px; font-size: 0.75rem; color: rgba(255,255,255,0.7); margin: 2px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.04)'; this.style.color='rgba(255,255,255,0.7)';"><i class="ti ti-plus" style="font-size:10px; color:var(--accent)"></i> ${s}</span>
+    `).join('');
+    wrapper.style.display = 'block';
+  }
+}
+
+function triggerJdAnalysis() {
+  const text = document.getElementById('jdInputText').value;
+  if (window.ResumeIntel && window.ResumeIntel.Core) {
+    window.ResumeIntel.Core.scanJobDescription(text);
+  }
+}
+
+function enhanceBulletPoint(index, event) {
+  if (event) event.stopPropagation();
+  const descEl = document.getElementById(`exp-desc-${index}`);
+  if (!descEl) return;
+
+  const originalText = descEl.value;
+  if (!originalText.trim()) {
+    showToast("Please enter some bullet points first.");
+    return;
+  }
+
+  const lines = originalText.split('\n');
+  const improvedLines = lines.map(line => {
+    if (!line.trim()) return "";
+    return window.ResumeIntel.BulletEngine.improve(line);
+  }).filter(Boolean);
+
+  const improvedText = improvedLines.join('\n');
+  descEl.value = improvedText;
+  S.experience[index].desc = improvedText;
+  render();
+  showToast("Bullet points improved!");
+}

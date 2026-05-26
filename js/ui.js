@@ -129,7 +129,14 @@ function buildEntries(){
           <div class="form-group"><input type="text" placeholder="Start" value="${esc(e.start)}" oninput="S.experience[${i}].start=this.value;render()"></div>
           <div class="form-group"><input type="text" placeholder="End / Present" value="${esc(e.end)}" oninput="S.experience[${i}].end=this.value;render()"></div>
         </div>
-        <div class="form-group"><textarea placeholder="• Bullet points (one per line)…" oninput="S.experience[${i}].desc=this.value;render()">${esc(e.desc)}</textarea></div>
+        <div class="form-group" style="position:relative">
+          <textarea id="exp-desc-${i}" placeholder="• Bullet points (one per line)…" oninput="S.experience[${i}].desc=this.value;render()">${esc(e.desc)}</textarea>
+          <div style="display:flex; justify-content:flex-end; margin-top:4.5px">
+            <button class="btn btn-outline btn-sm" style="padding: 3.5px 7.5px; font-size: 0.72rem; display: flex; align-items: center; gap: 4.5px; border-radius: 6px; border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.02);" onclick="enhanceBulletPoint(${i}, event)">
+              <i class="ti ti-sparkles" style="font-size: 11px; color: var(--accent);"></i> Enhance Bullets
+            </button>
+          </div>
+        </div>
       </div>`).join('');
   }
 

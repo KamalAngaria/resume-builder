@@ -332,6 +332,16 @@ function render(){
       ${S.sectionOrder.map(s=>renderSection(s,{accent:a,chipStyle:'filled'})).join('')}
     </div>`;
   }
+
+  // Trigger Smart Resume Intelligence System analysis (debounced)
+  if (window.ResumeIntel && window.ResumeIntel.Core) {
+    if (!window.ResumeIntel.Core.debouncedAnalyze) {
+      window.ResumeIntel.Core.debouncedAnalyze = window.ResumeIntel.Utils.debounce(() => {
+        window.ResumeIntel.Core.analyzeResume();
+      }, 400);
+    }
+    window.ResumeIntel.Core.debouncedAnalyze();
+  }
 }
 
 // ══════════════════════════════════════════════════════════
@@ -586,6 +596,14 @@ function loadResumeIntoDOM() {
   buildLangs();
   buildReorderList();
   updatePhotoUI();
+  
+  if (typeof renderSkillSuggestions === 'function') {
+    renderSkillSuggestions();
+  }
+  const rolePanel = document.getElementById('smart-role-panel');
+  if (rolePanel) {
+    rolePanel.style.display = 'none';
+  }
 }
 
 function saveActiveResume() {
