@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://resume-builder-3bc.pages.dev/sitemap.xml
