@@ -1,0 +1,252 @@
+/* ══════════════════════════════════════════════════════════
+   CV.craft PRO - Builder Templates Specific Styles
+   ══════════════════════════════════════════════════════════ */
+
+/* ==========================================================
+   1. EXECUTIVE MINIMAL (template-executive)
+   ========================================================== */
+.template-executive {
+  --cv-font-title: 'Playfair Display', serif;
+  --cv-font-body: 'Playfair Display', serif;
+}
+
+.template-executive .cvs-title {
+  text-align: center;
+  border-bottom: 1px solid var(--cv-a, #111);
+  letter-spacing: 2px;
+  font-weight: 600;
+  padding-bottom: 6px;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #111111;
+}
+
+.template-executive .cvs-title i {
+  display: none; /* Hide section icons for ultra-professional minimalist look */
+}
+
+.template-executive .cv-et {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111111;
+}
+
+.template-executive .cv-sum {
+  font-style: italic;
+  text-align: center;
+  color: #3f3f46;
+  line-height: 1.5;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.template-executive .cv-entry {
+  margin-bottom: 16px;
+}
+
+.template-executive .cv-edesc {
+  color: #3f3f46;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+/* ==========================================================
+   2. MODERN TECH (template-tech)
+   ========================================================== */
+.template-tech {
+  --cv-font-title: 'Space Mono', monospace;
+  --cv-font-body: var(--cv-f);
+}
+
+.template-tech .cvs-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-bottom: 1px dashed #cbd5e1;
+  padding-bottom: 4px;
+  color: #475569;
+  text-transform: uppercase;
+}
+
+/* Add custom '//' prefix to titles */
+.template-tech .cvs-title::before {
+  content: "// ";
+  color: var(--cv-a, #0f766e);
+  font-family: 'Space Mono', monospace;
+}
+
+.template-tech .cvs-title i {
+  display: none; /* Hide icons since we use '//' instead */
+}
+
+.template-tech .cv-sk-chip {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  color: #475569;
+  padding: 2px 6px;
+}
+
+.template-tech .cv-et {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.template-tech .cv-es {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.template-tech .cv-edesc {
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+/* ==========================================================
+   3. CREATIVE PROFESSIONAL (template-creative)
+   ========================================================== */
+.template-creative {
+  --cv-font-title: 'Montserrat', sans-serif;
+  --cv-font-body: 'Montserrat', sans-serif;
+}
+
+.template-creative .cvs-title {
+  font-weight: 800;
+  border-bottom: none;
+  padding-bottom: 0;
+  letter-spacing: 1px;
+  font-size: 0.72rem;
+  color: var(--cv-a, #be123c);
+}
+
+.template-creative .cvs-title i {
+  color: var(--cv-a, #be123c);
+}
+
+.template-creative .cv-et {
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.template-creative .cv-sk-chip {
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.72rem;
+}
+
+.template-creative .cv-sum {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #334155;
+}
+
+/* ==========================================================
+   4. CORPORATE CLASSIC (template-classic)
+   ========================================================== */
+.template-classic {
+  --cv-font-title: 'Merriweather', serif;
+  --cv-font-body: 'Merriweather', serif;
+}
+
+.template-classic .cvs-title {
+  font-weight: 700;
+  border-bottom: 1.5px solid var(--cv-a, #535366);
+  letter-spacing: 0.5px;
+  font-size: 0.72rem;
+  color: #111111;
+}
+
+.template-classic .cvs-title i {
+  display: none; /* Classic serif resumes do not use modern action icons */
+}
+
+.template-classic .cv-et {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.template-classic .cv-edesc {
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+/* ==========================================================
+   5. FRESHER SMART (template-fresher)
+   ========================================================== */
+.template-fresher {
+  --cv-font-title: 'DM Sans', sans-serif;
+  --cv-font-body: 'DM Sans', sans-serif;
+}
+
+.template-fresher .cvs-title {
+  font-weight: 700;
+  border-bottom: 2px solid var(--cv-a, #2563eb);
+  font-size: 0.75rem;
+}
+
+.template-fresher .cv-sk-chip {
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.74rem;
+}
+
+.template-fresher .cv-et {
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+/* ==========================================================
+   Design Tab: Template Presets Grid Selector
+   ========================================================== */
+.template-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.template-preset-opt {
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .template-preset-opt:hover {
+    border-color: var(--accent);
+    transform: translateY(-1.5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.template-preset-opt.active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.preset-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+}
+
+.preset-desc {
+  font-size: 0.65rem;
+  color: var(--muted);
+  line-height: 1.25;
+}

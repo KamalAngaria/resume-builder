@@ -6,7 +6,12 @@ let currentTab = 0;
 
 function switchTab(i){
   currentTab = i; // Keep state in sync
-  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  document.querySelectorAll('.tab').forEach((t,j)=>{
+    const active = j===i;
+    t.classList.toggle('active', active);
+    t.setAttribute('aria-selected', active ? 'true' : 'false');
+    t.setAttribute('tabindex', active ? '0' : '-1');
+  });
   document.querySelectorAll('.tab-body').forEach((b,j)=>b.classList.toggle('active',j===i));
   document.getElementById('stepLbl').textContent=`Step ${i+1} / ${TAB_IDS.length}`;
   document.getElementById('prevBtn').disabled = i===0;
@@ -61,7 +66,7 @@ function handlePhoto(e){
     if(!cropModal || !cropImage) return;
 
     cropImage.src = ev.target.result;
-    cropModal.style.display = 'flex';
+    showModal(cropModal);
 
     if(cropper) {
       cropper.destroy();
@@ -87,14 +92,14 @@ function applyCrop(){
   if(canvas) {
     S.photo = canvas.toDataURL('image/jpeg');
     updatePhotoUI();
-    render();
+    renderImmediate();
   }
   closeCropModal();
 }
 function closeCropModal(){
   const cropModal = document.getElementById('cropModal');
   if(cropModal) {
-    cropModal.style.display = 'none';
+    hideModal(cropModal);
   }
   if(cropper) {
     cropper.destroy();
@@ -115,19 +120,20 @@ function openPhotoPreview(e){
 
   previewImage.src = S.photo;
   previewImage.style.borderRadius = S.photoBR + '%';
-  previewModal.style.display = 'flex';
+  showModal(previewModal);
 }
 function closePhotoPreview(){
   const previewModal = document.getElementById('previewPhotoModal');
   if(previewModal) {
-    previewModal.style.display = 'none';
+    hideModal(previewModal);
   }
 }
-function removePhoto(){S.photo=null;updatePhotoUI();render();}
+function removePhoto(){S.photo=null;updatePhotoUI();renderImmediate();}
 function updatePhotoUI(){
   const c=document.getElementById('photoCircle');
   if(!c)return;
-  c.innerHTML=S.photo?`<img src="${S.photo}" style="width:100%;height:100%;object-fit:cover">`:`<i class="ti ti-camera" style="font-size:1.6rem;color:var(--muted)"></i>`;
+  const isSafePhoto = S.photo && (typeof S.photo === 'string') && (S.photo.startsWith('data:image/') || S.photo.match(/^https?:\/\//i));
+  c.innerHTML=isSafePhoto?`<img src="${esc(S.photo)}" style="width:100%;height:100%;object-fit:cover">`:`<i class="ti ti-camera" style="font-size:1.6rem;color:var(--muted)"></i>`;
 }
 function setPhotoSize(v){
   S.photoSize=+v;
@@ -136,13 +142,13 @@ function setPhotoSize(v){
   document.getElementById('photoCircle').style.height=v+'px';
   document.getElementById('photoRing').style.width=v+'px';
   document.getElementById('photoRing').style.height=v+'px';
-  render();
+  renderImmediate();
 }
 function setPhotoBR(v){
   S.photoBR=+v;
   document.getElementById('photoBRVal').textContent=v+'%';
   document.getElementById('photoCircle').style.borderRadius=v+'%';
-  render();
+  renderImmediate();
 }
 
 // Photo resize drag
@@ -170,24 +176,24 @@ function addEntry(type){
   else if(type==='edu') S.education.push({school:'',degree:'',start:'',end:'',desc:''});
   else if(type==='cert') S.certs.push({name:'',issuer:'',year:''});
   else if(type==='award') S.awards.push({title:'',org:'',year:''});
-  buildEntries(); render();
+  buildEntries(); renderImmediate();
 }
 function removeEntry(type,i){
   if(type==='exp') S.experience.splice(i,1);
   else if(type==='edu') S.education.splice(i,1);
   else if(type==='cert') S.certs.splice(i,1);
   else if(type==='award') S.awards.splice(i,1);
-  buildEntries(); render();
+  buildEntries(); renderImmediate();
 }
 function handleSkillKey(e){
   if(e.key==='Enter'||e.key===','){
     e.preventDefault();
     const v=e.target.value.trim().replace(/,/g,'');
-    if(v&&!S.skills.includes(v)){S.skills.push(v);buildSkillTags();render();}
+    if(v&&!S.skills.includes(v)){S.skills.push(v);buildSkillTags();renderImmediate();}
     e.target.value='';
   }
 }
-function addLang(){S.langs.push({lang:'',level:'Beginner'});buildLangs();render();}
+function addLang(){S.langs.push({lang:'',level:'Beginner'});buildLangs();renderImmediate();}
 
 // ══════════════════════════════════════════════════════════
 // CUSTOM COLOR PICKER MODAL
@@ -211,12 +217,12 @@ function openColorPickerModal() {
   if (slider) slider.value = pickerH;
   
   updatePickerUI();
-  modal.style.display = 'flex';
+  showModal(modal);
 }
 
 function closeColorPickerModal() {
   const modal = document.getElementById('colorPickerModal');
-  if (modal) modal.style.display = 'none';
+  if (modal) hideModal(modal);
 }
 
 function applyCustomColor() {
@@ -279,6 +285,26 @@ document.addEventListener('DOMContentLoaded', () => {
     tab.addEventListener('click', () => {
       switchTab(index);
       tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    });
+    tab.addEventListener('keydown', (e) => {
+      const tabs = document.querySelectorAll('.tab');
+      let nextIndex = index;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        nextIndex = (index + 1) % tabs.length;
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        nextIndex = (index - 1 + tabs.length) % tabs.length;
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        switchTab(index);
+        return;
+      } else {
+        return;
+      }
+      tabs[nextIndex].focus();
+      switchTab(nextIndex);
+      tabs[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     });
   });
 
@@ -358,13 +384,17 @@ function toggleCustomSelect(trigger, event) {
   document.querySelectorAll('.custom-select-container.open').forEach(c => {
     if (c !== container) {
       c.classList.remove('open');
+      const otherTrigger = c.querySelector('.custom-select-trigger');
+      if (otherTrigger) otherTrigger.setAttribute('aria-expanded', 'false');
     }
   });
   
   if (isOpen) {
     container.classList.remove('open');
+    trigger.setAttribute('aria-expanded', 'false');
   } else {
     container.classList.add('open');
+    trigger.setAttribute('aria-expanded', 'true');
   }
 }
 
@@ -386,19 +416,28 @@ function selectCustomOption(optionEl, value, index, event) {
   
   // Close dropdown
   container.classList.remove('open');
+  const trigger = container.querySelector('.custom-select-trigger');
+  if (trigger) {
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.focus();
+  }
   
   // Render CV preview
-  render();
+  renderImmediate();
 }
 
 // Global click handler to close dropdowns when clicking outside
 document.addEventListener('click', (e) => {
   document.querySelectorAll('.custom-select-container.open').forEach(c => {
     c.classList.remove('open');
+    const trigger = c.querySelector('.custom-select-trigger');
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
   });
   const resDropdown = document.getElementById('resumesDropdown');
   if (resDropdown && resDropdown.classList.contains('open') && !resDropdown.contains(e.target)) {
     resDropdown.classList.remove('open');
+    const trigger = document.getElementById('resumesTrigger');
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
   }
 });
 
@@ -446,9 +485,9 @@ function setupIntelligenceHandlers() {
       }
 
       suggestionsBox.innerHTML = matches.map((m, idx) => `
-        <div class="role-suggestion-item" role="option" id="opt-${idx}" tabindex="0" data-key="${m.key}" data-cat="${m.category}" style="padding: 10px 14px; font-size: 0.82rem; color: #fff; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; transition: background 0.15s;">
-          <span style="font-weight: 500;">${window.ResumeIntel.Utils.esc(m.role.title)}</span>
-          <span style="font-size: 0.65rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid var(--accent); padding: 2px 6px; border-radius: 4px; background: rgba(233, 69, 96, 0.05);">${m.category}</span>
+        <div class="role-suggestion-item" role="option" id="opt-${idx}" tabindex="0" data-key="${esc(m.key)}" data-cat="${esc(m.category)}" style="padding: 10px 14px; font-size: 0.82rem; color: #fff; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; transition: background 0.15s;">
+          <span style="font-weight: 500;">${esc(m.role.title)}</span>
+          <span style="font-size: 0.65rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid var(--accent); padding: 2px 6px; border-radius: 4px; background: rgba(233, 69, 96, 0.05);">${esc(m.category)}</span>
         </div>
       `).join('');
 
@@ -540,7 +579,7 @@ function selectRole(match) {
 
   // Render skills suggestions
   const skillsHtml = role.skills.map(s => `
-    <span class="kw-pill missing" onclick="addSkillFromSuggestions('${s.replace(/'/g, "\\'")}')" style="cursor: pointer; display: inline-flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.06); border-radius: 20px; padding: 4px 10px; font-size: 0.75rem; color: #475569; margin: 2px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'; this.style.color='#0f172a';" onmouseout="this.style.background='rgba(0,0,0,0.02)'; this.style.color='#475569';"><i class="ti ti-plus" style="font-size:10px; color:var(--accent)"></i> ${s}</span>
+    <span class="kw-pill missing" onclick="addSkillFromSuggestions('${s.replace(/'/g, "\\'")}')" style="cursor: pointer; display: inline-flex; align-items: center; gap: 4px; background: rgba(83,83,102,0.08); border: 1px solid rgba(83,83,102,0.18); border-radius: 20px; padding: 4px 10px; font-size: 0.75rem; color: #1c1c1c; margin: 2px; transition: background-color 0.2s, color 0.2s;" onmouseover="this.style.background='rgba(83,83,102,0.16)'; this.style.color='#000000';" onmouseout="this.style.background='rgba(83,83,102,0.08)'; this.style.color='#1c1c1c';"><i class="ti ti-plus" style="font-size:10px; color:var(--accent)"></i> ${s}</span>
   `).join('');
 
   panel.innerHTML = `
@@ -553,7 +592,7 @@ function selectRole(match) {
       <div style="display:flex; flex-wrap:wrap; gap: 4px; margin-bottom: 12px;">
         ${skillsHtml}
       </div>
-      <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Recommended Summaries <span style="font-weight: normal; text-transform: none; opacity: 0.6;">(Click to insert)</span></span>
+      <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Recommended Summaries <span style="font-weight: normal; text-transform: none; color: #535366;">(Click to insert)</span></span>
       <div style="max-height: 180px; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 4px;">
         ${summariesHtml}
       </div>
@@ -605,7 +644,11 @@ function renderSkillSuggestions() {
     wrapper.style.display = 'none';
   } else {
     listEl.innerHTML = recommendations.map(s => `
-      <span class="kw-pill missing" onclick="addSkillFromSuggestions('${s.replace(/'/g, "\\'")}')" style="cursor: pointer; display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 4px 10px; font-size: 0.75rem; color: rgba(255,255,255,0.7); margin: 2px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.04)'; this.style.color='rgba(255,255,255,0.7)';"><i class="ti ti-plus" style="font-size:10px; color:var(--accent)"></i> ${s}</span>
+      <span class="kw-pill missing" onclick="addSkillFromSuggestions('${s.replace(/'/g, "\\'")}')"
+        style="cursor: pointer; display: inline-flex; align-items: center; gap: 4px; background: color-mix(in srgb, var(--accent) 10%, #fff); border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); border-radius: 20px; padding: 4px 10px; font-size: 0.75rem; color: #1c1c1c; margin: 2px; transition: background-color 0.2s, color 0.2s;"
+        onmouseover="this.style.background='color-mix(in srgb, var(--accent) 18%, #fff)'; this.style.color='#000000';"
+        onmouseout="this.style.background='color-mix(in srgb, var(--accent) 10%, #fff)'; this.style.color='#1c1c1c';"
+      ><i class="ti ti-plus" style="font-size:10px; color:var(--accent)"></i> ${s}</span>
     `).join('');
     wrapper.style.display = 'block';
   }

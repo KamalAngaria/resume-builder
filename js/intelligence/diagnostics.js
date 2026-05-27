@@ -23,16 +23,16 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 function launchDiagnostics() {
   // Backup all states
-  window._diagnosticsOriginalState = JSON.parse(JSON.stringify(window.S));
+  window._diagnosticsOriginalState = deepClone(window.S);
   if (window.resumes) {
-    window._diagnosticsOriginalResumes = JSON.parse(JSON.stringify(window.resumes));
+    window._diagnosticsOriginalResumes = deepClone(window.resumes);
   }
   window._diagnosticsOriginalActiveResumeId = window.activeResumeId;
 
   // Show modal
   const modal = document.getElementById('diagnosticsModal');
   if (modal) {
-    modal.style.display = 'flex';
+    showModal(modal);
   }
   
   // Set up welcome console message
@@ -265,7 +265,7 @@ function closeDiagnostics() {
   // Close modal
   const modal = document.getElementById('diagnosticsModal');
   if (modal) {
-    modal.style.display = 'none';
+    hideModal(modal);
   }
 }
 

@@ -1,9 +1,29 @@
 // ══════════════════════════════════════════════════════════
+// DEEP COPY UTILITY
+// ══════════════════════════════════════════════════════════
+function deepClone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+window.deepClone = deepClone;
+
+// ══════════════════════════════════════════════════════════
+// CONFIGURATION CONSTANTS
+// ══════════════════════════════════════════════════════════
+const A4_WIDTH_PX = 794;
+const A4_HEIGHT_PX = 1123;
+const MIN_ZOOM = 30;
+const MAX_ZOOM = 150;
+const MAX_FIT_ZOOM = 120;
+const RENDER_DEBOUNCE_MS = 150;
+const SAVE_DEBOUNCE_MS = 450;
+
+// ══════════════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════════════
 const DEFAULT_BLANK_RESUME = {
   photo: null, photoSize: 76, photoBR: 50,
   accent: '#535366', layout: 'classic', font: 'DM Sans', fontSize: 100, lineH: 1.65, secGap: 20,
+  templateId: null, templateVersion: 1,
   f_name: '', f_title: '', f_summary: '',
   f_email: '', f_phone: '', f_city: '', f_country: '', f_linkedin: '', f_website: '', f_github: '',
   skills: [],
@@ -20,6 +40,7 @@ const DEFAULT_BLANK_RESUME = {
 const DEFAULT_SAMPLE_RESUME = {
   photo: null, photoSize: 76, photoBR: 50,
   accent: '#535366', layout: 'classic', font: 'DM Sans', fontSize: 100, lineH: 1.65, secGap: 20,
+  templateId: null, templateVersion: 1,
   f_name: 'Alex Johnson',
   f_title: 'Senior Product Designer',
   f_summary: 'Creative and detail-oriented Product Designer with 7+ years crafting digital experiences for top-tier tech companies. Passionate about user-centric design and building elegant interfaces that solve real problems.',
@@ -48,7 +69,7 @@ const DEFAULT_SAMPLE_RESUME = {
   sectionVis: { summary: true, experience: true, education: true, certifications: true, skills: true, languages: true, awards: false, interests: true }
 };
 
-const S = JSON.parse(JSON.stringify(DEFAULT_BLANK_RESUME));
+const S = deepClone(DEFAULT_BLANK_RESUME);
 window.S = S;
 
 // ══════════════════════════════════════════════════════════

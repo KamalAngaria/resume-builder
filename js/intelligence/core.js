@@ -320,12 +320,12 @@ window.ResumeIntel.Core = {
 
       kwPanel.innerHTML = `
         <div class="kw-group-label"><i class="ti ti-circle-check" style="color:#22c55e"></i> Found in Resume</div>
-        <div class="kw-flex">${matchedHtml || '<span style="opacity:0.6;font-size:0.78rem">No matching keywords.</span>'}</div>
+        <div class="kw-flex">${matchedHtml || '<span style="color:#535366;font-size:0.78rem">No matching keywords.</span>'}</div>
         <div class="kw-group-label" style="margin-top:12px"><i class="ti ti-alert-circle" style="color:#f59e0b"></i> Recommended Additions</div>
-        <div class="kw-flex">${missingHtml || '<span style="opacity:0.6;font-size:0.78rem">No missing keywords!</span>'}</div>
+        <div class="kw-flex">${missingHtml || '<span style="color:#535366;font-size:0.78rem">No missing keywords!</span>'}</div>
       `;
     } else if (kwPanel) {
-      kwPanel.innerHTML = `<div style="text-align:center;padding:12px;opacity:0.5;font-size:0.8rem">Paste a Job Description above to scan for missing keywords.</div>`;
+      kwPanel.innerHTML = `<div style="text-align:center;padding:12px;color:#535366;font-size:0.8rem">Paste a Job Description above to scan for missing keywords.</div>`;
     }
 
     // 5. Render ATS Parser Plain-Text Visualizer Preview

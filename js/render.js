@@ -1,124 +1,127 @@
 // ══════════════════════════════════════════════════════════
 // SECTION RENDERERS
 // ══════════════════════════════════════════════════════════
-function renderSection(sec,opts={}){
-  const {titleStyle='',wrapStyle='',chipStyle='filled',accent='#1a1a2e'}=opts;
-  const barColor=`color:${accent};border-bottom:2px solid ${accent};`;
-  const vis=S.sectionVis[sec];if(!vis)return'';
+function renderSection(sec, opts = {}) {
+  const chipStyle = opts.chipStyle || 'filled';
+  const vis = S.sectionVis[sec]; if (!vis) return '';
 
-  if(sec==='summary'){
-    const sum=gv('f_summary');if(!sum)return'';
-    return`<div style="${wrapStyle}">
-      <div class="cvs-title" style="${barColor}${titleStyle}"><i class="ti ti-align-left" style="margin-right:5px;font-size:11px"></i>Profile</div>
-      <p class="cv-sum" style="line-height:${S.lineH}">${sum}</p>
+  if (sec === 'summary') {
+    const sum = esc(gv('f_summary')); if (!sum) return '';
+    return `<div class="cv-section-wrap">
+      <div class="cvs-title"><i class="ti ti-align-left"></i>Profile</div>
+      <p class="cv-sum">${sum}</p>
     </div>`;
   }
-  if(sec==='experience'){
-    if(!S.experience.length)return'';
-    return`<div style="${wrapStyle}">
-      <div class="cvs-title" style="${barColor}${titleStyle}"><i class="ti ti-briefcase" style="margin-right:5px;font-size:11px"></i>Experience</div>
-      ${S.experience.map(e=>`<div class="cv-entry">
-        <div class="cv-eh"><div class="cv-et">${e.role||'Role'}</div><div class="cv-ed" style="color:${accent}">${[e.start,e.end].filter(Boolean).join(' – ')}</div></div>
-        <div class="cv-es">${e.company||''}</div>
-        ${e.desc?`<div class="cv-edesc" style="line-height:${S.lineH}">${fmtDesc(e.desc)}</div>`:''}
+  if (sec === 'experience') {
+    if (!S.experience.length) return '';
+    return `<div class="cv-section-wrap">
+      <div class="cvs-title"><i class="ti ti-briefcase"></i>Experience</div>
+      ${S.experience.map(e => `<div class="cv-entry">
+        <div class="cv-eh"><div class="cv-et">${esc(e.role || 'Role')}</div><div class="cv-ed">${[esc(e.start), esc(e.end)].filter(Boolean).join(' – ')}</div></div>
+        <div class="cv-es">${esc(e.company || '')}</div>
+        ${e.desc ? `<div class="cv-edesc">${fmtDesc(e.desc)}</div>` : ''}
       </div>`).join('')}
     </div>`;
   }
-  if(sec==='education'){
-    if(!S.education.length)return'';
-    return`<div style="${wrapStyle}">
-      <div class="cvs-title" style="${barColor}${titleStyle}"><i class="ti ti-school" style="margin-right:5px;font-size:11px"></i>Education</div>
-      ${S.education.map(e=>`<div class="cv-entry">
-        <div class="cv-eh"><div class="cv-et">${e.degree||'Degree'}</div><div class="cv-ed" style="color:${accent}">${[e.start,e.end].filter(Boolean).join(' – ')}</div></div>
-        <div class="cv-es">${e.school||''}</div>
-        ${e.desc?`<div class="cv-edesc" style="line-height:${S.lineH}">${fmtDesc(e.desc)}</div>`:''}
+  if (sec === 'education') {
+    if (!S.education.length) return '';
+    return `<div class="cv-section-wrap">
+      <div class="cvs-title"><i class="ti ti-school"></i>Education</div>
+      ${S.education.map(e => `<div class="cv-entry">
+        <div class="cv-eh"><div class="cv-et">${esc(e.degree || 'Degree')}</div><div class="cv-ed">${[esc(e.start), esc(e.end)].filter(Boolean).join(' – ')}</div></div>
+        <div class="cv-es">${esc(e.school || '')}</div>
+        ${e.desc ? `<div class="cv-edesc">${fmtDesc(e.desc)}</div>` : ''}
       </div>`).join('')}
     </div>`;
   }
-  if(sec==='certifications'){
-    const certs=S.certs.filter(c=>c.name);if(!certs.length)return'';
-    return`<div style="${wrapStyle}">
-      <div class="cvs-title" style="${barColor}${titleStyle}"><i class="ti ti-certificate" style="margin-right:5px;font-size:11px"></i>Certifications</div>
-      ${certs.map(c=>`<div class="cv-entry">
-        <div class="cv-eh"><div class="cv-et">${c.name}</div><div class="cv-ed" style="color:${accent}">${c.year||''}</div></div>
-        <div class="cv-es">${c.issuer||''}</div>
+  if (sec === 'certifications') {
+    const certs = S.certs.filter(c => c.name); if (!certs.length) return '';
+    return `<div class="cv-section-wrap">
+      <div class="cvs-title"><i class="ti ti-certificate"></i>Certifications</div>
+      ${certs.map(c => `<div class="cv-entry">
+        <div class="cv-eh"><div class="cv-et">${esc(c.name)}</div><div class="cv-ed">${esc(c.year || '')}</div></div>
+        <div class="cv-es">${esc(c.issuer || '')}</div>
       </div>`).join('')}
     </div>`;
   }
-  if(sec==='skills'){
-    if(!S.skills.length)return'';
-    const chips=S.skills.map(s=>{
-      if(chipStyle==='filled') return`<span class="cv-sk-chip" style="background:${accent};color:#fff">${s}</span>`;
-      if(chipStyle==='outline') return`<span class="cv-sk-chip" style="border:1.5px solid ${accent};color:${accent}">${s}</span>`;
-      if(chipStyle==='pill') return`<span class="cv-sk-chip" style="background:${accent}22;color:${accent}">${s}</span>`;
-      return`<span class="cv-sk-chip" style="background:#f0f0f0;color:#333">${s}</span>`;
+  if (sec === 'skills') {
+    if (!S.skills.length) return '';
+    const chips = S.skills.map(s => {
+      const safeS = esc(s);
+      return `<span class="cv-sk-chip ${chipStyle}">${safeS}</span>`;
     }).join('');
-    return`<div style="${wrapStyle}">
-      <div class="cvs-title" style="${barColor}${titleStyle}"><i class="ti ti-tools" style="margin-right:5px;font-size:11px"></i>Skills</div>
+    return `<div class="cv-section-wrap">
+      <div class="cvs-title"><i class="ti ti-tools"></i>Skills</div>
       <div class="cv-sk">${chips}</div>
     </div>`;
   }
-  if(sec==='languages'){
-    const langs=S.langs.filter(l=>l.lang);if(!langs.length)return'';
-    return`<div style="${wrapStyle}">
-      <div class="cvs-title" style="${barColor}${titleStyle}"><i class="ti ti-language" style="margin-right:5px;font-size:11px"></i>Languages</div>
-      <div class="cv-sk">${langs.map(l=>`<span class="cv-sk-chip" style="border:1.5px solid ${accent};color:${accent}">${l.lang}<span style="opacity:.6;font-weight:400"> · ${l.level}</span></span>`).join('')}</div>
+  if (sec === 'languages') {
+    const langs = S.langs.filter(l => l.lang); if (!langs.length) return '';
+    return `<div class="cv-section-wrap">
+      <div class="cvs-title"><i class="ti ti-language"></i>Languages</div>
+      <div class="cv-sk">${langs.map(l => `<span class="cv-sk-chip outline">${esc(l.lang)}<span class="cv-lang-level"> · ${esc(l.level)}</span></span>`).join('')}</div>
     </div>`;
   }
-  if(sec==='awards'){
-    if(!S.awards.filter(a=>a.title).length)return'';
-    return`<div style="${wrapStyle}">
-      <div class="cvs-title" style="${barColor}${titleStyle}"><i class="ti ti-trophy" style="margin-right:5px;font-size:11px"></i>Awards</div>
-      ${S.awards.filter(a=>a.title).map(a=>`<div class="cv-entry">
-        <div class="cv-eh"><div class="cv-et">${a.title}</div><div class="cv-ed" style="color:${accent}">${a.year||''}</div></div>
-        <div class="cv-es">${a.org||''}</div>
+  if (sec === 'awards') {
+    if (!S.awards.filter(a => a.title).length) return '';
+    return `<div class="cv-section-wrap">
+      <div class="cvs-title"><i class="ti ti-trophy"></i>Awards</div>
+      ${S.awards.filter(a => a.title).map(a => `<div class="cv-entry">
+        <div class="cv-eh"><div class="cv-et">${esc(a.title)}</div><div class="cv-ed">${esc(a.year || '')}</div></div>
+        <div class="cv-es">${esc(a.org || '')}</div>
       </div>`).join('')}
     </div>`;
   }
-  if(sec==='interests'){
-    const ints=gv('f_interests');if(!ints)return'';
-    return`<div style="${wrapStyle}">
-      <div class="cvs-title" style="${barColor}${titleStyle}"><i class="ti ti-heart" style="margin-right:5px;font-size:11px"></i>Interests</div>
-      <div style="font-size:.82em;opacity:.8;line-height:1.6">${ints}</div>
+  if (sec === 'interests') {
+    const ints = esc(gv('f_interests')); if (!ints) return '';
+    return `<div class="cv-section-wrap">
+      <div class="cvs-title"><i class="ti ti-heart"></i>Interests</div>
+      <div class="cv-interests-text">${ints}</div>
     </div>`;
   }
-  return'';
+  return '';
 }
 
-// sidebar section (for sidebar-l / sidebar-r layouts)
-function renderSidebarSection(sec,accent){
-  const vis=S.sectionVis[sec];if(!vis)return'';
-  const stitle=`<div style="font-size:.58em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.55);margin-bottom:7px;margin-top:14px">${SEC_LABELS[sec]||sec}</div>`;
-  
-  if(sec==='skills'){
-    if(!S.skills.length)return'';
-    return stitle+`<div style="display:flex;flex-wrap:wrap;gap:4px">${S.skills.map(s=>`<span style="background:rgba(255,255,255,.15);color:#fff;font-size:.7em;padding:2px 8px;border-radius:12px">${s}</span>`).join('')}</div>`;
+// sidebar section (for sidebar-l layout)
+function renderSidebarSection(sec) {
+  const vis = S.sectionVis[sec]; if (!vis) return '';
+  const stitle = `<div class="layout-sidebar-section-title">${SEC_LABELS[sec] || sec}</div>`;
+
+  if (sec === 'skills') {
+    if (!S.skills.length) return '';
+    return stitle + `<div class="layout-sidebar-skills-grid">${S.skills.map(s => `<span class="layout-sidebar-skill-badge">${esc(s)}</span>`).join('')}</div>`;
   }
-  if(sec==='languages'){
-    const langs=S.langs.filter(l=>l.lang);if(!langs.length)return'';
-    return stitle+langs.map(l=>`
-      <div style="margin-bottom:8px">
-        <div style="display:flex;justify-content:space-between;font-size:.76em;color:#fff;margin-bottom:3px"><span>${l.lang}</span><span style="opacity:.6;font-size:.66em">${l.level}</span></div>
-        <div style="height:3px;background:rgba(255,255,255,.15);border-radius:2px"><div style="height:100%;border-radius:2px;background:#fff;width:${{Native:100,Fluent:85,Advanced:70,Conversational:55,Intermediate:45,Beginner:30}[l.level]||50}%"></div></div>
+  if (sec === 'languages') {
+    const langs = S.langs.filter(l => l.lang); if (!langs.length) return '';
+    return stitle + langs.map(l => `
+      <div class="layout-sidebar-lang-item">
+        <div class="layout-sidebar-lang-header"><span>${esc(l.lang)}</span><span class="layout-sidebar-lang-level">${esc(l.level)}</span></div>
+        <div class="layout-sidebar-lang-track"><div class="layout-sidebar-lang-fill" style="width:${{ Native: 100, Fluent: 85, Advanced: 70, Conversational: 55, Intermediate: 45, Beginner: 30 }[l.level] || 50}%"></div></div>
       </div>`).join('');
   }
-  if(sec==='certifications'){
-    const certs=S.certs.filter(c=>c.name);if(!certs.length)return'';
-    return stitle+certs.map(c=>`<div style="font-size:.75em;color:rgba(255,255,255,.85);margin-bottom:6px"><div style="font-weight:600;margin-bottom:1px">${c.name}</div><div style="opacity:.6;font-size:.7em">${c.issuer}${c.year?' · '+c.year:''}</div></div>`).join('');
+  if (sec === 'certifications') {
+    const certs = S.certs.filter(c => c.name); if (!certs.length) return '';
+    return stitle + certs.map(c => `<div class="layout-sidebar-cert-item"><div class="layout-sidebar-cert-name">${esc(c.name)}</div><div class="layout-sidebar-cert-issuer">${esc(c.issuer)}${c.year ? ' · ' + esc(c.year) : ''}</div></div>`).join('');
   }
-  if(sec==='interests'){
-    const ints=gv('f_interests');if(!ints)return'';
-    return stitle+`<div style="font-size:.75em;color:rgba(255,255,255,.8);line-height:1.6">${ints}</div>`;
+  if (sec === 'interests') {
+    const ints = esc(gv('f_interests')); if (!ints) return '';
+    return stitle + `<div class="layout-sidebar-interests">${ints}</div>`;
   }
-  return'';
+  return '';
 }
 
 // ══════════════════════════════════════════════════════════
 // LAYOUT RENDERERS
 // ══════════════════════════════════════════════════════════
-function render(){
-  const doc=document.getElementById('cvDoc');
-  if(!doc)return;
+let lastRenderedHTML = '';
+
+function renderImmediate() {
+  const doc = document.getElementById('cvDoc');
+  if (!doc) return;
+
+  const a = S.accent;
+  const f = `'${S.font}',sans-serif`;
+  const gap = `${S.secGap}px`;
 
   // Sync personal info inputs to state S
   S.f_name = gv('f_name');
@@ -132,205 +135,134 @@ function render(){
   S.f_website = gv('f_website');
   S.f_github = gv('f_github');
 
-  // Save to active resume in localStorage
-  saveActiveResume();
+  // Debounced save to active resume in localStorage (saving performance)
+  debouncedSaveActiveResume();
 
-  const a=S.accent,f=`'${S.font}',sans-serif`;
-  const gap=S.secGap+'px';
-  doc.style.fontSize=`${S.fontSize}%`;
-  doc.style.fontFamily=f;
-  doc.style.setProperty('--cv-a',a);
-  doc.style.setProperty('--cv-f',f);
+  // Set layout and template class names on doc
+  doc.className = doc.className.split(' ')
+    .filter(c => !c.startsWith('layout-') && !c.startsWith('template-'))
+    .join(' ');
+  doc.classList.add('layout-' + S.layout);
+  if (S.templateId) {
+    doc.classList.add('template-' + S.templateId);
+  }
 
-  const name=gv('f_name')||'Your Name';
-  const title=gv('f_title');
-  const email=gv('f_email'),phone=gv('f_phone'),city=gv('f_city'),country=gv('f_country');
-  const linkedin=gv('f_linkedin'),website=gv('f_website'),github=gv('f_github');
-  const loc=[city,country].filter(Boolean).join(', ');
-  const photoHTML=S.photo?`<img src="${S.photo}" class="cv-photo" style="width:${S.photoSize}px;height:${S.photoSize}px;border-radius:${S.photoBR}%;cursor:pointer;" onclick="openPhotoPreview(event)">`:'';
+  // Set CSS variables for typography, gap, colors, photo sizing
+  doc.style.fontSize = `${S.fontSize}%`;
+  doc.style.fontFamily = f;
+  doc.style.setProperty('--cv-a', a);
+  doc.style.setProperty('--cv-f', f);
+  doc.style.setProperty('--cv-lh', S.lineH);
+  doc.style.setProperty('--cv-gap', gap);
+  doc.style.setProperty('--cv-photo-size', `${S.photoSize}px`);
+  doc.style.setProperty('--cv-photo-br', `${S.photoBR}%`);
 
-  const sideSecs=['skills','languages','certifications','interests'];
+  const name = esc(gv('f_name') || 'Your Name');
+  const title = esc(gv('f_title'));
+  
+  // Safe photo URL validation
+  const isSafePhoto = S.photo && (typeof S.photo === 'string') && (S.photo.startsWith('data:image/') || S.photo.match(/^https?:\/\//i));
+  const photoHTML = isSafePhoto ? `<img src="${esc(S.photo)}" class="cv-photo" onclick="openPhotoPreview(event)" alt="Profile Photo">` : '';
 
-  if(S.layout==='classic'){
-    const contactLine=[
-      contactItem('ti-mail',email,'email'),contactItem('ti-phone',phone,'phone'),
-      contactItem('ti-map-pin',loc,'loc'),contactItem('ti-brand-linkedin',linkedin,'url'),
-      contactItem('ti-world',website,'url'),contactItem('ti-brand-github',github,'url')
-    ].filter(Boolean).join('<span style="opacity:.3;margin:0 4px">|</span>');
-    doc.innerHTML=`
-    <div style="background:${a};color:#fff;padding:28px 36px 22px">
-      <div style="display:flex;gap:18px;align-items:center">
-        ${photoHTML?`<div style="flex-shrink:0">${photoHTML}</div>`:''}
-        <div>
-          <div style="font-family:${f};font-size:1.9em;letter-spacing:-.5px;margin-bottom:3px">${name}</div>
-          ${title?`<div style="font-size:.95em;opacity:.78;margin-bottom:10px">${title}</div>`:''}
-          <div style="font-size:.75em;display:flex;flex-wrap:wrap;gap:6px;opacity:.85">${contactLine}</div>
+  const sideSecs = ['skills', 'languages', 'certifications', 'interests'];
+
+  let html = '';
+
+  if (S.layout === 'classic') {
+    const contactLine = renderContacts('classic');
+    html = `
+    <div class="layout-classic-header">
+      <div class="layout-classic-header-content">
+        ${photoHTML ? `<div class="cv-photo-container">${photoHTML}</div>` : ''}
+        <div class="layout-classic-meta">
+          <div class="cv-name">${name}</div>
+          ${title ? `<div class="cv-title">${title}</div>` : ''}
+          <div class="cv-contacts-line">${contactLine}</div>
         </div>
       </div>
     </div>
-    <div style="padding:28px 36px;display:flex;flex-direction:column;gap:${gap}">
-      ${S.sectionOrder.map(s=>renderSection(s,{accent:a})).join('')}
+    <div class="layout-classic-body">
+      ${S.sectionOrder.map(s => renderSection(s, { accent: a })).join('')}
     </div>`;
   }
-  else if(S.layout==='sidebar-l'||S.layout==='sidebar-r'){
-    const isLeft=S.layout==='sidebar-l';
-    const sideHTML=`
-      <div style="width:220px;flex-shrink:0;background:${a};color:#fff;padding:28px 20px;min-height:1000px">
-        ${photoHTML?`<div style="margin-bottom:14px;text-align:center">${photoHTML}</div>`:''}
-        <div style="font-family:${f};font-size:1.25em;letter-spacing:-.3px;margin-bottom:3px;color:#fff">${name}</div>
-        ${title?`<div style="font-size:.78em;opacity:.72;margin-bottom:14px">${title}</div>`:''}
-        <div style="font-size:.7em;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.55);margin-bottom:7px">Contact</div>
-        ${[
-          [email,'ti-mail','email'],[phone,'ti-phone','phone'],[loc,'ti-map-pin','loc'],
-          [linkedin,'ti-brand-linkedin','url'],[website,'ti-world','url'],[github,'ti-brand-github','url']
-        ].filter(([v])=>v).map(([v,ic,type])=>{
-          const content = linkify(v, type);
-          return `<div style="font-size:.73em;color:rgba(255,255,255,.82);margin-bottom:5px;display:flex;gap:6px;align-items:flex-start"><i class="ti ${ic}" style="font-size:11px;margin-top:2px;flex-shrink:0"></i><span>${content}</span></div>`;
-        }).join('')}
-        ${sideSecs.map(s=>renderSidebarSection(s,a)).join('')}
+  else if (S.layout === 'sidebar-l') {
+    const sideHTML = `
+      <div class="layout-sidebar-sidebar">
+        ${photoHTML ? `<div class="layout-sidebar-photo">${photoHTML}</div>` : ''}
+        <div class="layout-sidebar-name">${name}</div>
+        ${title ? `<div class="layout-sidebar-title">${title}</div>` : ''}
+        <div class="layout-sidebar-section-label">Contact</div>
+        <div class="layout-sidebar-contacts">
+          ${renderContacts('sidebar')}
+        </div>
+        ${sideSecs.map(s => renderSidebarSection(s)).join('')}
       </div>`;
-    const mainHTML=`
-      <div style="flex:1;padding:28px 24px;display:flex;flex-direction:column;gap:${gap}">
-        ${S.sectionOrder.filter(s=>!sideSecs.includes(s)).map(s=>renderSection(s,{accent:a})).join('')}
+    const mainHTML = `
+      <div class="layout-sidebar-main">
+        ${S.sectionOrder.filter(s => !sideSecs.includes(s)).map(s => renderSection(s, { accent: a })).join('')}
       </div>`;
-    doc.innerHTML=`<div style="display:flex;min-height:1050px">${isLeft?sideHTML+mainHTML:mainHTML+sideHTML}</div>`;
+    html = `<div class="layout-sidebar-container">${sideHTML + mainHTML}</div>`;
   }
-  else if(S.layout==='minimal'){
-    const contacts=[
-      contactItem('ti-mail',email,'email'),contactItem('ti-phone',phone,'phone'),
-      contactItem('ti-map-pin',loc,'loc'),contactItem('ti-brand-linkedin',linkedin,'url'),
-      contactItem('ti-world',website,'url'),contactItem('ti-brand-github',github,'url')
-    ].filter(Boolean).join(' &nbsp;·&nbsp; ');
-    doc.innerHTML=`
-    <div style="padding:36px 40px 24px;border-bottom:1px solid #e8e4dc">
-      <div style="display:flex;gap:16px;align-items:center">
-        ${photoHTML?`<div style="flex-shrink:0">${photoHTML}</div>`:''}
-        <div>
-          <div style="font-family:${f};font-size:2.2em;letter-spacing:-1px;color:${a};margin-bottom:3px">${name}</div>
-          ${title?`<div style="font-size:.95em;color:#888;margin-bottom:8px">${title}</div>`:''}
-          <div style="font-size:.75em;color:#777;display:flex;flex-wrap:wrap;gap:4px">${contacts}</div>
+  else if (S.layout === 'minimal') {
+    const contacts = renderContacts('minimal');
+    html = `
+    <div class="layout-minimal-header">
+      <div class="layout-minimal-header-content">
+        ${photoHTML ? `<div class="cv-photo-container">${photoHTML}</div>` : ''}
+        <div class="layout-minimal-meta">
+          <div class="cv-name">${name}</div>
+          ${title ? `<div class="cv-title">${title}</div>` : ''}
+          <div class="cv-contacts-line">${contacts}</div>
         </div>
       </div>
     </div>
-    <div style="padding:28px 40px;display:flex;flex-direction:column;gap:${gap}">
-      ${S.sectionOrder.map(s=>renderSection(s,{accent:a,titleStyle:'border-bottom:none;letter-spacing:2.5px;'})).join('')}
+    <div class="layout-minimal-body">
+      ${S.sectionOrder.map(s => renderSection(s, { accent: a })).join('')}
     </div>`;
   }
-  else if(S.layout==='bold-header'){
-    doc.innerHTML=`
-    <div style="background:${a};padding:0">
-      <div style="padding:36px 36px 28px;color:#fff">
-        <div style="display:flex;gap:18px;align-items:flex-end">
-          ${photoHTML?`<div style="flex-shrink:0">${photoHTML}</div>`:''}
-          <div style="flex:1">
-            <div style="font-family:${f};font-size:2.4em;letter-spacing:-.8px;margin-bottom:5px">${name}</div>
-            ${title?`<div style="font-size:1em;opacity:.75;margin-bottom:12px;letter-spacing:.5px;text-transform:uppercase;font-size:.82em">${title}</div>`:''}
-          </div>
-           <div style="text-align:right;font-size:.74em;opacity:.9;line-height:2">${[contactItem('ti-mail',email,'email'),contactItem('ti-phone',phone,'phone'),contactItem('ti-map-pin',loc,'loc'),contactItem('ti-world',website,'url'),contactItem('ti-brand-linkedin',linkedin,'url'),contactItem('ti-brand-github',github,'url')].filter(Boolean).join('<br>')}</div>
-        </div>
-      </div>
-      <div style="background:rgba(0,0,0,.15);height:3px"></div>
-    </div>
-    <div style="padding:28px 36px;display:flex;flex-direction:column;gap:${gap}">
-      ${S.sectionOrder.map(s=>renderSection(s,{accent:a,chipStyle:'pill'})).join('')}
-    </div>`;
-  }
-  else if(S.layout==='timeline'){
-    const contacts=[contactItem('ti-mail',email,'email'),contactItem('ti-phone',phone,'phone'),contactItem('ti-map-pin',loc,'loc'),contactItem('ti-world',website,'url')].filter(Boolean).join('<span style="opacity:.3;margin:0 4px">|</span>');
-    doc.innerHTML=`
-    <div style="background:${a};padding:24px 36px;color:#fff;display:flex;align-items:center;gap:16px">
-      ${photoHTML?`<div style="flex-shrink:0">${photoHTML}</div>`:''}
-      <div>
-        <div style="font-family:${f};font-size:1.8em;letter-spacing:-.4px">${name}</div>
-        ${title?`<div style="opacity:.75;font-size:.88em;margin-top:2px">${title}</div>`:''}
-        <div style="font-size:.73em;opacity:.8;margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">${contacts}</div>
-      </div>
-    </div>
-    <div style="padding:28px 36px;display:grid;grid-template-columns:1fr 1fr;gap:24px">
-      <div style="display:flex;flex-direction:column;gap:${gap}">
-        ${S.sectionOrder.filter((_,i)=>i%2===0).map(s=>renderSection(s,{accent:a})).join('')}
-      </div>
-      <div style="border-left:2px solid ${a}22;padding-left:24px;display:flex;flex-direction:column;gap:${gap}">
-        ${S.sectionOrder.filter((_,i)=>i%2===1).map(s=>renderSection(s,{accent:a})).join('')}
-      </div>
-    </div>`;
-  }
-  else if(S.layout==='compact'){
-    const contacts=[email,phone,loc,website,linkedin].filter(Boolean).join('  ·  ');
-    doc.innerHTML=`
-    <div style="background:${a};height:6px"></div>
-    <div style="padding:20px 32px 14px;border-bottom:1px solid #eee">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
-        <div style="display:flex;gap:12px;align-items:center">
-          ${photoHTML?`<div style="flex-shrink:0">${photoHTML}</div>`:''}
-          <div>
-            <div style="font-family:${f};font-size:1.65em;color:${a};letter-spacing:-.4px">${name}</div>
-            ${title?`<div style="font-size:.85em;color:#777;margin-top:2px">${title}</div>`:''}
-          </div>
-        </div>
-        <div style="text-align:right;font-size:.72em;color:#666;line-height:1.9">${[linkify(email,'email'),linkify(phone,'phone'),loc,linkify(linkedin,'url')].filter(Boolean).join('<br>')}</div>
-      </div>
-    </div>
-    <div style="padding:16px 32px;display:grid;grid-template-columns:1fr 1fr;gap:16px ${gap}">
-      ${S.sectionOrder.map(s=>renderSection(s,{accent:a,wrapStyle:'',chipStyle:'outline'})).join('')}
-    </div>`;
-  }
-  else if(S.layout==='modern-split'){
-    doc.innerHTML=`
-    <div style="display:flex;min-height:1050px">
-      <div style="width:12px;background:${a}"></div>
-      <div style="flex:1">
-        <div style="padding:28px 28px 18px;background:#fafaf8;border-bottom:1px solid #eee">
-          <div style="display:flex;gap:14px;align-items:center">
-            ${photoHTML?`<div style="flex-shrink:0">${photoHTML}</div>`:''}
-            <div>
-              <div style="font-family:${f};font-size:1.85em;color:${a};letter-spacing:-.5px">${name}</div>
-              ${title?`<div style="font-size:.88em;color:#888;margin-top:2px">${title}</div>`:''}
-              <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:.74em;color:#666">
-                ${[contactItem('ti-mail',email,'email'),contactItem('ti-phone',phone,'phone'),contactItem('ti-map-pin',loc,'loc'),contactItem('ti-world',website,'url'),contactItem('ti-brand-linkedin',linkedin,'url')].filter(Boolean).join('')}
-              </div>
+  else if (S.layout === 'modern-split') {
+    const contacts = renderContacts('modern-split');
+    html = `
+    <div class="layout-modern-container">
+      <div class="layout-modern-left-bar"></div>
+      <div class="layout-modern-content">
+        <div class="layout-modern-header">
+          <div class="layout-modern-header-content">
+            ${photoHTML ? `<div class="cv-photo-container">${photoHTML}</div>` : ''}
+            <div class="layout-modern-meta">
+              <div class="cv-name">${name}</div>
+              ${title ? `<div class="cv-title">${title}</div>` : ''}
+              <div class="cv-contacts-line">${contacts}</div>
             </div>
           </div>
         </div>
-        <div style="padding:22px 28px;display:flex;flex-direction:column;gap:${gap}">
-          ${S.sectionOrder.map(s=>renderSection(s,{accent:a,chipStyle:'pill'})).join('')}
+        <div class="layout-modern-body">
+          ${S.sectionOrder.map(s => renderSection(s, { accent: a, chipStyle: 'pill' })).join('')}
         </div>
       </div>
-      <div style="width:12px;background:${a};opacity:.2"></div>
+      <div class="layout-modern-right-bar"></div>
     </div>`;
   }
-  else if(S.layout==='elegant'){
-    const contacts=[contactItem('ti-mail',email,'email'),contactItem('ti-phone',phone,'phone'),contactItem('ti-map-pin',loc,'loc'),contactItem('ti-world',website,'url')].filter(Boolean).join('&ensp;');
-    doc.innerHTML=`
-    <div style="height:4px;background:${a}"></div>
-    <div style="padding:36px 44px 28px;text-align:center;border-bottom:1px solid #eee">
-      ${photoHTML?`<div style="display:flex;justify-content:center;margin-bottom:12px">${photoHTML}</div>`:''}
-      <div style="font-family:${f};font-size:2.2em;letter-spacing:-.5px;color:${a}">${name}</div>
-      ${title?`<div style="font-size:.9em;color:#888;margin:5px 0 12px;letter-spacing:2px;text-transform:uppercase;font-size:.75em">${title}</div>`:''}
-      <div style="font-size:.75em;color:#777;display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${contacts}</div>
+  else if (S.layout === 'elegant') {
+    const contacts = renderContacts('elegant');
+    html = `
+    <div class="layout-elegant-top-bar"></div>
+    <div class="layout-elegant-header">
+      ${photoHTML ? `<div class="layout-elegant-photo">${photoHTML}</div>` : ''}
+      <div class="cv-name">${name}</div>
+      ${title ? `<div class="cv-title">${title}</div>` : ''}
+      <div class="cv-contacts-line">${contacts}</div>
     </div>
-    <div style="padding:28px 44px;display:flex;flex-direction:column;gap:${gap}">
-      ${S.sectionOrder.map(s=>renderSection(s,{accent:a,titleStyle:'text-align:center;border-bottom:none;border-top:1px solid #e8e4dc;padding-top:16px;'})).join('')}
+    <div class="layout-elegant-body">
+      ${S.sectionOrder.map(s => renderSection(s, { accent: a })).join('')}
     </div>
-    <div style="height:2px;background:${a};opacity:.25;margin:0 44px 20px"></div>`;
+    <div class="layout-elegant-bottom-bar"></div>`;
   }
-  else if(S.layout==='creative'){
-    doc.innerHTML=`
-    <div style="background:${a};padding:32px 36px;color:#fff;clip-path:polygon(0 0,100% 0,100% 78%,0 100%);padding-bottom:50px">
-      <div style="display:flex;gap:16px;align-items:center">
-        ${photoHTML?`<div style="flex-shrink:0">${photoHTML}</div>`:''}
-        <div>
-          <div style="font-family:${f};font-size:2em;letter-spacing:-.5px">${name}</div>
-          ${title?`<div style="opacity:.75;font-size:.88em;margin-top:4px">${title}</div>`:''}
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:.73em;opacity:.85">
-            ${[contactItem('ti-mail',email,'email'),contactItem('ti-phone',phone,'phone'),contactItem('ti-map-pin',loc,'loc'),contactItem('ti-world',website,'url')].filter(Boolean).join('')}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="padding:0 36px 28px;margin-top:-12px;display:flex;flex-direction:column;gap:${gap}">
-      ${S.sectionOrder.map(s=>renderSection(s,{accent:a,chipStyle:'filled'})).join('')}
-    </div>`;
+
+  // Prevent redundant DOM updates
+  if (html && html !== lastRenderedHTML) {
+    doc.innerHTML = html;
+    lastRenderedHTML = html;
   }
 
   // Trigger Smart Resume Intelligence System analysis (debounced)
@@ -344,33 +276,35 @@ function render(){
   }
 }
 
+const render = debounce(renderImmediate, 150);
+
 // ══════════════════════════════════════════════════════════
 // MOBILE & DOWNLOAD
 // ══════════════════════════════════════════════════════════
 const mobToggle = document.getElementById('mobToggle');
-if(mobToggle) {
-  mobToggle.onclick=()=>{
+if (mobToggle) {
+  mobToggle.onclick = () => {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
     sidebar.classList.toggle('open');
     overlay.classList.toggle('open');
-    if(sidebar.classList.contains('open')) {
+    if (sidebar.classList.contains('open')) {
       mobToggle.innerHTML = '<i class="ti ti-eye"></i> Preview';
     } else {
       mobToggle.innerHTML = '<i class="ti ti-edit"></i> Edit';
     }
   };
 }
-function closeSidebar(){
+function closeSidebar() {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('overlay').classList.remove('open');
   const mobToggle = document.getElementById('mobToggle');
-  if(mobToggle) {
+  if (mobToggle) {
     mobToggle.innerHTML = '<i class="ti ti-edit"></i> Edit';
   }
 }
 
-function doDownload(){
+function doDownload() {
   openDownloadModal();
 }
 function openDownloadModal() {
@@ -380,12 +314,12 @@ function openDownloadModal() {
     const active = resumes.find(r => r.id === activeResumeId);
     const defaultName = active ? active.name.replace(/\s+/g, '_') : 'My_Resume';
     input.value = defaultName;
-    modal.style.display = 'flex';
+    showModal(modal);
   }
 }
 function closeDownloadModal() {
   const modal = document.getElementById('downloadModal');
-  if (modal) modal.style.display = 'none';
+  if (modal) hideModal(modal);
 }
 async function generateAndSavePDF() {
   const input = document.getElementById('pdfFileNameInput');
@@ -413,7 +347,7 @@ async function generateAndSavePDF() {
     margin: 0,
     filename: fileName + '.pdf',
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { 
+    html2canvas: {
       scale: 2.5, // high print quality
       useCORS: true,
       logging: false
@@ -424,7 +358,7 @@ async function generateAndSavePDF() {
   try {
     if (window.showSaveFilePicker) {
       const pdfBlob = await html2pdf().set(opt).from(element).output('blob');
-      
+
       const handle = await window.showSaveFilePicker({
         suggestedName: fileName + '.pdf',
         types: [{
@@ -432,7 +366,7 @@ async function generateAndSavePDF() {
           accept: { 'application/pdf': ['.pdf'] }
         }]
       });
-      
+
       const writable = await handle.createWritable();
       await writable.write(pdfBlob);
       await writable.close();
@@ -452,11 +386,11 @@ async function generateAndSavePDF() {
     closeDownloadModal();
   }
 }
-function showToast(msg){
-  const t=document.getElementById('toast');
-  if(!t)return;
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3200);
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -480,10 +414,10 @@ function showConfirm(title, message) {
 
     titleEl.textContent = title;
     msgEl.textContent = message;
-    modal.style.display = 'flex';
+    showModal(modal);
 
     const cleanUp = () => {
-      modal.style.display = 'none';
+      hideModal(modal);
       confirmBtn.onclick = null;
       cancelBtn.onclick = null;
     };
@@ -509,15 +443,39 @@ function initResumes() {
     activeResumeId = '';
   }
 
+  // Intercept landing page selected template redirect
+  const selectedTemplateId = localStorage.getItem('selected_template_id');
+  if (selectedTemplateId) {
+    localStorage.removeItem('selected_template_id');
+    const template = window.TEMPLATE_REGISTRY ? window.TEMPLATE_REGISTRY[selectedTemplateId] : null;
+    if (template) {
+      const newResumeId = 'res-' + Date.now();
+      const starterData = deepClone(template.starterData);
+      starterData.templateId = template.id;
+      starterData.templateVersion = template.version;
+
+      const newResume = {
+        id: newResumeId,
+        name: template.label + ' Resume',
+        data: starterData
+      };
+
+      resumes.push(newResume);
+      activeResumeId = newResumeId;
+      localStorage.setItem('resumes', JSON.stringify(resumes));
+      localStorage.setItem('activeResumeId', activeResumeId);
+    }
+  }
+
   // If no resumes exist, initialize one (migrating legacy work if it exists)
   if (resumes.length === 0) {
     let legacyData = null;
     try {
       const legacySaved = localStorage.getItem('resume_state');
       if (legacySaved) legacyData = JSON.parse(legacySaved);
-    } catch(e){}
-    
-    const initialData = legacyData || JSON.parse(JSON.stringify(DEFAULT_BLANK_RESUME));
+    } catch (e) { }
+
+    const initialData = legacyData || deepClone(DEFAULT_BLANK_RESUME);
     const defaultResume = {
       id: 'res-' + Date.now(),
       name: 'My Resume',
@@ -545,12 +503,12 @@ function loadState(data) {
   for (let key in S) {
     if (S.hasOwnProperty(key)) delete S[key];
   }
-  Object.assign(S, JSON.parse(JSON.stringify(DEFAULT_BLANK_RESUME)), data);
+  Object.assign(S, deepClone(DEFAULT_BLANK_RESUME), data);
 }
 
 function loadResumeIntoDOM() {
   const fields = [
-    'f_name', 'f_title', 'f_summary', 'f_email', 'f_phone', 
+    'f_name', 'f_title', 'f_summary', 'f_email', 'f_phone',
     'f_city', 'f_country', 'f_linkedin', 'f_website', 'f_github'
   ];
   fields.forEach(fid => {
@@ -570,7 +528,7 @@ function loadResumeIntoDOM() {
     { id: 'lineHR', valId: 'lineHV', suffix: '', stateKey: 'lineH', scale: 100 },
     { id: 'secGapR', valId: 'secGapV', suffix: 'px', stateKey: 'secGap' }
   ];
-  
+
   sliders.forEach(s => {
     const el = document.getElementById(s.id);
     if (el) {
@@ -578,7 +536,7 @@ function loadResumeIntoDOM() {
       let val = S[key];
       if (s.scale) val = Math.round(val * s.scale);
       el.value = val;
-      
+
       const vEl = document.getElementById(s.valId);
       if (vEl) {
         let displayVal = S[key];
@@ -589,6 +547,9 @@ function loadResumeIntoDOM() {
   });
 
   buildColorGrid();
+  if (typeof buildTemplatePresets === 'function') {
+    buildTemplatePresets();
+  }
   buildLayoutGrid();
   buildFontGrid();
   buildEntries();
@@ -596,7 +557,7 @@ function loadResumeIntoDOM() {
   buildLangs();
   buildReorderList();
   updatePhotoUI();
-  
+
   if (typeof renderSkillSuggestions === 'function') {
     renderSkillSuggestions();
   }
@@ -607,18 +568,38 @@ function loadResumeIntoDOM() {
 }
 
 function saveActiveResume() {
-  const active = resumes.find(r => r.id === activeResumeId);
-  if (active) {
-    active.data = JSON.parse(JSON.stringify(S));
-    localStorage.setItem('resumes', JSON.stringify(resumes));
+  try {
+    const active = resumes.find(r => r.id === activeResumeId);
+    if (active) {
+      active.data = deepClone(S);
+      localStorage.setItem('resumes', JSON.stringify(resumes));
+    }
+  } catch (err) {
+    console.error('Failed to save resumes to localStorage:', err);
+    if (err.name === 'QuotaExceededError' || err.code === 22) {
+      showToast('Storage quota exceeded. Some changes may not be saved.');
+    }
   }
 }
+
+const debouncedSaveActiveResume = debounce(saveActiveResume, SAVE_DEBOUNCE_MS);
 
 function toggleResumesMenu(e) {
   if (e) e.stopPropagation();
   const dropdown = document.getElementById('resumesDropdown');
+  const trigger = document.getElementById('resumesTrigger');
   if (dropdown) {
-    dropdown.classList.toggle('open');
+    const isOpen = dropdown.classList.toggle('open');
+    if (trigger) trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+}
+
+function closeResumesDropdown() {
+  const dropdown = document.getElementById('resumesDropdown');
+  if (dropdown) {
+    dropdown.classList.remove('open');
+    const trigger = document.getElementById('resumesTrigger');
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
   }
 }
 
@@ -629,12 +610,12 @@ function renderResumesList() {
   list.innerHTML = resumes.map(r => {
     const isActive = r.id === activeResumeId;
     return `
-      <div class="resume-item ${isActive ? 'active' : ''}" onclick="switchResume('${r.id}')" data-id="${r.id}">
+      <div class="resume-item ${isActive ? 'active' : ''}" tabindex="0" role="button" aria-label="${esc(r.name)}" onclick="switchResume('${r.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); switchResume('${r.id}');}" data-id="${r.id}">
         <span class="resume-item-name" id="name-lbl-${r.id}">${esc(r.name)}</span>
         <div class="resume-item-actions">
-          <button class="resume-item-btn" onclick="duplicateResume('${r.id}', event)" title="Duplicate"><i class="ti ti-copy"></i></button>
-          <button class="resume-item-btn" onclick="startRename('${r.id}', event)" title="Rename"><i class="ti ti-pencil"></i></button>
-          <button class="resume-item-btn btn-delete" onclick="deleteResume('${r.id}', event)" title="Delete"><i class="ti ti-trash"></i></button>
+          <button class="resume-item-btn" onclick="duplicateResume('${r.id}', event)" title="Duplicate" aria-label="Duplicate ${esc(r.name)}"><i class="ti ti-copy"></i></button>
+          <button class="resume-item-btn" onclick="startRename('${r.id}', event)" title="Rename" aria-label="Rename ${esc(r.name)}"><i class="ti ti-pencil"></i></button>
+          <button class="resume-item-btn btn-delete" onclick="deleteResume('${r.id}', event)" title="Delete" aria-label="Delete ${esc(r.name)}"><i class="ti ti-trash"></i></button>
         </div>
       </div>
     `;
@@ -649,44 +630,42 @@ function renderResumesList() {
 
 function switchResume(id) {
   if (document.querySelector('.resume-rename-input')) return;
-  
+
   activeResumeId = id;
   localStorage.setItem('activeResumeId', activeResumeId);
-  
+
   const active = resumes.find(r => r.id === activeResumeId);
   if (active) {
     loadState(active.data);
     loadResumeIntoDOM();
-    render();
+    renderImmediate();
     setTimeout(zoomFit, 100);
   }
-  
+
   renderResumesList();
-  
-  const dropdown = document.getElementById('resumesDropdown');
-  if (dropdown) dropdown.classList.remove('open');
+  closeResumesDropdown();
 }
 
 function createNewResume(e) {
   if (e) e.stopPropagation();
-  
+
   const newResume = {
     id: 'res-' + Date.now(),
     name: 'Untitled Resume',
-    data: JSON.parse(JSON.stringify(DEFAULT_BLANK_RESUME))
+    data: deepClone(DEFAULT_BLANK_RESUME)
   };
-  
+
   resumes.push(newResume);
   activeResumeId = newResume.id;
-  
+
   localStorage.setItem('resumes', JSON.stringify(resumes));
   localStorage.setItem('activeResumeId', activeResumeId);
-  
+
   loadState(newResume.data);
   loadResumeIntoDOM();
-  render();
+  renderImmediate();
   renderResumesList();
-  
+
   setTimeout(() => {
     startRename(newResume.id);
   }, 100);
@@ -694,52 +673,52 @@ function createNewResume(e) {
 
 async function deleteResume(id, e) {
   if (e) e.stopPropagation();
-  
+
   if (resumes.length <= 1) {
     showToast("You must keep at least one resume.");
     return;
   }
-  
+
   const target = resumes.find(r => r.id === id);
   if (!target) return;
-  
+
   const confirmed = await showConfirm(
-    "Delete Resume", 
+    "Delete Resume",
     `Are you sure you want to delete "${target.name}"?`
   );
   if (!confirmed) return;
-  
+
   resumes = resumes.filter(r => r.id !== id);
   localStorage.setItem('resumes', JSON.stringify(resumes));
-  
+
   if (activeResumeId === id) {
     activeResumeId = resumes[0].id;
     localStorage.setItem('activeResumeId', activeResumeId);
-    
+
     const active = resumes.find(r => r.id === activeResumeId);
     loadState(active.data);
     loadResumeIntoDOM();
-    render();
+    renderImmediate();
   }
-  
+
   renderResumesList();
 }
 
 function startRename(id, e) {
   if (e) e.stopPropagation();
-  
+
   const label = document.getElementById(`name-lbl-${id}`);
   if (!label) return;
-  
+
   const currentName = label.textContent;
-  
+
   label.innerHTML = `
     <input type="text" class="resume-rename-input" value="${esc(currentName)}" 
            onclick="event.stopPropagation()" 
            onblur="finishRename('${id}', this.value)" 
            onkeydown="if(event.key==='Enter') this.blur(); if(event.key==='Escape') { this.value = '${esc(currentName)}'; this.blur(); }">
   `;
-  
+
   const input = label.querySelector('input');
   if (input) {
     input.focus();
@@ -759,19 +738,18 @@ function finishRename(id, newName) {
 
 async function loadSampleData(e) {
   if (e) e.stopPropagation();
-  
+
   const confirmed = await showConfirm(
-    "Load Example Resume", 
+    "Load Example Resume",
     "Are you sure you want to load the sample template data? This will overwrite current contents of this resume."
   );
   if (!confirmed) return;
-  
-  loadState(JSON.parse(JSON.stringify(DEFAULT_SAMPLE_RESUME)));
+
+  loadState(deepClone(DEFAULT_SAMPLE_RESUME));
   loadResumeIntoDOM();
-  render();
-  
-  const dropdown = document.getElementById('resumesDropdown');
-  if (dropdown) dropdown.classList.remove('open');
+  renderImmediate();
+
+  closeResumesDropdown();
 }
 
 function duplicateResume(id, e) {
@@ -782,7 +760,7 @@ function duplicateResume(id, e) {
   const duplicated = {
     id: 'res-' + Date.now(),
     name: target.name + ' Copy',
-    data: JSON.parse(JSON.stringify(target.data))
+    data: deepClone(target.data)
   };
 
   resumes.push(duplicated);
@@ -793,7 +771,7 @@ function duplicateResume(id, e) {
 
   loadState(duplicated.data);
   loadResumeIntoDOM();
-  render();
+  renderImmediate();
   renderResumesList();
   showToast('Resume Duplicated!');
 }
@@ -817,7 +795,7 @@ function exportProject(e) {
   const jsonString = JSON.stringify(projectData, null, 2);
   const blob = new Blob([jsonString], { type: 'application/octet-stream' });
   const url = URL.createObjectURL(blob);
-  
+
   const link = document.createElement('a');
   link.href = url;
   link.download = (active.name.replace(/\s+/g, '_') || 'Resume_Project') + '.cvcraft';
@@ -826,70 +804,79 @@ function exportProject(e) {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
   showToast('Resume File Saved!');
-  
-  const dropdown = document.getElementById('resumesDropdown');
-  if (dropdown) dropdown.classList.remove('open');
+
+  closeResumesDropdown();
 }
 
 function mapExternalResumeData(obj) {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+    return deepClone(DEFAULT_BLANK_RESUME);
+  }
+
   let src = obj;
-  if (obj && obj.data && typeof obj.data === 'object' && !Array.isArray(obj.data)) {
+  if (obj.data && typeof obj.data === 'object' && !Array.isArray(obj.data)) {
     src = obj.data;
   }
 
-  const result = JSON.parse(JSON.stringify(DEFAULT_BLANK_RESUME));
+  const result = deepClone(DEFAULT_BLANK_RESUME);
+
+  const safeStr = (v) => (typeof v === 'string' ? v : (v === null || v === undefined ? '' : String(v)));
+  const safeNum = (v, fallback, min = -Infinity, max = Infinity) => {
+    const num = Number(v);
+    return isNaN(num) ? fallback : Math.max(min, Math.min(max, num));
+  };
 
   const findVal = (keys, sourceObj = src) => {
-    if (!sourceObj || typeof sourceObj !== 'object') return undefined;
+    if (!sourceObj || typeof sourceObj !== 'object' || Array.isArray(sourceObj)) return undefined;
     for (const key of keys) {
-      if (key in sourceObj && sourceObj[key] !== undefined && sourceObj[key] !== null) {
+      if (Object.prototype.hasOwnProperty.call(sourceObj, key) && sourceObj[key] !== undefined && sourceObj[key] !== null) {
         return sourceObj[key];
       }
       const lowerKey = key.toLowerCase();
       const actualKey = Object.keys(sourceObj).find(k => k.toLowerCase() === lowerKey);
-      if (actualKey && sourceObj[actualKey] !== undefined && sourceObj[actualKey] !== null) {
+      if (actualKey && Object.prototype.hasOwnProperty.call(sourceObj, actualKey) && sourceObj[actualKey] !== undefined && sourceObj[actualKey] !== null) {
         return sourceObj[actualKey];
       }
     }
     return undefined;
   };
 
-  result.f_name = findVal(['f_name', 'name', 'fullName', 'name_label', 'username']) || '';
-  result.f_title = findVal(['f_title', 'title', 'label', 'jobTitle', 'designation']) || '';
-  result.f_summary = findVal(['f_summary', 'summary', 'about', 'objective', 'bio', 'description']) || '';
-  result.f_email = findVal(['f_email', 'email', 'mail']) || '';
-  result.f_phone = findVal(['f_phone', 'phone', 'contact', 'telephone']) || '';
-  result.f_city = findVal(['f_city', 'city']) || '';
-  result.f_country = findVal(['f_country', 'country', 'region']) || '';
-  result.f_linkedin = findVal(['f_linkedin', 'linkedin', 'linkedInUrl']) || '';
-  result.f_website = findVal(['f_website', 'website', 'url', 'portfolio']) || '';
-  result.f_github = findVal(['f_github', 'github', 'githubUrl']) || '';
+  result.f_name = safeStr(findVal(['f_name', 'name', 'fullName', 'name_label', 'username']));
+  result.f_title = safeStr(findVal(['f_title', 'title', 'label', 'jobTitle', 'designation']));
+  result.f_summary = safeStr(findVal(['f_summary', 'summary', 'about', 'objective', 'bio', 'description']));
+  result.f_email = safeStr(findVal(['f_email', 'email', 'mail']));
+  result.f_phone = safeStr(findVal(['f_phone', 'phone', 'contact', 'telephone']));
+  result.f_city = safeStr(findVal(['f_city', 'city']));
+  result.f_country = safeStr(findVal(['f_country', 'country', 'region']));
+  result.f_linkedin = safeStr(findVal(['f_linkedin', 'linkedin', 'linkedInUrl']));
+  result.f_website = safeStr(findVal(['f_website', 'website', 'url', 'portfolio']));
+  result.f_github = safeStr(findVal(['f_github', 'github', 'githubUrl']));
 
   const loc = findVal(['location'], src);
-  if (loc && typeof loc === 'object') {
-    if (!result.f_city) result.f_city = findVal(['city'], loc) || '';
-    if (!result.f_country) result.f_country = findVal(['country', 'countryCode', 'region'], loc) || '';
+  if (loc && typeof loc === 'object' && !Array.isArray(loc)) {
+    if (!result.f_city) result.f_city = safeStr(findVal(['city'], loc));
+    if (!result.f_country) result.f_country = safeStr(findVal(['country', 'countryCode', 'region'], loc));
   }
 
   const basics = findVal(['basics'], src);
-  if (basics && typeof basics === 'object') {
-    if (!result.f_name) result.f_name = findVal(['name', 'fullName'], basics) || '';
-    if (!result.f_title) result.f_title = findVal(['label', 'title', 'jobTitle'], basics) || '';
-    if (!result.f_summary) result.f_summary = findVal(['summary', 'about', 'bio'], basics) || '';
-    if (!result.f_email) result.f_email = findVal(['email'], basics) || '';
-    if (!result.f_phone) result.f_phone = findVal(['phone'], basics) || '';
-    if (!result.f_website) result.f_website = findVal(['url', 'website'], basics) || '';
-    
+  if (basics && typeof basics === 'object' && !Array.isArray(basics)) {
+    if (!result.f_name) result.f_name = safeStr(findVal(['name', 'fullName'], basics));
+    if (!result.f_title) result.f_title = safeStr(findVal(['label', 'title', 'jobTitle'], basics));
+    if (!result.f_summary) result.f_summary = safeStr(findVal(['summary', 'about', 'bio'], basics));
+    if (!result.f_email) result.f_email = safeStr(findVal(['email'], basics));
+    if (!result.f_phone) result.f_phone = safeStr(findVal(['phone'], basics));
+    if (!result.f_website) result.f_website = safeStr(findVal(['url', 'website'], basics));
+
     const profiles = findVal(['profiles'], basics);
     if (Array.isArray(profiles)) {
       profiles.forEach(p => {
         const net = findVal(['network'], p);
         const url = findVal(['url'], p);
         if (net && url) {
-          const nl = net.toLowerCase();
-          if (nl.includes('linkedin')) result.f_linkedin = url;
-          else if (nl.includes('github')) result.f_github = url;
-          else if (nl.includes('portfolio') || nl.includes('website')) result.f_website = url;
+          const nl = safeStr(net).toLowerCase();
+          if (nl.includes('linkedin')) result.f_linkedin = safeStr(url);
+          else if (nl.includes('github')) result.f_github = safeStr(url);
+          else if (nl.includes('portfolio') || nl.includes('website')) result.f_website = safeStr(url);
         }
       });
     }
@@ -899,26 +886,26 @@ function mapExternalResumeData(obj) {
   if (Array.isArray(rawSkills)) {
     result.skills = rawSkills.map(s => {
       if (typeof s === 'string') return s;
-      if (s && typeof s === 'object') {
-        const name = findVal(['name'], s);
+      if (s && typeof s === 'object' && !Array.isArray(s)) {
+        const name = safeStr(findVal(['name'], s));
         const keywords = findVal(['keywords'], s);
         if (keywords && Array.isArray(keywords)) {
-          return [name, ...keywords].filter(Boolean).join(', ');
+          return [name, ...keywords.map(k => safeStr(k))].filter(Boolean).join(', ');
         }
-        return name || '';
+        return name;
       }
       return '';
-    }).filter(Boolean);
+    }).map(safeStr).filter(Boolean);
   }
 
   const rawLangs = findVal(['langs', 'languages', 'language']);
   if (Array.isArray(rawLangs)) {
     result.langs = rawLangs.map(l => {
-      if (typeof l === 'string') return { lang: l, level: 'Fluent' };
-      if (l && typeof l === 'object') {
+      if (typeof l === 'string') return { lang: safeStr(l), level: 'Fluent' };
+      if (l && typeof l === 'object' && !Array.isArray(l)) {
         return {
-          lang: findVal(['lang', 'language', 'name'], l) || '',
-          level: findVal(['level', 'fluency', 'proficiency'], l) || 'Fluent'
+          lang: safeStr(findVal(['lang', 'language', 'name'], l)),
+          level: safeStr(findVal(['level', 'fluency', 'proficiency'], l) || 'Fluent')
         };
       }
       return null;
@@ -928,16 +915,21 @@ function mapExternalResumeData(obj) {
   const rawWork = findVal(['experience', 'work', 'history', 'employment']);
   if (Array.isArray(rawWork)) {
     result.experience = rawWork.map(w => {
-      if (!w || typeof w !== 'object') return null;
+      if (!w || typeof w !== 'object' || Array.isArray(w)) return null;
       let descVal = findVal(['desc', 'description', 'summary', 'highlights'], w) || '';
       if (Array.isArray(descVal)) {
-        descVal = descVal.map(h => h.startsWith('•') || h.startsWith('-') ? h : `• ${h}`).join('\n');
+        descVal = descVal.map(h => {
+          const s = safeStr(h);
+          return s.startsWith('•') || s.startsWith('-') ? s : `• ${s}`;
+        }).join('\n');
+      } else {
+        descVal = safeStr(descVal);
       }
       return {
-        company: findVal(['company', 'name', 'employer', 'organization'], w) || '',
-        role: findVal(['role', 'position', 'title', 'jobTitle'], w) || '',
-        start: findVal(['start', 'startDate', 'from'], w) || '',
-        end: findVal(['end', 'endDate', 'to'], w) || '',
+        company: safeStr(findVal(['company', 'name', 'employer', 'organization'], w)),
+        role: safeStr(findVal(['role', 'position', 'title', 'jobTitle'], w)),
+        start: safeStr(findVal(['start', 'startDate', 'from'], w)),
+        end: safeStr(findVal(['end', 'endDate', 'to'], w)),
         desc: descVal
       };
     }).filter(w => w && (w.company || w.role));
@@ -946,16 +938,18 @@ function mapExternalResumeData(obj) {
   const rawEdu = findVal(['education', 'edu', 'academic']);
   if (Array.isArray(rawEdu)) {
     result.education = rawEdu.map(e => {
-      if (!e || typeof e !== 'object') return null;
+      if (!e || typeof e !== 'object' || Array.isArray(e)) return null;
       let descVal = findVal(['desc', 'description', 'summary', 'courses'], e) || '';
       if (Array.isArray(descVal)) {
-        descVal = descVal.join('\n');
+        descVal = descVal.map(safeStr).join('\n');
+      } else {
+        descVal = safeStr(descVal);
       }
       return {
-        school: findVal(['school', 'institution', 'university', 'college'], e) || '',
-        degree: findVal(['degree', 'qualification', 'studyType', 'major'], e) || '',
-        start: findVal(['start', 'startDate', 'from'], e) || '',
-        end: findVal(['end', 'endDate', 'to'], e) || '',
+        school: safeStr(findVal(['school', 'institution', 'university', 'college'], e)),
+        degree: safeStr(findVal(['degree', 'qualification', 'studyType', 'major'], e)),
+        start: safeStr(findVal(['start', 'startDate', 'from'], e)),
+        end: safeStr(findVal(['end', 'endDate', 'to'], e)),
         desc: descVal
       };
     }).filter(e => e && (e.school || e.degree));
@@ -964,12 +958,12 @@ function mapExternalResumeData(obj) {
   const rawCerts = findVal(['certs', 'certifications', 'certificates', 'credentials']);
   if (Array.isArray(rawCerts)) {
     result.certs = rawCerts.map(c => {
-      if (typeof c === 'string') return { name: c, issuer: '', year: '' };
-      if (c && typeof c === 'object') {
+      if (typeof c === 'string') return { name: safeStr(c), issuer: '', year: '' };
+      if (c && typeof c === 'object' && !Array.isArray(c)) {
         return {
-          name: findVal(['name', 'title'], c) || '',
-          issuer: findVal(['issuer', 'institution', 'authority'], c) || '',
-          year: findVal(['year', 'date'], c) || ''
+          name: safeStr(findVal(['name', 'title'], c)),
+          issuer: safeStr(findVal(['issuer', 'institution', 'authority'], c)),
+          year: safeStr(findVal(['year', 'date'], c))
         };
       }
       return null;
@@ -979,12 +973,12 @@ function mapExternalResumeData(obj) {
   const rawAwards = findVal(['awards', 'honors']);
   if (Array.isArray(rawAwards)) {
     result.awards = rawAwards.map(a => {
-      if (typeof a === 'string') return { title: a, org: '', year: '' };
-      if (a && typeof a === 'object') {
+      if (typeof a === 'string') return { title: safeStr(a), org: '', year: '' };
+      if (a && typeof a === 'object' && !Array.isArray(a)) {
         return {
-          title: findVal(['title', 'name'], a) || '',
-          org: findVal(['org', 'awarder', 'issuer', 'organization'], a) || '',
-          year: findVal(['year', 'date'], a) || ''
+          title: safeStr(findVal(['title', 'name'], a)),
+          org: safeStr(findVal(['org', 'awarder', 'issuer', 'organization'], a)),
+          year: safeStr(findVal(['year', 'date'], a))
         };
       }
       return null;
@@ -994,9 +988,9 @@ function mapExternalResumeData(obj) {
   const rawInts = findVal(['interests', 'hobbies']);
   if (Array.isArray(rawInts)) {
     result.interests = rawInts.map(i => {
-      if (typeof i === 'string') return i;
-      if (i && typeof i === 'object') {
-        return findVal(['name'], i) || '';
+      if (typeof i === 'string') return safeStr(i);
+      if (i && typeof i === 'object' && !Array.isArray(i)) {
+        return safeStr(findVal(['name'], i));
       }
       return '';
     }).filter(Boolean);
@@ -1004,12 +998,42 @@ function mapExternalResumeData(obj) {
     result.interests = rawInts.split(',').map(i => i.trim()).filter(Boolean);
   }
 
-  const styleKeys = ['accent', 'layout', 'font', 'fontSize', 'lineH', 'secGap', 'photo', 'photoSize', 'photoBR'];
-  styleKeys.forEach(k => {
-    if (k in src && src[k] !== undefined && src[k] !== null) {
-      result[k] = src[k];
-    }
-  });
+  const accentVal = findVal(['accent']);
+  if (accentVal && typeof accentVal === 'string' && /^#[0-9a-fA-F]{3,6}$/.test(accentVal)) {
+    result.accent = accentVal;
+  }
+  const layoutVal = findVal(['layout']);
+  if (layoutVal && typeof layoutVal === 'string' && ['classic', 'sidebar-l', 'minimal', 'modern-split', 'elegant'].includes(layoutVal)) {
+    result.layout = layoutVal;
+  }
+  const fontVal = findVal(['font']);
+  if (fontVal && typeof fontVal === 'string') {
+    result.font = fontVal;
+  }
+  const fontSizeVal = findVal(['fontSize']);
+  if (fontSizeVal !== undefined) {
+    result.fontSize = safeNum(fontSizeVal, 100, 30, 200);
+  }
+  const lineHVal = findVal(['lineH']);
+  if (lineHVal !== undefined) {
+    result.lineH = safeNum(lineHVal, 1.65, 0.5, 3.0);
+  }
+  const secGapVal = findVal(['secGap']);
+  if (secGapVal !== undefined) {
+    result.secGap = safeNum(secGapVal, 20, 0, 100);
+  }
+  const photoVal = findVal(['photo']);
+  if (photoVal !== undefined) {
+    result.photo = (typeof photoVal === 'string' && (photoVal.startsWith('data:image/') || photoVal.match(/^https?:\/\//i))) ? photoVal : null;
+  }
+  const photoSizeVal = findVal(['photoSize']);
+  if (photoSizeVal !== undefined) {
+    result.photoSize = safeNum(photoSizeVal, 76, 30, 200);
+  }
+  const photoBRVal = findVal(['photoBR']);
+  if (photoBRVal !== undefined) {
+    result.photoBR = safeNum(photoBRVal, 50, 0, 50);
+  }
 
   return result;
 }
@@ -1019,7 +1043,7 @@ function handleImportProject(e) {
   if (!file) return;
 
   const reader = new FileReader();
-  reader.onload = function(evt) {
+  reader.onload = function (evt) {
     try {
       const parsed = JSON.parse(evt.target.result);
       const mappedData = mapExternalResumeData(parsed);
@@ -1047,7 +1071,7 @@ function handleImportProject(e) {
 
       loadState(importedResume.data);
       loadResumeIntoDOM();
-      render();
+      renderImmediate();
       renderResumesList();
       showToast('Resume Uploaded & Filled!');
     } catch (err) {
@@ -1069,16 +1093,15 @@ async function resetActiveResume(e) {
 
   const active = resumes.find(r => r.id === activeResumeId);
   if (active) {
-    active.data = JSON.parse(JSON.stringify(DEFAULT_BLANK_RESUME));
+    active.data = deepClone(DEFAULT_BLANK_RESUME);
     localStorage.setItem('resumes', JSON.stringify(resumes));
     loadState(active.data);
     loadResumeIntoDOM();
-    render();
+    renderImmediate();
     showToast('Resume Wiped to Blank!');
   }
-  
-  const dropdown = document.getElementById('resumesDropdown');
-  if (dropdown) dropdown.classList.remove('open');
+
+  closeResumesDropdown();
 }
 
 function generateShareLink(e) {
@@ -1088,15 +1111,15 @@ function generateShareLink(e) {
 
   try {
     // Clone the state and remove the base64 photo to keep URL length under browser limits
-    const sharedData = JSON.parse(JSON.stringify(active.data));
+    const sharedData = deepClone(active.data);
     delete sharedData.photo;
 
     const jsonStr = JSON.stringify(sharedData);
     const base64Data = btoa(unescape(encodeURIComponent(jsonStr)));
-    
+
     const url = new URL(window.location.href);
     url.searchParams.set('share', base64Data);
-    
+
     navigator.clipboard.writeText(url.toString()).then(() => {
       showToast('Share Link Copied to Clipboard!');
     }).catch(err => {
@@ -1108,8 +1131,7 @@ function generateShareLink(e) {
     showToast('Error generating share link.');
   }
 
-  const dropdown = document.getElementById('resumesDropdown');
-  if (dropdown) dropdown.classList.remove('open');
+  closeResumesDropdown();
 }
 
 function checkUrlShareParam() {
@@ -1120,28 +1142,33 @@ function checkUrlShareParam() {
   try {
     const decodedStr = decodeURIComponent(escape(atob(shareData)));
     const resumeData = JSON.parse(decodedStr);
-    
-    if (resumeData && typeof resumeData === 'object') {
+
+    if (resumeData && typeof resumeData === 'object' && !Array.isArray(resumeData)) {
       const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
       window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+
+      // Route shared resume data through mapExternalResumeData() for sanitization
+      const sanitizedData = mapExternalResumeData(resumeData);
 
       const sharedResume = {
         id: 'res-shared-' + Date.now(),
         name: 'Shared Resume',
-        data: resumeData
+        data: sanitizedData
       };
-      
+
       resumes.push(sharedResume);
       activeResumeId = sharedResume.id;
-      
+
       localStorage.setItem('resumes', JSON.stringify(resumes));
       localStorage.setItem('activeResumeId', activeResumeId);
-      
+
       loadState(sharedResume.data);
       loadResumeIntoDOM();
-      render();
+      renderImmediate();
       renderResumesList();
       showToast('Shared Resume Loaded Successfully!');
+    } else {
+      showToast('Invalid share link data.');
     }
   } catch (err) {
     console.error('Failed to parse share URL data:', err);
@@ -1152,12 +1179,59 @@ function checkUrlShareParam() {
 // ══════════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════════
-function init(){
+function init() {
   initResumes();
+  // Render the resume preview after loading state
+  renderImmediate();
   checkUrlShareParam();
   buildStepBar();
+
+  // Keyboard navigation support for saved resumes menu dropdown
+  const dropdown = document.getElementById('resumesDropdown');
+  if (dropdown) {
+    dropdown.addEventListener('keydown', (e) => {
+      if (!dropdown.classList.contains('open')) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeResumesDropdown();
+        const trigger = document.getElementById('resumesTrigger');
+        if (trigger) trigger.focus();
+        return;
+      }
+
+      // If typing in the rename input, do not intercept ArrowUp/ArrowDown
+      if (document.activeElement && document.activeElement.tagName === 'INPUT' && document.activeElement.type === 'text') {
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+          return;
+        }
+      }
+
+      // Find all focusable items in the menu
+      const focusable = Array.from(dropdown.querySelectorAll('input, button:not([style*="display:none"]), .resume-item[tabindex="0"]'))
+        .filter(el => {
+          const style = window.getComputedStyle(el);
+          return el.tabIndex !== -1 && !el.disabled && style.display !== 'none' && style.visibility !== 'hidden';
+        });
+
+      if (focusable.length === 0) return;
+
+      const activeIndex = focusable.indexOf(document.activeElement);
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = (activeIndex + 1) % focusable.length;
+        focusable[next].focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prev = (activeIndex - 1 + focusable.length) % focusable.length;
+        focusable[prev].focus();
+      }
+    });
+  }
+
   setTimeout(zoomFit, 200);
 }
 
-window.addEventListener('resize',()=>setTimeout(zoomFit,100));
+window.addEventListener('resize', () => setTimeout(zoomFit, 100));
 init();

@@ -296,30 +296,35 @@
         
         <!-- Vertical Tab List -->
         <div class="template-selector-list">
-          <button class="template-selector-btn active" data-template="swe">
+          <button class="template-selector-btn active" data-template="executive">
             <span class="sel-num">01</span>
-            <span class="sel-label">Software Engineer</span>
-            <span class="sel-tag">High-Density</span>
+            <span class="sel-label">Executive Minimal</span>
+            <span class="sel-tag">High-Trust Serif</span>
           </button>
-          <button class="template-selector-btn" data-template="pm">
+          <button class="template-selector-btn" data-template="tech">
             <span class="sel-num">02</span>
-            <span class="sel-label">Product Manager</span>
-            <span class="sel-tag">Metrics-Focus</span>
+            <span class="sel-label">Modern Tech</span>
+            <span class="sel-tag">Modular Developer</span>
           </button>
-          <button class="template-selector-btn" data-template="designer">
+          <button class="template-selector-btn" data-template="creative">
             <span class="sel-num">03</span>
-            <span class="sel-label">UI/UX Designer</span>
-            <span class="sel-tag">Minimalist Serif</span>
+            <span class="sel-label">Creative Professional</span>
+            <span class="sel-tag">Notion-Style</span>
           </button>
-          <button class="template-selector-btn" data-template="marketing">
+          <button class="template-selector-btn" data-template="classic">
             <span class="sel-num">04</span>
-            <span class="sel-label">Marketing</span>
-            <span class="sel-tag">Impact Editorial</span>
+            <span class="sel-label">Corporate Classic</span>
+            <span class="sel-tag">High-Density</span>
           </button>
           <button class="template-selector-btn" data-template="fresher">
             <span class="sel-num">05</span>
-            <span class="sel-label">Fresher / Graduate</span>
-            <span class="sel-tag">Academic Flow</span>
+            <span class="sel-label">Fresher Smart</span>
+            <span class="sel-tag">Skill-First</span>
+          </button>
+        </div>
+        <div class="template-cta-wrap scroll-reveal" style="margin-top: 24px; display: flex; justify-content: flex-start;">
+          <button id="btnUseSelectedTemplate" class="btn-premium primary" style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px 28px; width: auto; min-height: 48px; border: none;">
+            <i class="ti ti-sparkles"></i> Customize Selected Template
           </button>
         </div>
       </div>
@@ -331,109 +336,312 @@
           
           <!-- Interactive Mockup Cards (One active at a time) -->
           
-          <!-- SWE Mockup -->
-          <div class="tmpl-mockup-card active" id="tmplSwe">
-            <div class="tmpl-doc swe-style">
-              <div class="swe-header">
-                <div class="swe-name">ALEXANDER CHEN</div>
-                <div class="swe-contact">alex.chen@dev.io • github.com/alechen • Seattle, WA</div>
+          <!-- Executive Minimal (tmplExecutive) -->
+          <div class="tmpl-mockup-card active" id="tmplExecutive" data-template="executive">
+            <div class="tmpl-doc executive-style">
+              <div class="exec-header">
+                <div class="exec-name">Elizabeth Vance</div>
+                <div class="exec-title">Managing Director, Strategy & Operations</div>
+                <div class="exec-contact">elizabeth.vance@consulting.com • +1 (555) 321-4567 • New York, NY</div>
               </div>
-              <div class="swe-sec">
-                <div class="swe-sec-title">TECHNICAL EXPERIENCE</div>
-                <div class="swe-job">
-                  <div class="swe-job-header">
-                    <strong>Senior Software Engineer</strong> — Cloud Systems | 2022 – Present
-                  </div>
-                  <div class="swe-bullet">• Refactored core Python routing API, improving throughput by 42% (Kubernetes).</div>
-                  <div class="swe-bullet">• Designed distributed caching mechanism reducing database latency by 80ms.</div>
+              
+              <div class="exec-section">
+                <div class="exec-summary">
+                  Enterprise strategist with 14+ years of experience leading cross-functional teams in digital transformation, organizational design, and market expansion. Proven track record driving $100M+ corporate initiatives.
                 </div>
               </div>
-              <div class="swe-sec">
-                <div class="swe-sec-title">EDUCATION & SKILLS</div>
-                <div class="swe-skills">
-                  <strong>Languages:</strong> Go, Python, Java, JavaScript, Rust, SQL<br>
-                  <strong>Tools:</strong> Docker, Kubernetes, AWS, Terraform, Git, Postgres
+              
+              <div class="exec-section">
+                <div class="exec-sec-title">Professional Experience</div>
+                
+                <div class="exec-item">
+                  <div class="exec-item-header">
+                    <span class="exec-role">Principal Consultant</span>
+                    <span class="exec-company-date">McKinsey & Company | 2019 – Present</span>
+                  </div>
+                  <div class="exec-bullets">
+                    <div class="exec-bullet">• Formulated global supply chain strategy for Fortune 50 consumer goods group, realizing $35M in annual cost reductions.</div>
+                    <div class="exec-bullet">• Guided executive leadership through a $120M digital integration program across European business units.</div>
+                  </div>
+                </div>
+
+                <div class="exec-item">
+                  <div class="exec-item-header">
+                    <span class="exec-role">Senior Strategy Consultant</span>
+                    <span class="exec-company-date">Accenture | 2015 – 2019</span>
+                  </div>
+                  <div class="exec-bullets">
+                    <div class="exec-bullet">• Designed market entry strategy for a high-growth SaaS enterprise, capturing 12% market share within 18 months.</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="exec-footer-grid">
+                <div class="exec-section">
+                  <div class="exec-sec-title">Education</div>
+                  <div class="exec-edu">
+                    <strong>Master of Business Administration (MBA)</strong> — Harvard Business School
+                  </div>
+                </div>
+                
+                <div class="exec-section">
+                  <div class="exec-sec-title">Expertise</div>
+                  <div class="exec-skills">
+                    Corporate Strategy, Digital Transformation, Executive Leadership, M&A Integration, Financial Modeling
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          
-          <!-- PM Mockup -->
-          <div class="tmpl-mockup-card" id="tmplPm">
-            <div class="tmpl-doc pm-style">
-              <div class="pm-header">
-                <div class="pm-name">Victoria Vance</div>
-                <div class="pm-contact">victoria@vance.pm • Seattle, WA • linkedin.com/in/vvance</div>
-              </div>
-              <div class="pm-sec">
-                <div class="pm-sec-title">Product Leadership</div>
-                <div class="pm-job">
-                  <div class="pm-job-header">
-                    <strong>Principal Product Manager</strong> — FinTech Corp | 2021 – Present
-                  </div>
-                  <div class="pm-bullet">• Owned lifecycle of mobile checkout platform, driving <strong>$40M+ in ARR</strong>.</div>
-                  <div class="pm-bullet">• Increased user activation metrics by <strong>24% YoY</strong> via targeted A/B tests.</div>
-                </div>
-              </div>
+            <div class="tmpl-overlay">
+              <span class="btn-premium primary"><i class="ti ti-sparkles"></i> Customize Template</span>
             </div>
           </div>
           
-          <!-- Designer Mockup -->
-          <div class="tmpl-mockup-card" id="tmplDesigner">
-            <div class="tmpl-doc designer-style">
-              <div class="designer-header">
-                <div class="designer-name">Elena Rostova</div>
-                <div class="designer-contact">elena.design • Seattle, WA • hello@elena.design</div>
+          <!-- Modern Tech (tmplTech) -->
+          <div class="tmpl-mockup-card" id="tmplTech" data-template="tech">
+            <div class="tmpl-doc tech-style">
+              <div class="tech-header">
+                <div class="tech-name">Alexander Chen</div>
+                <div class="tech-title">Lead Infrastructure Architect</div>
+                <div class="tech-contact">alex.chen@infra.dev • github.com/alechen • San Francisco, CA</div>
               </div>
-              <div class="designer-sec">
-                <div class="designer-sec-title">Product Design</div>
-                <div class="designer-job">
-                  <div class="designer-job-header">
-                    <strong>Senior Product Designer</strong> — Arc Studios | 2020 – 2024
+              
+              <div class="tech-section">
+                <div class="tech-sec-title">// Profile Summary</div>
+                <div class="tech-desc">
+                  Systems architect specializing in high-performance cloud networking, container orchestration, and real-time infrastructure automation. Passionate about developer tools and zero-downtime deployments.
+                </div>
+              </div>
+              
+              <div class="tech-section">
+                <div class="tech-sec-title">// Technical Experience</div>
+                
+                <div class="tech-item">
+                  <div class="tech-item-header">
+                    <strong class="tech-role">Lead Systems Engineer</strong>
+                    <span class="tech-meta">Vercel | 2022 – Present</span>
                   </div>
-                  <div class="designer-bullet">• Re-imagined navigation workspace, decreasing bounce rates by 30%.</div>
-                  <div class="designer-bullet">• Maintained design system used by 45 cross-functional teams.</div>
+                  <div class="tech-bullets">
+                    <div class="tech-bullet">• Re-architected edge routing fabric handling 50B+ weekly requests, lowering average latency by 14ms.</div>
+                    <div class="tech-bullet">• Automated container provisioning workflows, reducing cold start deployment delays from 4s to 450ms.</div>
+                  </div>
+                </div>
+
+                <div class="tech-item">
+                  <div class="tech-item-header">
+                    <strong class="tech-role">Senior DevOps Engineer</strong>
+                    <span class="tech-meta">Stripe | 2018 – 2022</span>
+                  </div>
+                  <div class="tech-bullets">
+                    <div class="tech-bullet">• Spearheaded multi-region database replication over Kubernetes, maintaining 99.999% system uptime during peaks.</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="tech-section">
+                <div class="tech-sec-title">// Education & Competencies</div>
+                <div class="tech-grid">
+                  <div class="tech-edu-item">
+                    <strong>B.S. Computer Science</strong> — Stanford University
+                  </div>
+                  <div class="tech-skills-list">
+                    <span class="tech-skill-tag">Go</span>
+                    <span class="tech-skill-tag">Rust</span>
+                    <span class="tech-skill-tag">Kubernetes</span>
+                    <span class="tech-skill-tag">Terraform</span>
+                    <span class="tech-skill-tag">AWS</span>
+                    <span class="tech-skill-tag">Docker</span>
+                    <span class="tech-skill-tag">eBPF</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          
-          <!-- Marketing Mockup -->
-          <div class="tmpl-mockup-card" id="tmplMarketing">
-            <div class="tmpl-doc marketing-style">
-              <div class="mkt-header">
-                <div class="mkt-name">Marcus Aurelius</div>
-                <div class="mkt-contact">marcus.mktg@domain.com • Seattle, WA</div>
-              </div>
-              <div class="mkt-sec">
-                <div class="mkt-sec-title">Marketing Campaigns</div>
-                <div class="mkt-job">
-                  <div class="mkt-job-header">
-                    <strong>Growth Marketing Director</strong> — SaaSify | 2021 – 2025
-                  </div>
-                  <div class="mkt-bullet">• Scaled organic user acquisition from 50k to 1.2M monthly active sessions.</div>
-                  <div class="mkt-bullet">• Managed $2.5M digital ad spend yielding a 4.2x LTV/CAC ratio.</div>
-                </div>
-              </div>
+            <div class="tmpl-overlay">
+              <span class="btn-premium primary"><i class="ti ti-sparkles"></i> Customize Template</span>
             </div>
           </div>
           
-          <!-- Fresher Mockup -->
-          <div class="tmpl-mockup-card" id="tmplFresher">
+          <!-- Creative Professional (tmplCreative) -->
+          <div class="tmpl-mockup-card" id="tmplCreative" data-template="creative">
+            <div class="tmpl-doc creative-style">
+              <div class="creat-header">
+                <div class="creat-name">Elena Rostova</div>
+                <div class="creat-title">Senior Product Designer</div>
+                <div class="creat-contact">elena.rostova@design.io • elena.design • Brooklyn, NY</div>
+              </div>
+              
+              <div class="creat-section">
+                <div class="creat-summary">
+                  Interface designer focused on interactive systems, custom design systems, and delightful user experiences. Bridging the gap between engineering efficiency and polished visual design.
+                </div>
+              </div>
+              
+              <div class="creat-section">
+                <div class="creat-sec-title">Work Experience</div>
+                
+                <div class="creat-item">
+                  <div class="creat-item-header">
+                    <span class="creat-role">Lead Designer</span>
+                    <span class="creat-company">Framer</span>
+                    <span class="creat-date">2021 – Present</span>
+                  </div>
+                  <div class="creat-bullets">
+                    <div class="creat-bullet">• Led redesign of layout engine controls, increasing workspace retention metrics by 32%.</div>
+                    <div class="creat-bullet">• Developed and scaled internal component library used by 10,000+ creators.</div>
+                  </div>
+                </div>
+
+                <div class="creat-item">
+                  <div class="creat-item-header">
+                    <span class="creat-role">Product Designer</span>
+                    <span class="creat-company">Notion</span>
+                    <span class="creat-date">2018 – 2021</span>
+                  </div>
+                  <div class="creat-bullets">
+                    <div class="creat-bullet">• Designed collaborative block templates, driving 15% growth in team onboarding cycles.</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="creat-footer-row">
+                <div class="creat-footer-item">
+                  <div class="creat-sec-title">Education</div>
+                  <p class="creat-text"><strong>B.F.A. Communication Design</strong> — Pratt Institute</p>
+                </div>
+                <div class="creat-footer-item">
+                  <div class="creat-sec-title">Core Skills</div>
+                  <p class="creat-text">Figma, Design Systems, Typography, Prototyping, CSS Grid, User Research</p>
+                </div>
+              </div>
+            </div>
+            <div class="tmpl-overlay">
+              <span class="btn-premium primary"><i class="ti ti-sparkles"></i> Customize Template</span>
+            </div>
+          </div>
+          
+          <!-- Corporate Classic (tmplClassic) -->
+          <div class="tmpl-mockup-card" id="tmplClassic" data-template="classic">
+            <div class="tmpl-doc classic-style">
+              <div class="class-header">
+                <div class="class-name">Marcus Sterling, CFA</div>
+                <div class="class-title">Vice President, Financial Analysis</div>
+                <div class="class-contact">m.sterling@capital.com | +1 (555) 789-0123 | Chicago, IL</div>
+              </div>
+              
+              <div class="class-section">
+                <div class="class-summary">
+                  Analytical financial officer with 12+ years managing investment portfolios, corporate forecasting, and asset allocations. Expert in treasury management, risk mitigation, and SEC reporting.
+                </div>
+              </div>
+              
+              <div class="class-section">
+                <div class="class-sec-title">PROFESSIONAL EXPERIENCE</div>
+                
+                <div class="class-item">
+                  <div class="class-item-header">
+                    <strong>Vice President, Finance</strong> — Vanguard
+                    <span style="float: right;">2020 – Present</span>
+                  </div>
+                  <div class="class-bullets">
+                    <div class="class-bullet">• Supervised financial modeling for a $450M equity portfolio, achieving a 14.8% annualized return.</div>
+                    <div class="class-bullet">• Standardized financial reporting templates across 6 departments, saving 40 hours of monthly manual entry.</div>
+                  </div>
+                </div>
+
+                <div class="class-item">
+                  <div class="class-item-header">
+                    <strong>Senior Financial Analyst</strong> — JP Morgan
+                    <span style="float: right;">2015 – 2020</span>
+                  </div>
+                  <div class="class-bullets">
+                    <div class="class-bullet">• Led valuation research for 18 M&A transactions totaling $1.2B in volume.</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="class-section">
+                <div class="class-sec-title">EDUCATION</div>
+                <div class="class-edu">
+                  <strong>B.S. in Finance & Economics</strong> — Wharton School, University of Pennsylvania
+                </div>
+              </div>
+
+              <div class="class-section">
+                <div class="class-sec-title">CORE SKILLS & CERTIFICATIONS</div>
+                <div class="class-skills">
+                  Portfolio Management, Financial Modeling, Valuations, SEC Compliance, Treasury, Asset Allocation
+                </div>
+              </div>
+            </div>
+            <div class="tmpl-overlay">
+              <span class="btn-premium primary"><i class="ti ti-sparkles"></i> Customize Template</span>
+            </div>
+          </div>
+          
+          <!-- Fresher Smart (tmplFresher) -->
+          <div class="tmpl-mockup-card" id="tmplFresher" data-template="fresher">
             <div class="tmpl-doc fresher-style">
-              <div class="fr-header">
-                <div class="fr-name">Devon Martinez</div>
-                <div class="fr-contact">devon.m@college.edu • Seattle, WA</div>
+              <div class="fresh-header">
+                <div class="fresh-name">Devon Martinez</div>
+                <div class="fresh-title">Junior Software Developer</div>
+                <div class="fresh-contact">devon.martinez@edu.org • github.com/devonm • Austin, TX</div>
               </div>
-              <div class="fr-sec">
-                <div class="fr-sec-title">Education</div>
-                <div class="fr-job">
-                  <div class="fr-job-header">
-                    <strong>B.S. in Computer Science</strong> — University of Washington | GPA: 3.9 (2022 - 2026)
-                  </div>
-                  <div class="fr-bullet">• Academic Projects: Developed linear shell scripts and local file servers.</div>
+              
+              <div class="fresh-section">
+                <div class="fresh-summary">
+                  Recent Computer Science honors graduate with experience building client-side tools, local file servers, and web automation scripts. Eager to contribute to high-scale infrastructure projects.
                 </div>
               </div>
+              
+              <div class="fresh-section">
+                <div class="fresh-sec-title">Education</div>
+                <div class="fresh-edu-item">
+                  <div class="fresh-edu-header">
+                    <strong>B.S. in Computer Engineering (Honors)</strong>
+                    <span>GPA: 3.92 | 2022 - 2026</span>
+                  </div>
+                  <div class="fresh-edu-school">University of Texas at Austin</div>
+                </div>
+              </div>
+              
+              <div class="fresh-section">
+                <div class="fresh-sec-title">Academic Projects</div>
+                
+                <div class="fresh-item">
+                  <div class="fresh-item-header">
+                    <strong>Lead Developer</strong> — Open-Source Shell Engine
+                  </div>
+                  <div class="fresh-bullets">
+                    <div class="fresh-bullet">• Designed a custom Linux shell with pipeline redirection and background execution, utilized by 200+ students.</div>
+                  </div>
+                </div>
+
+                <div class="fresh-item">
+                  <div class="fresh-item-header">
+                    <strong>Full Stack Developer</strong> — Client Task Scheduler
+                  </div>
+                  <div class="fresh-bullets">
+                    <div class="fresh-bullet">• Built a local offline-first task board utilizing local storage, reducing page weight to 12kb.</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="fresh-section">
+                <div class="fresh-sec-title">Core Competencies</div>
+                <div class="fresh-skills-grid">
+                  <span>Python</span>
+                  <span>Go</span>
+                  <span>C++</span>
+                  <span>JavaScript</span>
+                  <span>Git</span>
+                  <span>Linux Shell</span>
+                  <span>SQL</span>
+                  <span>API Design</span>
+                </div>
+              </div>
+            </div>
+            <div class="tmpl-overlay">
+              <span class="btn-premium primary"><i class="ti ti-sparkles"></i> Customize Template</span>
             </div>
           </div>
           

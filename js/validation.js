@@ -46,8 +46,8 @@ function sanitize(el) {
       placeholder.includes('role') || placeholder.includes('organization') || 
       placeholder.includes('issuer') || placeholder.includes('award') || 
       placeholder.includes('certificate')) {
-    // Names, locations, schools, roles: allow letters, spaces, hyphens, periods, and apostrophes
-    cleaned = val.replace(/[^a-zA-Z\s.\-']/g, '');
+    // Names, locations, schools, roles: allow letters, spaces, hyphens, periods, and apostrophes (Unicode-aware)
+    cleaned = val.replace(/[^\p{L}\s.\-']/gu, '');
   } 
   else if (id === 'f_phone') {
     // Phone numbers: allow digits, spaces, plus sign, hyphens, parentheses

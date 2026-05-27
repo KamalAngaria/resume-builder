@@ -1,3 +1,5 @@
+html,
+body,
 *,
 *::before,
 *::after {
@@ -6,6 +8,8 @@
   padding: 0;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 *::-webkit-scrollbar {
@@ -24,14 +28,65 @@
   --radius: 12px;
   --sh: 0 4px 20px rgba(0, 0, 0, .04);
   --sh2: 0 12px 48px rgba(0, 0, 0, .08);
+
+  /* Unified Z-Indices */
+  --z-index-sidebar: 10;
+  --z-index-header: 200;
+  --z-index-dropdown: 300;
+  --z-index-overlay: 400;
+  --z-index-modal: 500;
+  --z-index-toast: 600;
 }
 
+/* Global selection styling */
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+::-moz-selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ══ GLOBAL FOCUS SYSTEM ══
+   Removes browser-default focus rings everywhere.
+   Re-applies only for keyboard navigation via :focus-visible.
+   Touch / mouse clicks will never show an outline. ══ */
+*:focus {
+  outline: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible,
+.tab:focus-visible,
+.layout-opt:focus-visible,
+.font-opt:focus-visible,
+.c-swatch:focus-visible,
+.resume-item:focus-visible,
+.resume-item-btn:focus-visible,
+.kw-pill:focus-visible,
+.rec-card:focus-visible,
+.summary-suggest-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Body styles */
 body {
   font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden
+}
+
+/* Modal open body lock */
+.modal-open {
+  overflow: hidden !important;
 }
 
 /* ══ HEADER ══ */
@@ -45,7 +100,7 @@ header {
   justify-content: space-between;
   position: sticky;
   top: 0;
-  z-index: 200;
+  z-index: var(--z-index-header);
   gap: 12px
 }
 
@@ -88,7 +143,7 @@ header {
   font-weight: 600;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   white-space: nowrap;
   user-select: none;
@@ -106,10 +161,12 @@ header {
   box-shadow: 0 4px 12px rgba(83, 83, 102, 0.22), 0 1px 0 rgba(255, 255, 255, 0.15) inset;
 }
 
-.btn-primary:hover {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 90%, #fff) 0%, var(--accent) 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 7px 18px rgba(83, 83, 102, 0.35), 0 1px 0 rgba(255, 255, 255, 0.2) inset;
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 90%, #fff) 0%, var(--accent) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(83, 83, 102, 0.35), 0 1px 0 rgba(255, 255, 255, 0.2) inset;
+  }
 }
 
 .btn-ghost {
@@ -119,11 +176,13 @@ header {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.26);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
+@media (hover: hover) and (pointer: fine) {
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.26);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
+  }
 }
 
 .btn-sm {
@@ -139,12 +198,14 @@ header {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
 }
 
-.btn-outline:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 3%, #ffffff);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+@media (hover: hover) and (pointer: fine) {
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 3%, #ffffff);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+  }
 }
 
 .btn-icon {
@@ -159,15 +220,17 @@ header {
   color: #fff;
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
-.btn-icon:hover {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.26);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
+@media (hover: hover) and (pointer: fine) {
+  .btn-icon:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.26);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
+  }
 }
 
 /* ══ LAYOUT ══ */
@@ -180,29 +243,37 @@ header {
 /* ══ RESUMES SELECTOR ══ */
 .resumes-dropdown {
   position: relative;
-  z-index: 300;
+  z-index: var(--z-index-dropdown);
 }
 .resumes-trigger {
   background: rgba(255, 255, 255, 0.08);
-  border: 1.5px solid rgba(255, 255, 255, 0.28); /* Made resting border more visible */
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
   color: #fff;
-  padding: 7px 16px;
+  padding: 7px 14px;
   border-radius: 9px;
   font-family: 'Outfit', sans-serif;
   font-size: 0.86rem;
   font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  max-width: 160px;
 }
-.resumes-trigger:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.45);
-  transform: translateY(-1.5px);
-  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.25);
+.resumes-trigger span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .resumes-trigger:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.25);
+  }
 }
 .resumes-dropdown.open .resumes-trigger {
   border-color: rgba(255, 255, 255, 0.55);
@@ -211,183 +282,315 @@ header {
 }
 .resumes-trigger i {
   font-size: 14px;
+  flex-shrink: 0;
 }
 .resumes-trigger .ti-chevron-down {
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 11px;
+  margin-left: auto;
 }
 .resumes-dropdown.open .resumes-trigger .ti-chevron-down {
   transform: rotate(180deg);
 }
+
+/* ── Backdrop (mobile only via media query) ── */
+.resumes-backdrop {
+  display: none;
+}
+
+/* ── Menu panel ── */
 .resumes-menu {
   display: none;
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-  width: 255px;
-  background: rgba(28, 28, 28, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-  padding: 12px 10px;
+  width: 268px;
+  background: rgba(22, 22, 26, 0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.25);
+  padding: 10px 8px;
   flex-direction: column;
-  gap: 4px;
-  animation: menuFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  gap: 2px;
+  animation: menuFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
 }
 .resumes-dropdown.open .resumes-menu {
   display: flex;
 }
 @keyframes menuFadeIn {
-  from { opacity: 0; transform: translateY(-4px) scale(0.96); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
 }
+
+/* ── Resume list ── */
 .resumes-list {
-  max-height: 180px;
+  max-height: 160px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 2px 6px 6px 2px; /* Added padding to prevent bottom border clipping */
+  gap: 2px;
+  padding: 2px 0 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.12) transparent;
 }
-.resumes-list::-webkit-scrollbar {
-  width: 4px;
-}
-.resumes-list::-webkit-scrollbar-track {
-  background: transparent;
-}
+.resumes-list::-webkit-scrollbar { width: 3px; }
+.resumes-list::-webkit-scrollbar-track { background: transparent; }
 .resumes-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
 }
+
+/* ── Resume row ── */
 .resume-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
+  padding: 7px 10px;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.18s ease;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.84rem;
-  gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08); /* Faint resting border */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: background 0.15s ease, border-color 0.15s ease;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.82rem;
+  gap: 6px;
+  border: 1px solid transparent;
 }
-.resume-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
+@media (hover: hover) and (pointer: fine) {
+  .resume-item:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
 }
 .resume-item.active {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.32); /* Clear, visible active border */
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
   color: #fff;
   font-weight: 600;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 .resume-item-name {
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
 }
+
+/* ── Row action buttons ── */
 .resume-item-actions {
   display: flex;
-  gap: 4px;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-.resume-item:hover .resume-item-actions {
+  gap: 1px;
+  flex-shrink: 0;
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 .resume-item-btn {
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.45);
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
+  padding: 4px 5px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
+  transition: background-color 0.12s ease, color 0.12s ease;
+  font-size: 12px;
+  line-height: 1;
+  min-width: 24px;
+  min-height: 24px;
 }
-.resume-item-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+
+@media (hover: hover) and (pointer: fine) {
+  .resume-item-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+  .resume-item-btn.btn-delete:hover {
+    color: #ff5555;
+    background: rgba(255, 77, 77, 0.16);
+  }
 }
-.resume-item-btn.btn-delete:hover {
-  color: #ff4d4d;
-  background: rgba(255, 77, 77, 0.15);
-}
-.resumes-actions {
-  padding-top: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.resumes-actions button {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.85);
-  padding: 9px 12px;
-  border-radius: 8px;
-  font-size: 0.82rem;
-  font-family: 'Outfit', sans-serif;
-  font-weight: 600;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-.resumes-actions button:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.25);
-  color: #fff;
-  transform: translateY(-1.5px);
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
-}
-.resumes-actions button.btn-sample {
-  background: rgba(83, 83, 102, 0.25);
-  border-color: rgba(83, 83, 102, 0.4);
-  color: #dfdff0;
-}
-.resumes-actions button.btn-sample:hover {
-  background: var(--accent);
-  border-color: rgba(255, 255, 255, 0.25);
-  color: #fff;
-}
+
+/* ── Rename input ── */
 .resume-rename-input {
   background: rgba(255, 255, 255, 0.08);
   border: 1.5px solid rgba(255, 255, 255, 0.22);
   color: #fff;
   border-radius: 6px;
-  padding: 4px 8px;
+  padding: 3px 7px;
   font-family: inherit;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   width: 100%;
   box-sizing: border-box;
   outline: none;
-  transition: all 0.2s;
+  transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
 }
 .resume-rename-input:focus {
   border-color: var(--accent);
   background: rgba(255, 255, 255, 0.12);
   box-shadow: 0 0 0 3px rgba(83, 83, 102, 0.35);
 }
+
+/* ── Section divider ── */
+.menu-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  margin: 4px 2px;
+}
+
+/* ── Section label ── */
 .menu-sec-label {
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: rgba(255, 255, 255, 0.35);
-  padding: 4px 10px 4px;
+  letter-spacing: 0.9px;
+  color: rgba(255, 255, 255, 0.28);
+  padding: 6px 10px 3px;
   user-select: none;
+}
+
+/* ── Action buttons ── */
+.resumes-actions {
+  padding-top: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.resumes-actions button {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.78);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.81rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  width: 100%;
+}
+.resumes-actions button i {
+  font-size: 14px;
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .resumes-actions button:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+  .resumes-actions button:hover i {
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+.resumes-actions button.btn-sample {
+  color: #c8c8f0;
+}
+.resumes-actions button.btn-sample i {
+  color: rgba(200, 200, 240, 0.6);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .resumes-actions button.btn-sample:hover {
+    background: rgba(83, 83, 102, 0.2);
+    color: #e0e0ff;
+  }
+}
+/* Danger zone */
+.resumes-actions button.btn-danger {
+  color: rgba(255, 100, 100, 0.85);
+}
+.resumes-actions button.btn-danger i {
+  color: rgba(255, 100, 100, 0.55);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .resumes-actions button.btn-danger:hover {
+    background: rgba(255, 77, 77, 0.1);
+    color: #ff6b6b;
+  }
+  .resumes-actions button.btn-danger:hover i {
+    color: #ff6b6b;
+  }
+}
+
+/* ══════════════════════════════════
+   MOBILE BOTTOM-SHEET (< 768px)
+   ══════════════════════════════════ */
+@media (max-width: 767px) {
+  /* Backdrop */
+  .resumes-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    z-index: calc(var(--z-index-dropdown) - 2);
+    pointer-events: none;
+    transition: background 0.25s ease;
+  }
+  .resumes-dropdown.open .resumes-backdrop {
+    background: rgba(0, 0, 0, 0.45);
+    pointer-events: auto;
+  }
+
+  /* Panel becomes floating centered sheet */
+  .resumes-menu {
+    position: fixed;
+    top: 68px;           /* just below the 58px header */
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px) scale(0.97);
+    width: calc(100vw - 24px);
+    max-width: 420px;
+    max-height: 72vh;
+    overflow-y: auto;
+    border-radius: 20px;
+    padding: 12px 10px;
+    gap: 2px;
+    animation: none;   /* custom below */
+    opacity: 0;
+    transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: calc(var(--z-index-dropdown) - 1);
+    display: flex !important; /* always rendered, visibility via opacity */
+    pointer-events: none;
+  }
+  .resumes-dropdown.open .resumes-menu {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  /* Taller resume list on mobile */
+  .resumes-list {
+    max-height: 200px;
+  }
+
+  /* Larger touch targets on rows */
+  .resume-item {
+    padding: 9px 10px;
+    font-size: 0.84rem;
+  }
+  .resume-item-btn {
+    min-width: 28px;
+    min-height: 28px;
+    font-size: 13px;
+  }
+
+  /* Slightly taller action rows for touch */
+  .resumes-actions button {
+    padding: 9px 10px;
+    font-size: 0.82rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -395,6 +598,7 @@ header {
     display: none !important;
   }
 }
+
 
 /* ══ PREMIUM TACTILE FEEDBACK & DEPTH ══ */
 
@@ -414,8 +618,7 @@ header {
 .font-opt:active, 
 .zoom-btn:active, 
 .fit-btn:active,
-.photo-circle:active,
-.form-section-card:active {
+.photo-circle:active {
   transform: scale(0.96) !important;
   transition: transform 0.08s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
@@ -446,28 +649,30 @@ header {
 
 
 .form-section-card {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.012) !important;
 }
-.form-section-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.035) !important;
-  border-color: color-mix(in srgb, var(--border) 70%, var(--accent)) !important;
-  transform: translateY(-1px);
-}
+/* Hover disabled for .form-section-card */
 
 .zoom-btn, .fit-btn {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
-.zoom-btn:hover, .fit-btn:hover {
-  transform: translateY(-1.5px) !important;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08) !important;
-  border-color: var(--accent) !important;
+
+@media (hover: hover) and (pointer: fine) {
+  .zoom-btn:hover, .fit-btn:hover {
+    transform: translateY(-1.5px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08) !important;
+    border-color: var(--accent) !important;
+  }
 }
 
 .custom-select-trigger {
-  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.22s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.22s cubic-bezier(0.4, 0, 0.2, 1), transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
-.custom-select-trigger:hover {
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+
+@media (hover: hover) and (pointer: fine) {
+  .custom-select-trigger:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+  }
 }

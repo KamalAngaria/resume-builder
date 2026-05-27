@@ -16,11 +16,12 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;600;700&family=Josefin+Sans:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600;700&family=Lato:wght@300;400;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600;700&family=Source+Code+Pro:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;400;600&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@300;400;700&family=Work+Sans:wght@300;400;500;600&family=Fira+Sans:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
 <link rel="stylesheet" href="css/style.css?v=2">
+<link rel="stylesheet" href="css/templates.css?v=3">
 </head>
 <body>
 <div id="ats-live-announcer" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;" role="status" aria-live="polite"></div>
 
-<header>
+<header role="banner">
   <div class="logo-group" style="display:flex;align-items:center;gap:12px">
     <div class="logo" ondblclick="launchDiagnostics()" style="cursor: pointer;" title="Double-click to run diagnostics">CV<span>.</span>craft <span style="font-size:.7rem;opacity:.5;font-family:'DM Sans';font-weight:400">PRO</span></div>
     
@@ -28,27 +29,30 @@
       <button class="resumes-trigger" onclick="toggleResumesMenu(event)" id="resumesTrigger">
         <i class="ti ti-file-text"></i>
         <span id="activeResumeName">My Resume</span>
-        <i class="ti ti-chevron-down" style="font-size:10px;opacity:.7"></i>
+        <i class="ti ti-chevron-down"></i>
       </button>
+      <!-- Backdrop for mobile sheet -->
+      <div class="resumes-backdrop" id="resumesBackdrop" onclick="toggleResumesMenu(event)"></div>
       <div class="resumes-menu" id="resumesMenu">
         <div class="menu-sec-label">Saved Resumes</div>
         <div class="resumes-list" id="resumesList"></div>
-        <div class="menu-sec-label" style="margin-top: 6px;">Actions</div>
+        <div class="menu-divider"></div>
+        <div class="menu-sec-label">Actions</div>
         <div class="resumes-actions">
           <button onclick="duplicateActiveResume(event)"><i class="ti ti-copy"></i> Duplicate Current Resume</button>
           <button onclick="createNewResume(event)"><i class="ti ti-plus"></i> New Blank Resume</button>
           <button onclick="document.getElementById('importProjectInput').click()"><i class="ti ti-upload"></i> Upload Existing Resume (.cvcraft / .json)</button>
           <input type="file" id="importProjectInput" accept=".cvcraft,.json" style="display:none" onchange="handleImportProject(event)">
           
-          <div style="height: 1px; background: rgba(255, 255, 255, 0.08); margin: 2px 0;"></div>
+          <div class="menu-divider"></div>
           
           <button onclick="generateShareLink(event)"><i class="ti ti-share"></i> Share Resume Link</button>
           <button onclick="exportProject(event)"><i class="ti ti-download"></i> Save Resume to File</button>
           
-          <div style="height: 1px; background: rgba(255, 255, 255, 0.08); margin: 2px 0;"></div>
+          <div class="menu-divider"></div>
           
           <button onclick="loadSampleData(event)" class="btn-sample"><i class="ti ti-sparkles"></i> Load Example Resume</button>
-          <button onclick="resetActiveResume(event)" style="color: #ff4d4d; border-color: rgba(255, 77, 77, 0.15); background: rgba(255, 77, 77, 0.04);"><i class="ti ti-rotate"></i> Reset Current Resume</button>
+          <button onclick="resetActiveResume(event)" class="btn-danger"><i class="ti ti-rotate"></i> Reset Current Resume</button>
         </div>
       </div>
     </div>
@@ -67,7 +71,7 @@
 
 <div class="app">
 <!-- ══ SIDEBAR ══ -->
-<aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar" role="complementary">
   <div class="step-bar" id="stepBar"></div>
   <div class="tabs" id="tabBar">
     <div class="tab active" data-tab="info"><i class="ti ti-user"></i>Info</div>
@@ -98,33 +102,33 @@
           <button class="btn btn-outline btn-sm" style="margin-left:4px;display:none" onclick="removePhoto()" id="removePhotoBtn" title="Remove Photo"><i class="ti ti-trash"></i></button>
         </div>
       </div>
-      <div class="range-row"><label class="lbl">Size</label><input type="range" id="photoSize" min="50" max="120" value="76" oninput="setPhotoSize(this.value)"><span class="range-val" id="photoSizeVal">76px</span></div>
-      <div class="range-row" style="margin-bottom:0"><label class="lbl">Border radius</label><input type="range" id="photoBR" min="0" max="50" value="50" oninput="setPhotoBR(this.value)"><span class="range-val" id="photoBRVal">50%</span></div>
+      <div class="range-row"><label class="lbl" for="photoSize">Size</label><input type="range" id="photoSize" min="50" max="120" value="76" oninput="setPhotoSize(this.value)"><span class="range-val" id="photoSizeVal">76px</span></div>
+      <div class="range-row" style="margin-bottom:0"><label class="lbl" for="photoBR">Border radius</label><input type="range" id="photoBR" min="0" max="50" value="50" oninput="setPhotoBR(this.value)"><span class="range-val" id="photoBRVal">50%</span></div>
     </div>
 
     <div class="form-section-card">
       <div class="sec-label"><i class="ti ti-id-badge"></i> Personal Details</div>
-      <div class="form-group"><label class="lbl">Full Name</label><input type="text" id="f_name" placeholder="Alex Johnson" oninput="render()" value=""></div>
+      <div class="form-group"><label class="lbl" for="f_name">Full Name</label><input type="text" id="f_name" placeholder="Alex Johnson" oninput="render()" value=""></div>
       <div class="form-group" style="position: relative;">
         <label class="lbl" for="f_title">Job Title</label>
         <input type="text" id="f_title" placeholder="Senior Product Designer" oninput="render()" value="" aria-autocomplete="list" aria-controls="role-suggestions" aria-expanded="false">
         <div id="role-suggestions" class="role-suggestions-dropdown" role="listbox" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #1c1c1e; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 1000; max-height: 200px; overflow-y: auto; margin-top: 4px;"></div>
       </div>
-      <div class="form-group" style="margin-bottom:0"><label class="lbl">Professional Summary</label><textarea id="f_summary" oninput="render()" placeholder="Brief professional summary..."></textarea></div>
+      <div class="form-group" style="margin-bottom:0"><label class="lbl" for="f_summary">Professional Summary</label><textarea id="f_summary" oninput="render()" placeholder="Brief professional summary..."></textarea></div>
       <div id="smart-role-panel" style="display: none; margin-top: 14px; background: rgba(0, 0, 0, 0.015); border: 1px dashed rgba(0, 0, 0, 0.12); padding: 12px; border-radius: 8px;"></div>
     </div>
 
     <div class="form-section-card">
       <div class="sec-label"><i class="ti ti-address-book"></i> Contact Info</div>
-      <div class="form-group"><label class="lbl"><i class="ti ti-mail" style="font-size:12px"></i> Email</label><input type="email" id="f_email" placeholder="alex@email.com" oninput="render()" value=""></div>
-      <div class="form-group"><label class="lbl"><i class="ti ti-phone" style="font-size:12px"></i> Phone</label><input type="tel" id="f_phone" placeholder="+1 234 567 890" oninput="render()" value=""></div>
+      <div class="form-group"><label class="lbl" for="f_email"><i class="ti ti-mail" style="font-size:12px"></i> Email</label><input type="email" id="f_email" placeholder="alex@email.com" oninput="render()" value=""></div>
+      <div class="form-group"><label class="lbl" for="f_phone"><i class="ti ti-phone" style="font-size:12px"></i> Phone</label><input type="tel" id="f_phone" placeholder="+1 234 567 890" oninput="render()" value=""></div>
       <div class="two-col">
-        <div class="form-group"><label class="lbl"><i class="ti ti-map-pin" style="font-size:12px"></i> City</label><input type="text" id="f_city" placeholder="New York" oninput="render()" value=""></div>
-        <div class="form-group"><label class="lbl">Country</label><input type="text" id="f_country" placeholder="USA" oninput="render()" value=""></div>
+        <div class="form-group"><label class="lbl" for="f_city"><i class="ti ti-map-pin" style="font-size:12px"></i> City</label><input type="text" id="f_city" placeholder="New York" oninput="render()" value=""></div>
+        <div class="form-group"><label class="lbl" for="f_country">Country</label><input type="text" id="f_country" placeholder="USA" oninput="render()" value=""></div>
       </div>
-      <div class="form-group"><label class="lbl"><i class="ti ti-brand-linkedin" style="font-size:12px"></i> LinkedIn</label><input type="url" id="f_linkedin" placeholder="linkedin.com/in/alex" oninput="render()" value=""></div>
-      <div class="form-group"><label class="lbl"><i class="ti ti-world" style="font-size:12px"></i> Website</label><input type="url" id="f_website" placeholder="alexjohnson.design" oninput="render()" value=""></div>
-      <div class="form-group" style="margin-bottom:0"><label class="lbl"><i class="ti ti-brand-github" style="font-size:12px"></i> GitHub</label><input type="url" id="f_github" placeholder="github.com/alex" oninput="render()" value=""></div>
+      <div class="form-group"><label class="lbl" for="f_linkedin"><i class="ti ti-brand-linkedin" style="font-size:12px"></i> LinkedIn</label><input type="url" id="f_linkedin" placeholder="linkedin.com/in/alex" oninput="render()" value=""></div>
+      <div class="form-group"><label class="lbl" for="f_website"><i class="ti ti-world" style="font-size:12px"></i> Website</label><input type="url" id="f_website" placeholder="alexjohnson.design" oninput="render()" value=""></div>
+      <div class="form-group" style="margin-bottom:0"><label class="lbl" for="f_github"><i class="ti ti-brand-github" style="font-size:12px"></i> GitHub</label><input type="url" id="f_github" placeholder="github.com/alex" oninput="render()" value=""></div>
     </div>
   </div>
 
@@ -168,7 +172,7 @@
       </div>
       <!-- Skill suggestions flex-box container -->
       <div id="skills-suggestions-wrapper" style="margin-top: 12px; display: none;">
-        <span style="font-size: 0.72rem; color: rgba(255,255,255,0.4); font-weight: bold; display: block; margin-bottom: 6px;">Recommended Skills</span>
+        <span style="font-size: 0.72rem; color: #535366; font-weight: 700; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Recommended Skills</span>
         <div id="skillsSuggestionsList" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
       </div>
     </div>
@@ -181,7 +185,7 @@
 
     <div class="form-section-card">
       <div class="sec-label"><i class="ti ti-heart"></i> Interests / Hobbies</div>
-      <div class="form-group" style="margin-bottom:0"><input type="text" id="f_interests" placeholder="Photography, Hiking, Open Source…" oninput="render()" value="UX Research, Photography, Hiking"></div>
+      <div class="form-group" style="margin-bottom:0"><label class="sr-only" for="f_interests">Interests / Hobbies</label><input type="text" id="f_interests" placeholder="Photography, Hiking, Open Source…" oninput="render()" value="UX Research, Photography, Hiking"></div>
     </div>
   </div>
 
@@ -196,6 +200,12 @@
 
   <!-- DESIGN TAB -->
   <div class="tab-body" id="tb-design">
+    <div class="form-section-card">
+      <div class="sec-label"><i class="ti ti-brush"></i> Template Presets</div>
+      <div style="font-size:.74rem;color:var(--muted);margin-bottom:12px">Select a template preset. This updates layout, font, accent, and spacing while keeping your content intact.</div>
+      <div class="template-presets-grid" id="templatePresetsGrid"></div>
+    </div>
+
     <div class="form-section-card">
       <div class="sec-label"><i class="ti ti-color-swatch"></i> Accent Color</div>
       <div class="color-grid" id="colorGrid"></div>
@@ -217,13 +227,13 @@
 
     <div class="form-section-card">
       <div class="sec-label"><i class="ti ti-text-size"></i> Typography</div>
-      <div class="range-row"><label class="lbl">Base size</label><input type="range" min="80" max="115" value="100" step="5" id="fontSizeR" oninput="setFontSize(this.value)"><span class="range-val" id="fontSizeV">100%</span></div>
-      <div class="range-row" style="margin-bottom:0"><label class="lbl">Line height</label><input type="range" min="130" max="200" value="165" step="5" id="lineHR" oninput="setLineH(this.value)"><span class="range-val" id="lineHV">1.65</span></div>
+      <div class="range-row"><label class="lbl" for="fontSizeR">Base size</label><input type="range" min="80" max="115" value="100" step="5" id="fontSizeR" oninput="setFontSize(this.value)"><span class="range-val" id="fontSizeV">100%</span></div>
+      <div class="range-row" style="margin-bottom:0"><label class="lbl" for="lineHR">Line height</label><input type="range" min="130" max="200" value="165" step="5" id="lineHR" oninput="setLineH(this.value)"><span class="range-val" id="lineHV">1.65</span></div>
     </div>
 
     <div class="form-section-card">
       <div class="sec-label"><i class="ti ti-adjustments-horizontal"></i> Spacing</div>
-      <div class="range-row" style="margin-bottom:0"><label class="lbl">Section gap</label><input type="range" min="8" max="36" value="20" step="2" id="secGapR" oninput="setSecGap(this.value)"><span class="range-val" id="secGapV">20px</span></div>
+      <div class="range-row" style="margin-bottom:0"><label class="lbl" for="secGapR">Section gap</label><input type="range" min="8" max="36" value="20" step="2" id="secGapR" oninput="setSecGap(this.value)"><span class="range-val" id="secGapV">20px</span></div>
     </div>
   </div>
 
@@ -265,7 +275,7 @@
         <textarea id="jdInputText" placeholder="Paste the job description here to analyze missing keywords..." style="height: 120px; font-family: inherit; font-size: 0.82rem; line-height: 1.5; resize: vertical;" oninput="triggerJdAnalysis()"></textarea>
       </div>
       <div id="jdKeywordsPanel" style="display: flex; flex-direction: column; gap: 8px; background: var(--surface2); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
-        <div style="text-align:center;padding:8px;opacity:0.5;font-size:0.8rem">Paste a Job Description above to scan for missing keywords.</div>
+        <div style="text-align:center;padding:8px;color:#8896aa;font-size:0.8rem">Paste a Job Description above to scan for missing keywords.</div>
       </div>
     </div>
 
@@ -305,7 +315,7 @@
     </div>
 
     <!-- Privacy Guard Footer -->
-    <div style="text-align: center; font-size: 0.68rem; color: var(--muted); opacity: 0.8; padding: 4px 0 10px 0; border-top: 1px dashed var(--border); margin-top: 12px;">
+    <div style="text-align: center; font-size: 0.68rem; color: #8896aa; padding: 4px 0 10px 0; border-top: 1px dashed var(--border); margin-top: 12px;">
       <i class="ti ti-shield-check" style="color: #22c55e; vertical-align: middle; font-size: 12px; margin-right: 2px;"></i>
       Privacy-First: Analysis runs 100% locally. No resume data is sent to external servers.
     </div>
@@ -320,7 +330,7 @@
 </aside>
 
 <!-- ══ PREVIEW PANEL ══ -->
-<main class="preview-panel">
+<main class="preview-panel" role="main">
   <div class="preview-toolbar">
     <span class="pt-label"><i class="ti ti-eye" style="font-size:13px;margin-right:4px"></i>Live Preview</span>
     <div class="zoom-group">
@@ -344,10 +354,10 @@
 <div class="toast" id="toast"></div>
 
 <!-- Diagnostics Modal -->
-<div id="diagnosticsModal" class="modal-overlay" style="display: none; z-index: 99999;">
+<div id="diagnosticsModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="diagnosticsTitle">
   <div class="modal-card" style="max-width: 520px; width: 95%; background: #121214; border: 1.5px solid rgba(255,255,255,0.08); border-radius: 14px; font-family: 'Space Mono', monospace; padding: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.6); overflow: hidden; display: flex; flex-direction: column; gap: 0;">
     <div style="background: #1c1c1f; padding: 14px 20px; border-bottom: 1.5px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center;">
-      <span style="color: #fff; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="ti ti-terminal" style="color: var(--accent); font-size: 16px;"></i> Automated QA Test Suite</span>
+      <span id="diagnosticsTitle" style="color: #fff; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="ti ti-terminal" style="color: var(--accent); font-size: 16px;"></i> Automated QA Test Suite</span>
       <button onclick="closeDiagnostics()" style="background: transparent; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 1.1rem; padding: 2px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'"><i class="ti ti-x"></i></button>
     </div>
     <div style="padding: 16px 20px; flex: 1;">
@@ -365,10 +375,10 @@
 </div>
 
 <!-- Crop Modal -->
-<div id="cropModal" class="modal-overlay" style="display: none;">
+<div id="cropModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="cropTitle">
   <div class="modal-card">
     <div class="modal-header">
-      <h3 style="font-family:'DM Serif Display',serif; font-size:1.2rem; color:var(--text); margin-bottom: 4px;">Crop Profile Photo</h3>
+      <h3 id="cropTitle" style="font-family:'DM Serif Display',serif; font-size:1.2rem; color:var(--text); margin-bottom: 4px;">Crop Profile Photo</h3>
     </div>
     <div class="modal-body">
       <div class="crop-container">
@@ -383,7 +393,7 @@
 </div>
 
 <!-- Photo Preview Modal -->
-<div id="previewPhotoModal" class="modal-overlay" style="display: none;" onclick="closePhotoPreview()">
+<div id="previewPhotoModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-label="Profile Photo Preview" onclick="closePhotoPreview()">
   <div class="modal-card" style="background: transparent; border: none; box-shadow: none; max-width: 400px; padding: 0;" onclick="event.stopPropagation()">
     <div class="modal-body" style="padding: 0; display: flex; justify-content: center; align-items: center;">
       <img id="previewPhotoImage" src="" alt="Profile Photo Preview" style="width: 100%; height: auto; box-shadow: var(--sh2); transition: all 0.3s ease; border: 3px solid #fff;">
@@ -392,10 +402,10 @@
 </div>
 
 <!-- Color Picker Modal -->
-<div id="colorPickerModal" class="modal-overlay" style="display: none;" onclick="closeColorPickerModal()">
+<div id="colorPickerModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="colorPickerTitle" onclick="closeColorPickerModal()">
   <div class="modal-card" style="max-width: 320px;" onclick="event.stopPropagation()">
     <div class="modal-header">
-      <h3 style="font-family:'DM Serif Display',serif; font-size:1.2rem; color:var(--text); margin-bottom: 4px;">Custom Accent Color</h3>
+      <h3 id="colorPickerTitle" style="font-family:'DM Serif Display',serif; font-size:1.2rem; color:var(--text); margin-bottom: 4px;">Custom Accent Color</h3>
     </div>
     <div class="modal-body" style="padding-top: 10px;">
       <!-- Saturation/Lightness Pad -->
@@ -414,7 +424,7 @@
       <div style="display: flex; align-items: center; gap: 12px; margin-top: 16px;">
         <div id="pickerColorPreview" style="width: 44px; height: 44px; border-radius: 10px; border: 1.5px solid var(--border); box-shadow: inset 0 1px 3px rgba(0,0,0,0.08); background-color: var(--accent); flex-shrink: 0;"></div>
         <div style="flex: 1;">
-          <label class="lbl" style="margin-bottom: 4px;">Hex Code</label>
+          <label class="lbl" for="pickerHexValue" style="margin-bottom: 4px;">Hex Code</label>
           <input type="text" id="pickerHexValue" placeholder="#E94560" style="text-transform: uppercase; padding: 8px 12px;" oninput="handlePickerHexInput(this.value)">
         </div>
       </div>
@@ -427,7 +437,7 @@
 </div>
 
 <!-- Custom Confirm Modal -->
-<div id="confirmModal" class="modal-overlay" style="display: none;" onclick="document.getElementById('confirmCancelBtn').click()">
+<div id="confirmModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" onclick="document.getElementById('confirmCancelBtn').click()">
   <div class="modal-card" style="max-width: 380px; width: 90%; background: rgba(28, 28, 28, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; overflow: hidden; padding: 0; gap: 0;" onclick="event.stopPropagation()">
     <div style="padding: 24px 24px 18px; display: flex; flex-direction: column; gap: 14px;">
       <div style="display: flex; align-items: center; gap: 12px;">
@@ -448,17 +458,17 @@
 </div>
 
 <!-- Custom Download Modal -->
-<div id="downloadModal" class="modal-overlay" style="display: none;" onclick="closeDownloadModal()">
+<div id="downloadModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="downloadTitle" onclick="closeDownloadModal()">
   <div class="modal-card" style="max-width: 380px; width: 90%; background: rgba(28, 28, 28, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; overflow: hidden; padding: 0; gap: 0;" onclick="event.stopPropagation()">
     <div style="padding: 24px 24px 18px; display: flex; flex-direction: column; gap: 14px;">
       <div style="display: flex; align-items: center; gap: 12px;">
         <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(233, 69, 96, 0.12); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;">
           <i class="ti ti-download" style="font-size: 20px;"></i>
         </div>
-        <h3 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: #fff; margin: 0;">Download PDF</h3>
+        <h3 id="downloadTitle" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: #fff; margin: 0;">Download PDF</h3>
       </div>
       <div>
-        <label class="lbl" style="color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 6px; display: block;">File Name</label>
+        <label class="lbl" for="pdfFileNameInput" style="color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 6px; display: block;">File Name</label>
         <input type="text" id="pdfFileNameInput" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #fff; outline: none; font-family: inherit; font-size: 0.9rem;" placeholder="my-resume">
       </div>
     </div>
@@ -473,6 +483,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+<script src="js/templates.js?v=3"></script>
+<script src="js/template-engine.js?v=3"></script>
 <script src="js/state.js?v=3"></script>
 <script src="js/helpers.js?v=3"></script>
 <script src="js/validation.js?v=3"></script>

@@ -357,7 +357,7 @@ function initLiveDemo() {
   }
 }
 
-/* --- Section 4: Template Showcase Tab Selector & 3D Tilt --- */
+/* --- Section 4: Template Showcase Tab Selector, 3D Tilt, & Customizer Redirection --- */
 function initTemplates() {
   const buttons = document.querySelectorAll('.template-selector-btn');
   const cards = document.querySelectorAll('.tmpl-mockup-card');
@@ -423,6 +423,32 @@ function initTemplates() {
       if (doc) {
         doc.style.background = '#ffffff';
       }
+    });
+  }
+
+  // Handle click / navigation logic
+  function selectTemplate(templateId) {
+    localStorage.setItem('selected_template_id', templateId);
+    window.location.href = 'resume.html';
+  }
+
+  // Handle click on active template cards directly
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const templateId = card.getAttribute('data-template');
+      if (templateId) {
+        selectTemplate(templateId);
+      }
+    });
+  });
+
+  // Handle click on CTA button below selector tabs
+  const ctaBtn = document.getElementById('btnUseSelectedTemplate');
+  if (ctaBtn) {
+    ctaBtn.addEventListener('click', () => {
+      const activeBtn = document.querySelector('.template-selector-btn.active');
+      const templateId = activeBtn ? activeBtn.getAttribute('data-template') : 'executive';
+      selectTemplate(templateId);
     });
   }
 }

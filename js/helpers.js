@@ -2,34 +2,44 @@
 // ZOOM
 // ══════════════════════════════════════════════════════════
 let zoomLevel = 75;
-function zoom(delta){zoomSet(Math.max(30,Math.min(150,zoomLevel+delta)));}
+function zoom(delta){zoomSet(Math.max(MIN_ZOOM,Math.min(MAX_ZOOM,zoomLevel+delta)));}
 function zoomSet(v){
   zoomLevel=v;
   document.getElementById('zoomLabel').textContent=v+'%';
   document.getElementById('cvWrap').style.transform=`scale(${v/100})`;
   const doc = document.getElementById('cvDoc');
-  const height = doc ? doc.offsetHeight : 1123;
+  const height = doc ? doc.offsetHeight : A4_HEIGHT_PX;
   document.getElementById('cvWrap').style.marginBottom=`${(v/100-1)*height}px`;
 }
 function zoomFit(){
   const panel=document.getElementById('previewScroll');
   if(!panel)return;
   const pw=panel.clientWidth-40;
-  const fit=Math.floor((pw/794)*100);
-  zoomSet(Math.max(30,Math.min(120,fit)));
+  const fit=Math.floor((pw/A4_WIDTH_PX)*100);
+  zoomSet(Math.max(MIN_ZOOM,Math.min(MAX_FIT_ZOOM,fit)));
 }
 
 // ══════════════════════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════════════════════
+function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
 function gv(id){return(document.getElementById(id)||{}).value||'';}
 function fmtDesc(desc){
   if(!desc)return'';
   return desc.split('\n').map(l=>{
     const t=l.trim();if(!t)return'';
-    return(t.startsWith('•')||t.startsWith('-'))
-      ?`<div style="display:flex;gap:6px;margin-bottom:3px"><span style="flex-shrink:0;color:var(--cv-a)">▸</span><span>${t.replace(/^[•\-]\s*/,'')}</span></div>`
-      :`<div style="margin-bottom:2px">${t}</div>`;
+    if (t.startsWith('•') || t.startsWith('-')) {
+      const cleaned = t.replace(/^[•\-]\s*/,'');
+      return `<div class="cv-desc-bullet"><span class="cv-desc-bullet-marker">▸</span><span>${esc(cleaned)}</span></div>`;
+    }
+    return `<div class="cv-desc-text">${esc(t)}</div>`;
   }).join('');
 }
 function linkify(text, type) {
@@ -39,16 +49,58 @@ function linkify(text, type) {
   else if (type === 'phone') href = `tel:${text}`;
   else if (type === 'url') href = text.match(/^https?:\/\//i) ? text : `https://${text}`;
   
-  if (href) {
-    return `<a href="${href}" target="_blank" style="color:inherit;text-decoration:none;transition:opacity 0.15s;" onmouseover="this.style.opacity=0.7" onmouseout="this.style.opacity=1">${text}</a>`;
+  if (href && href.trim().toLowerCase().startsWith('javascript:')) {
+    href = '#';
   }
-  return text;
+
+  if (href) {
+    return `<a href="${esc(href)}" target="_blank" class="cv-link">${esc(text)}</a>`;
+  }
+  return esc(text);
 }
 
 function contactItem(icon, text, type) {
   if (!text) return '';
   const content = linkify(text, type);
-  return `<span style="display:inline-flex;align-items:center;gap:4px"><i class="ti ${icon}" style="font-size:12px;opacity:.8"></i>${content}</span>`;
+  return `<span class="cv-contact-item"><i class="ti ${esc(icon)} cv-contact-icon"></i>${content}</span>`;
+}
+
+function renderContacts(layoutType) {
+  const email = gv('f_email'), phone = gv('f_phone'), city = gv('f_city'), country = gv('f_country');
+  const linkedin = gv('f_linkedin'), website = gv('f_website'), github = gv('f_github');
+  const loc = [city, country].filter(Boolean).join(', ');
+
+  const items = [
+    { val: email, icon: 'ti-mail', type: 'email' },
+    { val: phone, icon: 'ti-phone', type: 'phone' },
+    { val: loc, icon: 'ti-map-pin', type: 'loc' },
+    { val: linkedin, icon: 'ti-brand-linkedin', type: 'url' },
+    { val: website, icon: 'ti-world', type: 'url' },
+    { val: github, icon: 'ti-brand-github', type: 'url' }
+  ].filter(item => item.val);
+
+  if (layoutType === 'sidebar') {
+    return items.map(item => {
+      const content = linkify(item.val, item.type);
+      return `<div class="layout-sidebar-contact-item"><i class="ti ${esc(item.icon)}"></i><span>${content}</span></div>`;
+    }).join('');
+  }
+
+  const renderedItems = items.map(item => contactItem(item.icon, item.val, item.type));
+
+  if (layoutType === 'classic') {
+    return renderedItems.join('<span class="cv-contact-separator">|</span>');
+  }
+  if (layoutType === 'minimal') {
+    return renderedItems.join('<span class="cv-contact-bullet">·</span>');
+  }
+  if (layoutType === 'elegant') {
+    return renderedItems.join('&ensp;');
+  }
+  if (layoutType === 'modern-split') {
+    return renderedItems.join('');
+  }
+  return renderedItems.join(' ');
 }
 
 function hsvToHex(h, s, v) {
@@ -88,3 +140,74 @@ function hexToHsv(hex) {
 }
 
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+let activeModalElements = [];
+let modalFocusBackups = new Map();
+
+function showModal(modal) {
+  if (!modal) return;
+  modalFocusBackups.set(modal, document.activeElement);
+  modal.style.display = 'flex';
+  document.body.classList.add('modal-open');
+  activeModalElements.push(modal);
+
+  // Set focus on first focusable input or button inside modal (skip backdrop if focused)
+  const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  if (focusable.length > 0) {
+    const interactive = Array.from(focusable).find(el => !el.classList.contains('modal-overlay'));
+    if (interactive) interactive.focus();
+    else focusable[0].focus();
+  }
+}
+
+function hideModal(modal) {
+  if (!modal) return;
+  modal.style.display = 'none';
+  activeModalElements = activeModalElements.filter(m => m !== modal);
+  if (activeModalElements.length === 0) {
+    document.body.classList.remove('modal-open');
+  }
+  const backup = modalFocusBackups.get(modal);
+  if (backup) {
+    backup.focus();
+    modalFocusBackups.delete(modal);
+  }
+}
+
+// Global modal keyboard event listener (Escape to close, Tab to trap focus)
+window.addEventListener('keydown', (e) => {
+  const activeModal = activeModalElements[activeModalElements.length - 1];
+  if (!activeModal) return;
+
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    const cancelBtn = activeModal.querySelector('.btn-outline, button[onclick*="close"], button[onclick*="Cancel"]');
+    if (cancelBtn) cancelBtn.click();
+    else hideModal(activeModal);
+    return;
+  }
+
+  if (e.key === 'Tab') {
+    const focusable = Array.from(activeModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+      .filter(el => {
+        const style = window.getComputedStyle(el);
+        return el.tabIndex !== -1 && !el.disabled && style.display !== 'none' && style.visibility !== 'hidden';
+      });
+    if (focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        last.focus();
+        e.preventDefault();
+      }
+    } else {
+      if (document.activeElement === last) {
+        first.focus();
+        e.preventDefault();
+      }
+    }
+  }
+});
