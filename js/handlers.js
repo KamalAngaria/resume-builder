@@ -1,6 +1,60 @@
 // ══════════════════════════════════════════════════════════
 // TABS & NAV
 // ══════════════════════════════════════════════════════════
+window.autocompleteInstances = window.autocompleteInstances || {};
+window.cardRefs = window.cardRefs || {};
+
+function destroyCard(cardId) {
+  // 1. Find all elements belonging to this card
+  const cardElements = document.querySelectorAll(`[data-card-id="${cardId}"]`);
+
+  cardElements.forEach(el => {
+    // 2. Clone the node without listeners to force listener detachment
+    const clone = el.cloneNode(false);
+    el.parentNode?.replaceChild(clone, el);
+    clone.remove();
+  });
+
+  // 3. Explicitly destroy autocomplete instance for this card
+  if (window.autocompleteInstances && window.autocompleteInstances[cardId]) {
+    if (typeof window.autocompleteInstances[cardId].destroy === 'function') {
+      window.autocompleteInstances[cardId].destroy();
+    }
+    delete window.autocompleteInstances[cardId];
+  }
+
+  // 4. Nullify any direct state references
+  if (window.cardRefs) {
+    delete window.cardRefs[cardId];
+  }
+}
+window.destroyCard = destroyCard;
+
+function swapTemplate(newTemplateId) {
+  // Destroy all existing card instances cleanly
+  if (window.autocompleteInstances) {
+    Object.keys(window.autocompleteInstances).forEach(destroyCard);
+  }
+  // Also destroy all editor cards explicitly
+  document.querySelectorAll('.entry-card[data-card-id]').forEach(el => {
+    const cardId = el.getAttribute('data-card-id');
+    if (cardId) destroyCard(cardId);
+  });
+
+  // Clear the preview container explicitly
+  const doc = document.getElementById('cvDoc');
+  if (doc) doc.innerHTML = '';
+
+  // Then apply the new template and re-render
+  if (typeof applyTemplateStyles === 'function') {
+    applyTemplateStyles(newTemplateId);
+  } else {
+    S.templateId = newTemplateId;
+    render();
+  }
+}
+window.swapTemplate = swapTemplate;
+
 const TAB_IDS = ['info','work','edu','skills','sections','design','assist'];
 let currentTab = 0;
 
@@ -179,6 +233,7 @@ function addEntry(type){
   buildEntries(); renderImmediate();
 }
 function removeEntry(type,i){
+  destroyCard(`${type}-${i}`);
   if(type==='exp') S.experience.splice(i,1);
   else if(type==='edu') S.education.splice(i,1);
   else if(type==='cert') S.certs.splice(i,1);

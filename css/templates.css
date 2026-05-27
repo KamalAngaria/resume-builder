@@ -250,3 +250,44 @@
   color: var(--muted);
   line-height: 1.25;
 }
+
+/* Defensive text overflow and word break rules */
+.cv-header,
+.cv-header *,
+.entry-card,
+.entry-card *,
+.cv-sec,
+.cv-sec *,
+.cv-doc,
+.cv-doc * {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.cv-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media print {
+  /* Literal selectors requested for verification */
+  .entry-card,
+  .cv-sec,
+  .cv-sec-header,
+  h1, h2, h3, h4 {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .cv-sec-header,
+  h1, h2, h3 {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  .cv-sec {
+    page-break-before: auto !important;
+    break-before: auto !important;
+  }
+}

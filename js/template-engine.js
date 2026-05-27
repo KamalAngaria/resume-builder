@@ -160,7 +160,7 @@ function buildTemplatePresets() {
   container.innerHTML = Object.values(TEMPLATE_REGISTRY).map(t => {
     const isActive = S.templateId === t.id;
     return `
-      <div class="template-preset-opt ${isActive ? 'active' : ''}" onclick="applyTemplateStyles('${t.id}')">
+      <div class="template-preset-opt ${isActive ? 'active' : ''}" onclick="swapTemplate('${t.id}')">
         <div class="preset-name">${t.label}</div>
         <div class="preset-desc">${t.targetAudience}</div>
       </div>

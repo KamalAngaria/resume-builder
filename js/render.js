@@ -276,7 +276,243 @@ function renderImmediate() {
   }
 }
 
-const render = debounce(renderImmediate, 150);
+function getSectionWrapByIcon(iconClass) {
+  const icon = document.querySelector(`.cv-section-wrap i.${iconClass}`);
+  return icon ? icon.closest('.cv-section-wrap') : null;
+}
+
+function patchPreview(elementId, value) {
+  // 1. Personal details
+  if (elementId === 'f_name') {
+    document.querySelectorAll('.cv-name').forEach(el => {
+      el.textContent = value || 'Your Name';
+    });
+  } else if (elementId === 'f_title') {
+    document.querySelectorAll('.cv-title').forEach(el => {
+      el.textContent = value;
+      el.style.display = value ? '' : 'none';
+    });
+  } else if (elementId === 'f_summary') {
+    document.querySelectorAll('.cv-sum').forEach(el => {
+      el.textContent = value;
+      const wrap = el.closest('.cv-section-wrap');
+      if (wrap) wrap.style.display = value ? '' : 'none';
+    });
+  }
+  // 2. Contacts
+  else if (['f_email', 'f_phone', 'f_city', 'f_country', 'f_linkedin', 'f_website', 'f_github'].includes(elementId)) {
+    const layouts = ['classic', 'minimal', 'elegant', 'modern-split'];
+    layouts.forEach(l => {
+      document.querySelectorAll(`.layout-${l} .cv-contacts-line`).forEach(el => {
+        el.innerHTML = renderContacts(l);
+      });
+    });
+    // Sidebar layouts contacts
+    document.querySelectorAll('.layout-sidebar-contacts').forEach(el => {
+      el.innerHTML = renderContacts('sidebar');
+    });
+  }
+  // 3. Interests
+  else if (elementId === 'f_interests') {
+    if (S.layout === 'sidebar-l') {
+      const el = document.querySelector('.layout-sidebar-sidebar .layout-sidebar-interests');
+      if (el) el.textContent = value;
+    } else {
+      const sec = getSectionWrapByIcon('ti-heart');
+      const el = sec ? sec.querySelector('.cv-interests-text') : null;
+      if (el) el.textContent = value;
+    }
+  }
+}
+
+function patchEntryPreview(type, field, index, value) {
+  let sec = null;
+  const isSidebarCert = (type === 'cert' && S.layout === 'sidebar-l');
+
+  if (type === 'lang') {
+    if (S.layout === 'sidebar-l') {
+      sec = document.querySelector('.layout-sidebar-sidebar');
+    } else {
+      sec = getSectionWrapByIcon('ti-language');
+    }
+  } else if (isSidebarCert) {
+    sec = document.querySelector('.layout-sidebar-sidebar');
+  } else {
+    let iconClass = '';
+    if (type === 'exp') iconClass = 'ti-briefcase';
+    else if (type === 'edu') iconClass = 'ti-school';
+    else if (type === 'cert') iconClass = 'ti-certificate';
+    else if (type === 'award') iconClass = 'ti-trophy';
+    sec = getSectionWrapByIcon(iconClass);
+  }
+
+  if (!sec) return;
+
+  if (type === 'lang') {
+    if (S.layout === 'sidebar-l') {
+      const items = sec.querySelectorAll('.layout-sidebar-lang-item');
+      const item = items[index];
+      if (item) {
+        const langState = S.langs[index];
+        if (langState) {
+          const nameSpan = item.querySelector('.layout-sidebar-lang-header span:first-child');
+          const levelSpan = item.querySelector('.layout-sidebar-lang-level');
+          const fill = item.querySelector('.layout-sidebar-lang-fill');
+          if (nameSpan) nameSpan.textContent = langState.lang;
+          if (levelSpan) levelSpan.textContent = langState.level;
+          if (fill) {
+            const pct = { Native: 100, Fluent: 85, Advanced: 70, Conversational: 55, Intermediate: 45, Beginner: 30 }[langState.level] || 50;
+            fill.style.width = `${pct}%`;
+          }
+        }
+      }
+    } else {
+      const chips = sec.querySelectorAll('.cv-sk-chip');
+      const chip = chips[index];
+      if (chip) {
+        const langState = S.langs[index];
+        if (langState) {
+          chip.innerHTML = esc(langState.lang) + `<span class="cv-lang-level"> · ${esc(langState.level)}</span>`;
+        }
+      }
+    }
+    return;
+  }
+
+  if (isSidebarCert) {
+    const items = sec.querySelectorAll('.layout-sidebar-cert-item');
+    const item = items[index];
+    if (item) {
+      const certState = S.certs[index];
+      if (certState) {
+        const nameEl = item.querySelector('.layout-sidebar-cert-name');
+        const issuerEl = item.querySelector('.layout-sidebar-cert-issuer');
+        if (nameEl) nameEl.textContent = certState.name;
+        if (issuerEl) {
+          issuerEl.textContent = [certState.issuer, certState.year].filter(Boolean).join(' · ');
+        }
+      }
+    }
+    return;
+  }
+
+  const entries = sec.querySelectorAll('.cv-entry');
+  const entry = entries[index];
+  if (!entry) return;
+
+  if (field === 'role' || field === 'degree' || field === 'name' || field === 'title') {
+    const el = entry.querySelector('.cv-et');
+    if (el) el.textContent = value || (field === 'role' ? 'Role' : field === 'degree' ? 'Degree' : '');
+  } else if (field === 'company' || field === 'school' || field === 'issuer' || field === 'org') {
+    const el = entry.querySelector('.cv-es');
+    if (el) el.textContent = value;
+  } else if (field === 'start' || field === 'end' || field === 'year') {
+    const el = entry.querySelector('.cv-ed');
+    if (el) {
+      if (field === 'year') {
+        el.textContent = value;
+      } else {
+        const item = type === 'exp' ? S.experience[index] : S.education[index];
+        if (item) {
+          el.textContent = [item.start, item.end].filter(Boolean).join(' – ');
+        }
+      }
+    }
+  } else if (field === 'desc') {
+    let el = entry.querySelector('.cv-edesc');
+    if (!el && value) {
+      el = document.createElement('div');
+      el.className = 'cv-edesc';
+      entry.appendChild(el);
+    }
+    if (el) {
+      el.innerHTML = fmtDesc(value);
+      if (!value) el.remove();
+    }
+  }
+}
+
+function triggerIntelAnalysis() {
+  if (window.ResumeIntel && window.ResumeIntel.Core) {
+    if (!window.ResumeIntel.Core.debouncedAnalyze) {
+      window.ResumeIntel.Core.debouncedAnalyze = window.ResumeIntel.Utils.debounce(() => {
+        window.ResumeIntel.Core.analyzeResume();
+      }, 400);
+    }
+    window.ResumeIntel.Core.debouncedAnalyze();
+  }
+}
+
+const debouncedRenderImmediate = debounce(renderImmediate, 150);
+
+function render() {
+  const activeEl = document.activeElement;
+  if (activeEl && activeEl.matches('input, textarea')) {
+    // 1. Personal Details & Interests
+    const id = activeEl.id;
+    if (id && id.startsWith('f_')) {
+      const val = activeEl.value;
+      S[id] = val;
+      patchPreview(id, val);
+      debouncedSaveActiveResume();
+      triggerIntelAnalysis();
+      return;
+    }
+    
+    // 2. Dynamic Entry Cards
+    const card = activeEl.closest('.entry-card');
+    if (card && card.parentElement) {
+      const parentId = card.parentElement.id;
+      const cards = Array.from(card.parentElement.querySelectorAll('.entry-card'));
+      const index = cards.indexOf(card);
+      
+      let type = '';
+      if (parentId === 'exp-list') type = 'exp';
+      else if (parentId === 'edu-list') type = 'edu';
+      else if (parentId === 'cert-list') type = 'cert';
+      else if (parentId === 'award-list') type = 'award';
+      else if (parentId === 'lang-list') type = 'lang';
+      
+      if (type && index !== -1) {
+        const placeholder = (activeEl.placeholder || '').toLowerCase();
+        let field = '';
+        if (type === 'exp') {
+          if (placeholder.includes('company')) field = 'company';
+          else if (placeholder.includes('job title')) field = 'role';
+          else if (placeholder.includes('start')) field = 'start';
+          else if (placeholder.includes('end')) field = 'end';
+          else if (placeholder.includes('bullet points')) field = 'desc';
+        } else if (type === 'edu') {
+          if (placeholder.includes('school')) field = 'school';
+          else if (placeholder.includes('degree')) field = 'degree';
+          else if (placeholder.includes('start')) field = 'start';
+          else if (placeholder.includes('end')) field = 'end';
+          else if (placeholder.includes('description')) field = 'desc';
+        } else if (type === 'cert') {
+          if (placeholder.includes('name')) field = 'name';
+          else if (placeholder.includes('issuer')) field = 'issuer';
+          else if (placeholder.includes('year')) field = 'year';
+        } else if (type === 'award') {
+          if (placeholder.includes('award')) field = 'title';
+          else if (placeholder.includes('organization')) field = 'org';
+          else if (placeholder.includes('year')) field = 'year';
+        } else if (type === 'lang') {
+          if (placeholder.includes('language')) field = 'lang';
+        }
+        
+        if (field) {
+          patchEntryPreview(type, field, index, activeEl.value);
+          debouncedSaveActiveResume();
+          triggerIntelAnalysis();
+          return;
+        }
+      }
+    }
+  }
+  
+  // Fallback to full render
+  debouncedRenderImmediate();
+}
 
 // ══════════════════════════════════════════════════════════
 // MOBILE & DOWNLOAD
@@ -326,65 +562,21 @@ async function generateAndSavePDF() {
   if (!input) return;
 
   const fileName = input.value.trim() || 'My_Resume';
-  const element = document.getElementById('cvDoc');
-  if (!element) return;
 
-  const downloadBtn = document.getElementById('downloadConfirmBtn');
-  const origContent = downloadBtn.innerHTML;
-  downloadBtn.disabled = true;
-  downloadBtn.innerHTML = '<i class="ti ti-loader" style="animation: spin 1s linear infinite; display: inline-block;"></i> Generating...';
+  // Close the download modal to ensure it is hidden from printing
+  closeDownloadModal();
 
-  // Add styles for spin animation if not present
-  if (!document.getElementById('spinStyle')) {
-    const style = document.createElement('style');
-    style.id = 'spinStyle';
-    style.textContent = '@keyframes spin { 100% { transform: rotate(360deg); } }';
-    document.head.appendChild(style);
-  }
+  // Temporarily set document title so the native save dialog suggests the selected file name
+  const originalTitle = document.title;
+  document.title = fileName;
 
-  // html2pdf options
-  const opt = {
-    margin: 0,
-    filename: fileName + '.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: {
-      scale: 2.5, // high print quality
-      useCORS: true,
-      logging: false
-    },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
+  // Launch browser native print dialog
+  window.print();
 
-  try {
-    if (window.showSaveFilePicker) {
-      const pdfBlob = await html2pdf().set(opt).from(element).output('blob');
-
-      const handle = await window.showSaveFilePicker({
-        suggestedName: fileName + '.pdf',
-        types: [{
-          description: 'PDF Document',
-          accept: { 'application/pdf': ['.pdf'] }
-        }]
-      });
-
-      const writable = await handle.createWritable();
-      await writable.write(pdfBlob);
-      await writable.close();
-      showToast('PDF Saved Successfully!');
-    } else {
-      await html2pdf().set(opt).from(element).save();
-      showToast('PDF Download Started!');
-    }
-  } catch (err) {
-    console.error(err);
-    if (err.name !== 'AbortError') {
-      showToast('Error generating PDF.');
-    }
-  } finally {
-    downloadBtn.disabled = false;
-    downloadBtn.innerHTML = origContent;
-    closeDownloadModal();
-  }
+  // Restore the original page title after print trigger
+  setTimeout(() => {
+    document.title = originalTitle;
+  }, 1000);
 }
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -636,6 +828,11 @@ function switchResume(id) {
 
   const active = resumes.find(r => r.id === activeResumeId);
   if (active) {
+    document.querySelectorAll('.entry-card[data-card-id]').forEach(el => {
+      const cardId = el.getAttribute('data-card-id');
+      if (cardId) destroyCard(cardId);
+    });
+
     loadState(active.data);
     loadResumeIntoDOM();
     renderImmediate();
@@ -648,6 +845,11 @@ function switchResume(id) {
 
 function createNewResume(e) {
   if (e) e.stopPropagation();
+
+  document.querySelectorAll('.entry-card[data-card-id]').forEach(el => {
+    const cardId = el.getAttribute('data-card-id');
+    if (cardId) destroyCard(cardId);
+  });
 
   const newResume = {
     id: 'res-' + Date.now(),
@@ -744,6 +946,11 @@ async function loadSampleData(e) {
     "Are you sure you want to load the sample template data? This will overwrite current contents of this resume."
   );
   if (!confirmed) return;
+
+  document.querySelectorAll('.entry-card[data-card-id]').forEach(el => {
+    const cardId = el.getAttribute('data-card-id');
+    if (cardId) destroyCard(cardId);
+  });
 
   loadState(deepClone(DEFAULT_SAMPLE_RESUME));
   loadResumeIntoDOM();
@@ -1093,6 +1300,11 @@ async function resetActiveResume(e) {
 
   const active = resumes.find(r => r.id === activeResumeId);
   if (active) {
+    document.querySelectorAll('.entry-card[data-card-id]').forEach(el => {
+      const cardId = el.getAttribute('data-card-id');
+      if (cardId) destroyCard(cardId);
+    });
+
     active.data = deepClone(DEFAULT_BLANK_RESUME);
     localStorage.setItem('resumes', JSON.stringify(resumes));
     loadState(active.data);

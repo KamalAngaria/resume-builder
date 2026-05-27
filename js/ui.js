@@ -113,8 +113,12 @@ function toggleVis(sec,el){
 function buildEntries(){
   const expList = document.getElementById('exp-list');
   if(expList) {
+    expList.querySelectorAll('.entry-card[data-card-id]').forEach(el => {
+      const cardId = el.getAttribute('data-card-id');
+      if (cardId) destroyCard(cardId);
+    });
     expList.innerHTML=S.experience.map((e,i)=>`
-      <div class="entry-card">
+      <div class="entry-card" data-card-id="exp-${i}">
         <div class="ec-hdr"><div class="ec-title"><i class="ti ti-briefcase"></i>Experience ${i+1}</div>
           <div class="ec-actions"><button class="ic-btn del" onclick="removeEntry('exp',${i})" title="Remove"><i class="ti ti-trash"></i></button></div>
         </div>
@@ -137,8 +141,12 @@ function buildEntries(){
 
   const eduList = document.getElementById('edu-list');
   if(eduList) {
+    eduList.querySelectorAll('.entry-card[data-card-id]').forEach(el => {
+      const cardId = el.getAttribute('data-card-id');
+      if (cardId) destroyCard(cardId);
+    });
     eduList.innerHTML=S.education.map((e,i)=>`
-      <div class="entry-card">
+      <div class="entry-card" data-card-id="edu-${i}">
         <div class="ec-hdr"><div class="ec-title"><i class="ti ti-school"></i>Education ${i+1}</div>
           <div class="ec-actions"><button class="ic-btn del" onclick="removeEntry('edu',${i})" title="Remove"><i class="ti ti-trash"></i></button></div>
         </div>
@@ -154,8 +162,12 @@ function buildEntries(){
 
   const certList = document.getElementById('cert-list');
   if(certList) {
+    certList.querySelectorAll('.entry-card[data-card-id]').forEach(el => {
+      const cardId = el.getAttribute('data-card-id');
+      if (cardId) destroyCard(cardId);
+    });
     certList.innerHTML=S.certs.map((c,i)=>`
-      <div class="entry-card">
+      <div class="entry-card" data-card-id="cert-${i}">
         <div class="ec-hdr"><div class="ec-title"><i class="ti ti-certificate"></i>Cert ${i+1}</div>
           <div class="ec-actions"><button class="ic-btn del" onclick="removeEntry('cert',${i})" title="Remove"><i class="ti ti-trash"></i></button></div>
         </div>
@@ -169,8 +181,12 @@ function buildEntries(){
 
   const awardList = document.getElementById('award-list');
   if(awardList) {
+    awardList.querySelectorAll('.entry-card[data-card-id]').forEach(el => {
+      const cardId = el.getAttribute('data-card-id');
+      if (cardId) destroyCard(cardId);
+    });
     awardList.innerHTML=S.awards.map((a,i)=>`
-      <div class="entry-card">
+      <div class="entry-card" data-card-id="award-${i}">
         <div class="ec-hdr"><div class="ec-title"><i class="ti ti-trophy"></i>Award ${i+1}</div>
           <div class="ec-actions"><button class="ic-btn del" onclick="removeEntry('award',${i})" title="Remove"><i class="ti ti-trash"></i></button></div>
         </div>
@@ -200,8 +216,12 @@ function buildLangs(){
   const levels=['Native','Fluent','Advanced','Conversational','Intermediate','Beginner'];
   const langList = document.getElementById('lang-list');
   if(!langList)return;
+  langList.querySelectorAll('.entry-card[data-card-id]').forEach(el => {
+    const cardId = el.getAttribute('data-card-id');
+    if (cardId) destroyCard(cardId);
+  });
   langList.innerHTML=S.langs.map((l,i)=>`
-    <div class="entry-card" style="padding:9px">
+    <div class="entry-card" data-card-id="lang-${i}" style="padding:9px">
       <div class="two-col" style="margin-bottom:5px">
         <input type="text" placeholder="Language" aria-label="Language ${i+1} Name" value="${esc(l.lang)}" oninput="S.langs[${i}].lang=this.value;render()">
         <div class="custom-select-container">
@@ -218,6 +238,6 @@ function buildLangs(){
           </div>
         </div>
       </div>
-      <button class="ic-btn del" style="width:100%;border-radius:5px" onclick="S.langs.splice(${i},1);buildLangs();renderImmediate()"><i class="ti ti-trash"></i> Remove</button>
+      <button class="ic-btn del" style="width:100%;border-radius:5px" onclick="destroyCard('lang-${i}');S.langs.splice(${i},1);buildLangs();renderImmediate()"><i class="ti ti-trash"></i> Remove</button>
     </div>`).join('');
 }

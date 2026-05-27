@@ -128,6 +128,9 @@ function validate(el) {
 }
 
 function checkGibberish(val) {
+  // Normalize accented characters to plain English equivalents (e.g. Müller -> Muller) to prevent false gibberish flags
+  val = val.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
   if (val.length <= 3) {
     // Flag very short entries if they are just repeating letters (e.g. "xxx")
     return /^(.)\1+$/i.test(val);
