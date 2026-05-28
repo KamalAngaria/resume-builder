@@ -34,8 +34,8 @@ body,
   --z-index-header: 200;
   --z-index-dropdown: 300;
   --z-index-overlay: 400;
-  --z-index-modal: 500;
-  --z-index-toast: 600;
+  --z-index-modal: 2000;
+  --z-index-toast: 2100;
 }
 
 /* Global selection styling */
@@ -102,6 +102,11 @@ header {
   top: 0;
   z-index: var(--z-index-header);
   gap: 12px
+}
+
+/* Elevate header stacking context when the resumes dropdown/modal is open so it renders above sidebar & overlays */
+header:has(#resumesDropdown.open) {
+  z-index: calc(var(--z-index-modal) + 200);
 }
 
 .logo {
@@ -528,6 +533,10 @@ header {
    MOBILE BOTTOM-SHEET (< 768px)
    ══════════════════════════════════ */
 @media (max-width: 767px) {
+  .resumes-dropdown.open {
+    z-index: calc(var(--z-index-modal) + 100);
+  }
+
   /* Backdrop */
   .resumes-backdrop {
     display: block;
