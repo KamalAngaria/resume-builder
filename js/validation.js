@@ -77,8 +77,13 @@ function validate(el) {
   const type = el.type || '';
   const placeholder = (el.placeholder || '').toLowerCase();
 
-  // Empty fields are cleared of errors (optional fields allowed, sanitization rules apply when they type)
+  // Require core fields to be non-empty
+  const requiredFields = ['f_name', 'f_email', 'f_title', 'f_phone'];
   if (!val) {
+    if (requiredFields.includes(id)) {
+      showError(el, 'This field is required.');
+      return false;
+    }
     clearError(el);
     return true;
   }

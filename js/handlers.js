@@ -115,6 +115,28 @@ styleEl.textContent = `
 document.head.appendChild(styleEl);
 
 function navStep(dir){
+  if (dir > 0) {
+    const activeBody = document.querySelector('.tab-body.active');
+    if (activeBody) {
+      const inputs = activeBody.querySelectorAll('input, textarea, select');
+      let allValid = true;
+      inputs.forEach(el => {
+        if (typeof validate === 'function') {
+          if (!validate(el)) {
+            allValid = false;
+          }
+        }
+      });
+      if (!allValid) {
+        const firstInvalid = activeBody.querySelector('.has-error');
+        if (firstInvalid) {
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstInvalid.focus();
+        }
+        return;
+      }
+    }
+  }
   const next = Math.max(0, Math.min(TAB_IDS.length-1, currentTab+dir));
   switchTab(next);
   // scroll tab smoothly into view

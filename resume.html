@@ -1,507 +1,643 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<title>Free ATS Resume Builder Online | CVcraft Pro</title>
-<meta name="description" content="Create ATS-friendly resumes online for free with CVcraft Pro. Fast, modern and privacy-first resume builder.">
-<meta property="og:title" content="CVcraft Pro">
-<meta property="og:description" content="Free ATS Resume Builder">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://resume-builder-3bc.pages.dev/">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;600;700&family=Josefin+Sans:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600;700&family=Lato:wght@300;400;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600;700&family=Source+Code+Pro:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;400;600&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@300;400;700&family=Work+Sans:wght@300;400;500;600&family=Fira+Sans:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
-<link rel="stylesheet" href="css/style.css?v=2">
-<link rel="stylesheet" href="css/templates.css?v=3">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Free ATS Resume Builder Online | CVcraft Pro</title>
+  <meta name="description"
+    content="Create ATS-friendly resumes online for free with CVcraft Pro. Fast, modern and privacy-first resume builder.">
+  <meta property="og:title" content="CVcraft Pro">
+  <meta property="og:description" content="Free ATS Resume Builder">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://resume-builder-3bc.pages.dev/">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;600;700&family=Josefin+Sans:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600;700&family=Lato:wght@300;400;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600;700&family=Source+Code+Pro:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;400;600&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@300;400;700&family=Work+Sans:wght@300;400;500;600&family=Fira+Sans:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/templates.css?v=3">
 </head>
+
 <body>
-<div id="ats-live-announcer" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;" role="status" aria-live="polite"></div>
+  <div id="ats-live-announcer"
+    style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;"
+    role="status" aria-live="polite"></div>
 
-<header role="banner">
-  <div class="logo-group" style="display:flex;align-items:center;gap:12px">
-    <div class="logo" ondblclick="launchDiagnostics()" style="cursor: pointer;" title="Double-click to run diagnostics">CV<span>.</span>craft <span style="font-size:.7rem;opacity:.5;font-family:'DM Sans';font-weight:400">PRO</span></div>
-    
-    <div class="resumes-dropdown" id="resumesDropdown">
-      <button class="resumes-trigger" onclick="toggleResumesMenu(event)" id="resumesTrigger">
-        <i class="ti ti-file-text"></i>
-        <span id="activeResumeName">My Resume</span>
-        <i class="ti ti-chevron-down"></i>
-      </button>
-      <!-- Backdrop for mobile sheet -->
-      <div class="resumes-backdrop" id="resumesBackdrop" onclick="toggleResumesMenu(event)"></div>
-      <div class="resumes-menu" id="resumesMenu">
-        <div class="menu-sec-label">Saved Resumes</div>
-        <div class="resumes-list" id="resumesList"></div>
-        <div class="menu-divider"></div>
-        <div class="menu-sec-label">Actions</div>
-        <div class="resumes-actions">
-          <button onclick="duplicateActiveResume(event)"><i class="ti ti-copy"></i> Duplicate Current Resume</button>
-          <button onclick="createNewResume(event)"><i class="ti ti-plus"></i> New Blank Resume</button>
-          <button onclick="document.getElementById('importProjectInput').click()"><i class="ti ti-upload"></i> Upload Existing Resume (.cvcraft / .json)</button>
-          <input type="file" id="importProjectInput" accept=".cvcraft,.json" style="display:none" onchange="handleImportProject(event)">
-          
+  <header role="banner">
+    <div class="logo-group" style="display:flex;align-items:center;gap:12px">
+      <div class="logo" ondblclick="launchDiagnostics()" style="cursor: pointer;"
+        title="Double-click to run diagnostics">CV<span>.</span>craft <span
+          style="font-size:.7rem;opacity:.5;font-family:'DM Sans';font-weight:400">PRO</span></div>
+
+      <div class="resumes-dropdown" id="resumesDropdown">
+        <button class="resumes-trigger" onclick="toggleResumesMenu(event)" id="resumesTrigger">
+          <i class="ti ti-file-text"></i>
+          <span id="activeResumeName">My Resume</span>
+          <i class="ti ti-chevron-down"></i>
+        </button>
+        <!-- Backdrop for mobile sheet -->
+        <div class="resumes-backdrop" id="resumesBackdrop" onclick="toggleResumesMenu(event)"></div>
+        <div class="resumes-menu" id="resumesMenu">
+          <div class="menu-sec-label">Saved Resumes</div>
+          <div class="resumes-list" id="resumesList"></div>
           <div class="menu-divider"></div>
-          
-          <button onclick="generateShareLink(event)"><i class="ti ti-share"></i> Share Resume Link</button>
-          <button onclick="exportProject(event)"><i class="ti ti-download"></i> Save Resume to File</button>
-          
-          <div class="menu-divider"></div>
-          
-          <button onclick="loadSampleData(event)" class="btn-sample"><i class="ti ti-sparkles"></i> Load Example Resume</button>
-          <button onclick="resetActiveResume(event)" class="btn-danger"><i class="ti ti-rotate"></i> Reset Current Resume</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="hdr-center">
-    <button class="btn btn-ghost btn-sm" onclick="window.print()"><i class="ti ti-printer"></i> Print</button>
-    <button class="btn btn-primary btn-sm" onclick="doDownload()"><i class="ti ti-download"></i> Download PDF</button>
-  </div>
-  <div class="hdr-actions">
-    <button class="btn btn-ghost mob-edit-btn" id="mobToggle"><i class="ti ti-edit"></i> Edit</button>
-    <button class="btn btn-primary btn-sm" onclick="doDownload()" style="display:none" id="mobDL"><i class="ti ti-download"></i></button>
-  </div>
-</header>
+          <div class="menu-sec-label">Actions</div>
+          <div class="resumes-actions">
+            <button onclick="duplicateActiveResume(event)"><i class="ti ti-copy"></i> Duplicate Current Resume</button>
+            <button onclick="createNewResume(event)"><i class="ti ti-plus"></i> New Blank Resume</button>
+            <button onclick="document.getElementById('importProjectInput').click()"><i class="ti ti-upload"></i> Upload
+              Existing Resume (.cvcraft / .json)</button>
+            <input type="file" id="importProjectInput" accept=".cvcraft,.json" style="display:none"
+              onchange="handleImportProject(event)">
 
-<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+            <div class="menu-divider"></div>
 
-<div class="app">
-<!-- ══ SIDEBAR ══ -->
-<aside class="sidebar" id="sidebar" role="complementary">
-  <div class="step-bar" id="stepBar"></div>
-  <div class="tabs" id="tabBar">
-    <div class="tab active" data-tab="info"><i class="ti ti-user"></i>Info</div>
-    <div class="tab" data-tab="work"><i class="ti ti-briefcase"></i>Work</div>
-    <div class="tab" data-tab="edu"><i class="ti ti-school"></i>Edu</div>
-    <div class="tab" data-tab="skills"><i class="ti ti-tools"></i>Skills</div>
-    <div class="tab" data-tab="sections"><i class="ti ti-layout-list"></i>Order</div>
-    <div class="tab" data-tab="design"><i class="ti ti-brush"></i>Design</div>
-    <div class="tab" data-tab="assist"><i class="ti ti-sparkles"></i>Optimizer</div>
-  </div>
+            <button onclick="generateShareLink(event)"><i class="ti ti-share"></i> Share Resume Link</button>
+            <button onclick="exportProject(event)"><i class="ti ti-download"></i> Save Resume to File</button>
 
-  <!-- INFO TAB -->
-  <div class="tab-body active" id="tb-info">
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-photo"></i> Profile Photo</div>
-      <div class="photo-wrap">
-        <div class="photo-ring" id="photoRing">
-          <div class="photo-circle" id="photoCircle" onclick="handleAvatarClick(event)">
-            <i class="ti ti-camera" style="font-size:1.6rem;color:var(--muted)"></i>
+            <div class="menu-divider"></div>
+
+            <button onclick="loadSampleData(event)" class="btn-sample"><i class="ti ti-sparkles"></i> Load Example
+              Resume</button>
+            <button onclick="resetActiveResume(event)" class="btn-danger"><i class="ti ti-rotate"></i> Reset Current
+              Resume</button>
           </div>
-          <div class="photo-resize-ring" id="photoResizeRing" title="Drag to resize"></div>
-        </div>
-        <div>
-          <div style="font-weight:600;font-size:.85rem;margin-bottom:3px">Upload Photo</div>
-          <div style="font-size:.75rem;color:var(--muted);margin-bottom:6px">Optional · Drag ring to resize</div>
-          <input type="file" id="photo-input" accept="image/*" onchange="handlePhoto(event)">
-          <button class="btn btn-outline btn-sm" onclick="document.getElementById('photo-input').click()"><i class="ti ti-upload"></i> Choose File</button>
-          <button class="btn btn-outline btn-sm" style="margin-left:4px;display:none" onclick="removePhoto()" id="removePhotoBtn" title="Remove Photo"><i class="ti ti-trash"></i></button>
         </div>
       </div>
-      <div class="range-row"><label class="lbl" for="photoSize">Size</label><input type="range" id="photoSize" min="50" max="120" value="76" oninput="setPhotoSize(this.value)"><span class="range-val" id="photoSizeVal">76px</span></div>
-      <div class="range-row" style="margin-bottom:0"><label class="lbl" for="photoBR">Border radius</label><input type="range" id="photoBR" min="0" max="50" value="50" oninput="setPhotoBR(this.value)"><span class="range-val" id="photoBRVal">50%</span></div>
     </div>
+    <div class="hdr-center">
+      <button class="btn btn-ghost btn-sm" onclick="window.print()"><i class="ti ti-printer"></i> Print</button>
+      <button class="btn btn-primary btn-sm" onclick="doDownload()"><i class="ti ti-download"></i> Download PDF</button>
+    </div>
+    <div class="hdr-actions">
+      <button class="btn btn-ghost mob-edit-btn" id="mobToggle"><i class="ti ti-edit"></i> Edit</button>
+      <button class="btn btn-primary btn-sm" onclick="doDownload()" style="display:none" id="mobDL"><i
+          class="ti ti-download"></i></button>
+    </div>
+  </header>
 
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-id-badge"></i> Personal Details</div>
-      <div class="form-group"><label class="lbl" for="f_name">Full Name</label><input type="text" id="f_name" placeholder="Alex Johnson" oninput="render()" value=""></div>
-      <div class="form-group" style="position: relative;">
-        <label class="lbl" for="f_title">Job Title</label>
-        <input type="text" id="f_title" placeholder="Senior Product Designer" oninput="render()" value="" aria-autocomplete="list" aria-controls="role-suggestions" aria-expanded="false">
-        <div id="role-suggestions" class="role-suggestions-dropdown" role="listbox" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #1c1c1e; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 1000; max-height: 200px; overflow-y: auto; margin-top: 4px;"></div>
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <div class="app">
+    <!-- ══ SIDEBAR ══ -->
+    <aside class="sidebar" id="sidebar" role="complementary">
+      <div class="step-bar" id="stepBar"></div>
+      <div class="tabs" id="tabBar">
+        <div class="tab active" data-tab="info"><i class="ti ti-user"></i>Info</div>
+        <div class="tab" data-tab="work"><i class="ti ti-briefcase"></i>Work</div>
+        <div class="tab" data-tab="edu"><i class="ti ti-school"></i>Edu</div>
+        <div class="tab" data-tab="skills"><i class="ti ti-tools"></i>Skills</div>
+        <div class="tab" data-tab="sections"><i class="ti ti-layout-list"></i>Order</div>
+        <div class="tab" data-tab="design"><i class="ti ti-brush"></i>Design</div>
+        <div class="tab" data-tab="assist"><i class="ti ti-sparkles"></i>Optimizer</div>
       </div>
-      <div class="form-group" style="margin-bottom:0"><label class="lbl" for="f_summary">Professional Summary</label><textarea id="f_summary" oninput="render()" placeholder="Brief professional summary..."></textarea></div>
-      <div id="smart-role-panel" style="display: none; margin-top: 14px; background: rgba(0, 0, 0, 0.015); border: 1px dashed rgba(0, 0, 0, 0.12); padding: 12px; border-radius: 8px;"></div>
-    </div>
 
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-address-book"></i> Contact Info</div>
-      <div class="form-group"><label class="lbl" for="f_email"><i class="ti ti-mail" style="font-size:12px"></i> Email</label><input type="email" id="f_email" placeholder="alex@email.com" oninput="render()" value=""></div>
-      <div class="form-group"><label class="lbl" for="f_phone"><i class="ti ti-phone" style="font-size:12px"></i> Phone</label><input type="tel" id="f_phone" placeholder="+1 234 567 890" oninput="render()" value=""></div>
-      <div class="two-col">
-        <div class="form-group"><label class="lbl" for="f_city"><i class="ti ti-map-pin" style="font-size:12px"></i> City</label><input type="text" id="f_city" placeholder="New York" oninput="render()" value=""></div>
-        <div class="form-group"><label class="lbl" for="f_country">Country</label><input type="text" id="f_country" placeholder="USA" oninput="render()" value=""></div>
-      </div>
-      <div class="form-group"><label class="lbl" for="f_linkedin"><i class="ti ti-brand-linkedin" style="font-size:12px"></i> LinkedIn</label><input type="url" id="f_linkedin" placeholder="linkedin.com/in/alex" oninput="render()" value=""></div>
-      <div class="form-group"><label class="lbl" for="f_website"><i class="ti ti-world" style="font-size:12px"></i> Website</label><input type="url" id="f_website" placeholder="alexjohnson.design" oninput="render()" value=""></div>
-      <div class="form-group" style="margin-bottom:0"><label class="lbl" for="f_github"><i class="ti ti-brand-github" style="font-size:12px"></i> GitHub</label><input type="url" id="f_github" placeholder="github.com/alex" oninput="render()" value=""></div>
-    </div>
-  </div>
-
-  <!-- WORK TAB -->
-  <div class="tab-body" id="tb-work">
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-briefcase"></i> Work Experience</div>
-      <div id="exp-list"></div>
-      <button class="add-btn" onclick="addEntry('exp')"><i class="ti ti-plus"></i> Add Experience</button>
-    </div>
-  </div>
-
-  <!-- EDU TAB -->
-  <div class="tab-body" id="tb-edu">
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-school"></i> Education</div>
-      <div id="edu-list"></div>
-      <button class="add-btn" onclick="addEntry('edu')"><i class="ti ti-plus"></i> Add Education</button>
-    </div>
-
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-certificate"></i> Certifications</div>
-      <div id="cert-list"></div>
-      <button class="add-btn" onclick="addEntry('cert')"><i class="ti ti-plus"></i> Add Certification</button>
-    </div>
-
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-trophy"></i> Awards & Achievements</div>
-      <div id="award-list"></div>
-      <button class="add-btn" onclick="addEntry('award')"><i class="ti ti-plus"></i> Add Award</button>
-    </div>
-  </div>
-
-  <!-- SKILLS TAB -->
-  <div class="tab-body" id="tb-skills">
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-tools"></i> Skills</div>
-      <div style="font-size:.75rem;color:var(--muted);margin-bottom:8px">Type skill + press Enter to add</div>
-      <div class="skills-box" id="skills-area" onclick="document.getElementById('skill-input').focus()">
-        <input class="s-ghost" id="skill-input" placeholder="e.g. Figma, React…" onkeydown="handleSkillKey(event)">
-      </div>
-      <!-- Skill suggestions flex-box container -->
-      <div id="skills-suggestions-wrapper" style="margin-top: 12px; display: none;">
-        <span style="font-size: 0.72rem; color: #535366; font-weight: 700; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Recommended Skills</span>
-        <div id="skillsSuggestionsList" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
-      </div>
-    </div>
-
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-language"></i> Languages</div>
-      <div id="lang-list"></div>
-      <button class="add-btn" onclick="addLang()"><i class="ti ti-plus"></i> Add Language</button>
-    </div>
-
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-heart"></i> Interests / Hobbies</div>
-      <div class="form-group" style="margin-bottom:0"><label class="sr-only" for="f_interests">Interests / Hobbies</label><input type="text" id="f_interests" placeholder="Photography, Hiking, Open Source…" oninput="render()" value="UX Research, Photography, Hiking"></div>
-    </div>
-  </div>
-
-  <!-- SECTIONS ORDER TAB -->
-  <div class="tab-body" id="tb-sections">
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-arrows-sort"></i> Drag to Reorder Sections</div>
-      <div style="font-size:.75rem;color:var(--muted);margin-bottom:12px">Drag items to change section order. Toggle eye to show/hide.</div>
-      <div class="reorder-list" id="reorderList"></div>
-    </div>
-  </div>
-
-  <!-- DESIGN TAB -->
-  <div class="tab-body" id="tb-design">
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-brush"></i> Template Presets</div>
-      <div style="font-size:.74rem;color:var(--muted);margin-bottom:12px">Select a template preset. This updates layout, font, accent, and spacing while keeping your content intact.</div>
-      <div class="template-presets-grid" id="templatePresetsGrid"></div>
-    </div>
-
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-color-swatch"></i> Accent Color</div>
-      <div class="color-grid" id="colorGrid"></div>
-      <div class="custom-color-trigger" onclick="openColorPickerModal()">
-        <div class="custom-color-swatch" id="customColorPreview" style="background: var(--accent);"></div>
-        <span style="font-size: .82rem; font-weight: 500; color: var(--text);">Choose Custom Color...</span>
-      </div>
-    </div>
-
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-layout-grid"></i> Layout</div>
-      <div class="layout-grid" id="layoutGrid"></div>
-    </div>
-
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-typography"></i> Font Family</div>
-      <div class="font-grid" id="fontGrid"></div>
-    </div>
-
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-text-size"></i> Typography</div>
-      <div class="range-row"><label class="lbl" for="fontSizeR">Base size</label><input type="range" min="80" max="115" value="100" step="5" id="fontSizeR" oninput="setFontSize(this.value)"><span class="range-val" id="fontSizeV">100%</span></div>
-      <div class="range-row" style="margin-bottom:0"><label class="lbl" for="lineHR">Line height</label><input type="range" min="130" max="200" value="165" step="5" id="lineHR" oninput="setLineH(this.value)"><span class="range-val" id="lineHV">1.65</span></div>
-    </div>
-
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-adjustments-horizontal"></i> Spacing</div>
-      <div class="range-row" style="margin-bottom:0"><label class="lbl" for="secGapR">Section gap</label><input type="range" min="8" max="36" value="20" step="2" id="secGapR" oninput="setSecGap(this.value)"><span class="range-val" id="secGapV">20px</span></div>
-    </div>
-  </div>
-
-  <!-- OPTIMIZER (ASSIST) TAB -->
-  <div class="tab-body" id="tb-assist">
-    <!-- Trust Positioning Disclaimer -->
-    <div style="padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; font-size: 0.74rem; color: var(--muted); line-height: 1.4; margin-bottom: 14px;">
-      <div style="display: flex; align-items: flex-start; gap: 6px; font-weight: 600; color: var(--text); margin-bottom: 3px;">
-        <i class="ti ti-info-circle" style="color: var(--accent); font-size: 14px; margin-top: 1.5px;"></i>
-        Recruiter Readability Assistant
-      </div>
-      Higher scores improve layout parsing and keyword matching in recruiter searches, but do not guarantee interviews. We focus on realistic, data-safe optimization.
-    </div>
-
-    <!-- ATS Score Card -->
-    <div class="form-section-card" style="text-align: center; padding: 24px 16px;">
-      <div class="sec-label" style="justify-content: center; margin-bottom: 12px;"><i class="ti ti-chart-bar"></i> ATS Optimization Score</div>
-      <div style="display: flex; justify-content: center; margin: 16px 0;">
-        <div style="position: relative; display: inline-block;">
-          <div id="atsScoreFill" style="width: 110px; height: 110px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient(var(--accent) 0deg, rgba(0,0,0,0.06) 0deg); box-shadow: inset 0 2px 8px rgba(0,0,0,0.05); padding: 8px;">
-            <div style="width: 94px; height: 94px; border-radius: 50%; background: var(--surface); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.04);">
-              <span id="atsScoreVal" style="font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--text); line-height: 1;">0%</span>
-              <span style="font-size: 0.68rem; color: var(--muted); font-weight: 600; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px;">Score</span>
+      <!-- INFO TAB -->
+      <div class="tab-body active" id="tb-info">
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-photo"></i> Profile Photo</div>
+          <div class="photo-wrap">
+            <div class="photo-ring" id="photoRing">
+              <div class="photo-circle" id="photoCircle" onclick="handleAvatarClick(event)">
+                <i class="ti ti-camera" style="font-size:1.6rem;color:var(--muted)"></i>
+              </div>
+              <div class="photo-resize-ring" id="photoResizeRing" title="Drag to resize"></div>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:.85rem;margin-bottom:3px">Upload Photo</div>
+              <div style="font-size:.75rem;color:var(--muted);margin-bottom:6px">Optional · Drag ring to resize</div>
+              <input type="file" id="photo-input" accept="image/*" onchange="handlePhoto(event)">
+              <button class="btn btn-outline btn-sm" onclick="document.getElementById('photo-input').click()"><i
+                  class="ti ti-upload"></i> Choose File</button>
+              <button class="btn btn-outline btn-sm" style="margin-left:4px;display:none" onclick="removePhoto()"
+                id="removePhotoBtn" title="Remove Photo"><i class="ti ti-trash"></i></button>
             </div>
           </div>
-          <div id="atsScoreDelta" style="position: absolute; top: -5px; right: -15px; font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 800; opacity: 0; pointer-events: none; transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transform: translateY(8px); z-index: 10;"></div>
+          <div class="range-row"><label class="lbl" for="photoSize">Size</label><input type="range" id="photoSize"
+              min="50" max="120" value="76" oninput="setPhotoSize(this.value)"><span class="range-val"
+              id="photoSizeVal">76px</span></div>
+          <div class="range-row" style="margin-bottom:0"><label class="lbl" for="photoBR">Border radius</label><input
+              type="range" id="photoBR" min="0" max="50" value="50" oninput="setPhotoBR(this.value)"><span
+              class="range-val" id="photoBRVal">50%</span></div>
         </div>
-      </div>
-      <div id="atsBreakdownPanel" style="display: flex; flex-direction: column; gap: 8px; text-align: left; margin-top: 14px; background: var(--surface2); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
-        <!-- Live values rendered by core.js -->
-      </div>
-    </div>
 
-    <!-- Job Description Scanner -->
-    <div class="form-section-card">
-      <div class="sec-label"><i class="ti ti-briefcase"></i> Target Job Description</div>
-      <div class="form-group" style="margin-bottom: 10px;">
-        <label class="lbl">Paste Job Requirements / Description</label>
-        <textarea id="jdInputText" placeholder="Paste the job description here to analyze missing keywords..." style="height: 120px; font-family: inherit; font-size: 0.82rem; line-height: 1.5; resize: vertical;" oninput="triggerJdAnalysis()"></textarea>
-      </div>
-      <div id="jdKeywordsPanel" style="display: flex; flex-direction: column; gap: 8px; background: var(--surface2); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
-        <div style="text-align:center;padding:8px;color:#8896aa;font-size:0.8rem">Paste a Job Description above to scan for missing keywords.</div>
-      </div>
-    </div>
-
-    <!-- Optimization Recommendations Checklist -->
-    <div class="form-section-card" style="margin-bottom: 16px;">
-      <div class="sec-label"><i class="ti ti-list-check"></i> Actionable Checklist</div>
-      <div id="recsListPanel" style="display: flex; flex-direction: column; gap: 10px;">
-        <!-- Checklist items rendered by core.js -->
-      </div>
-    </div>
-
-    <!-- ATS Parsing Preview -->
-    <div class="form-section-card" style="margin-bottom: 16px;">
-      <div class="sec-label" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-        <span style="display: flex; align-items: center; gap: 6px;"><i class="ti ti-binary"></i> ATS Parsing Preview</span>
-        <button id="toggleParserPreviewBtn" class="btn btn-outline btn-sm" style="padding: 2px 8px; font-size: 0.72rem; height: auto; border-radius: 4px;" onclick="toggleParserPreview()">Show Preview</button>
-      </div>
-      <div style="font-size: 0.74rem; color: var(--muted); margin-bottom: 10px; line-height: 1.4;">
-        Inspect how standard parsing software interprets your layout structure. Real ATS databases read text in chronological order.
-      </div>
-      <div id="parserPreviewContainer" style="display: none; transition: all 0.3s ease;">
-        <div id="parserWarningsPanel" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px;"></div>
-        
-        <div style="position: relative; background: #0f172a; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); padding: 12px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.62rem; color: rgba(255,255,255,0.4); font-family: monospace; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 6px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
-            <span>Chronological Plain-Text Output</span>
-            <span>UTF-8 Readability: Stable</span>
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-id-badge"></i> Personal Details</div>
+          <div class="form-group"><label class="lbl" for="f_name">Full Name</label><input type="text" id="f_name"
+              placeholder="Alex Johnson" oninput="render()" value=""></div>
+          <div class="form-group" style="position: relative;">
+            <label class="lbl" for="f_title">Job Title</label>
+            <input type="text" id="f_title" placeholder="Senior Product Designer" oninput="render()" value=""
+              aria-autocomplete="list" aria-controls="role-suggestions" aria-expanded="false">
+            <div id="role-suggestions" class="role-suggestions-dropdown" role="listbox"
+              style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #1c1c1e; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 1000; max-height: 200px; overflow-y: auto; margin-top: 4px;">
+            </div>
           </div>
-          <pre id="atsRawTextOutput" style="margin: 0; white-space: pre-wrap; font-family: 'Space Mono', monospace; font-size: 0.7rem; color: #cbd5e1; max-height: 180px; overflow-y: auto; line-height: 1.6; text-align: left;"></pre>
+          <div class="form-group" style="margin-bottom:0"><label class="lbl" for="f_summary">Professional
+              Summary</label><textarea id="f_summary" oninput="render()"
+              placeholder="Brief professional summary..."></textarea></div>
+          <div id="smart-role-panel"
+            style="display: none; margin-top: 14px; background: rgba(0, 0, 0, 0.015); border: 1px dashed rgba(0, 0, 0, 0.12); padding: 12px; border-radius: 8px;">
+          </div>
         </div>
-        
-        <div style="margin-top: 12px;">
-          <div style="font-size: 0.7rem; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Detected Sections</div>
-          <div id="detectedSectionsFlex" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Privacy Guard Footer -->
-    <div style="text-align: center; font-size: 0.68rem; color: #8896aa; padding: 4px 0 10px 0; border-top: 1px dashed var(--border); margin-top: 12px;">
-      <i class="ti ti-shield-check" style="color: #22c55e; vertical-align: middle; font-size: 12px; margin-right: 2px;"></i>
-      Privacy-First: Analysis runs 100% locally. No resume data is sent to external servers.
-    </div>
-  </div>
-
-  <!-- NAV FOOTER -->
-  <div class="form-nav">
-    <button class="btn btn-outline btn-sm" id="prevBtn" onclick="navStep(-1)"><i class="ti ti-arrow-left"></i> Back</button>
-    <span class="step-label" id="stepLbl">Step 1 / 6</span>
-    <button class="btn btn-primary btn-sm" id="nextBtn" onclick="navStep(1)">Next <i class="ti ti-arrow-right"></i></button>
-  </div>
-</aside>
-
-<!-- ══ PREVIEW PANEL ══ -->
-<main class="preview-panel" role="main">
-  <div class="preview-toolbar">
-    <span class="pt-label"><i class="ti ti-eye" style="font-size:13px;margin-right:4px"></i>Live Preview</span>
-    <div class="zoom-group">
-      <button class="zoom-btn" onclick="zoom(-10)" title="Zoom Out"><i class="ti ti-zoom-out"></i></button>
-      <span class="zoom-label" id="zoomLabel">75%</span>
-      <button class="zoom-btn" onclick="zoom(10)" title="Zoom In"><i class="ti ti-zoom-in"></i></button>
-    </div>
-    <button class="fit-btn" onclick="zoomFit()" title="Fit to window"><i class="ti ti-maximize" style="font-size:12px;margin-right:3px"></i>Fit</button>
-    <button class="fit-btn" onclick="zoomSet(100)"><i class="ti ti-zoom-reset" style="font-size:12px;margin-right:3px"></i>100%</button>
-    <button class="btn btn-outline btn-sm" onclick="window.print()"><i class="ti ti-printer"></i></button>
-    <button class="btn btn-primary btn-sm" onclick="doDownload()"><i class="ti ti-download"></i> PDF</button>
-  </div>
-  <div class="preview-scroll" id="previewScroll">
-    <div class="cv-wrap" id="cvWrap">
-      <div class="cv-doc" id="cvDoc"></div>
-    </div>
-  </div>
-</main>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<!-- Diagnostics Modal -->
-<div id="diagnosticsModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="diagnosticsTitle">
-  <div class="modal-card" style="max-width: 520px; width: 95%; background: #121214; border: 1.5px solid rgba(255,255,255,0.08); border-radius: 14px; font-family: 'Space Mono', monospace; padding: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.6); overflow: hidden; display: flex; flex-direction: column; gap: 0;">
-    <div style="background: #1c1c1f; padding: 14px 20px; border-bottom: 1.5px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center;">
-      <span id="diagnosticsTitle" style="color: #fff; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="ti ti-terminal" style="color: var(--accent); font-size: 16px;"></i> Automated QA Test Suite</span>
-      <button onclick="closeDiagnostics()" style="background: transparent; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 1.1rem; padding: 2px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'"><i class="ti ti-x"></i></button>
-    </div>
-    <div style="padding: 16px 20px; flex: 1;">
-      <div id="diagTerminal" class="diag-terminal" style="height: 220px; background: #09090b; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 12px; overflow-y: auto; font-size: 0.76rem; line-height: 1.6; color: #a1a1aa; display: flex; flex-direction: column; gap: 6px; box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);">
-        <!-- Diagnostics logs printed here -->
-      </div>
-    </div>
-    <div style="background: #1c1c1f; padding: 14px 20px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1.5px solid rgba(255,255,255,0.06);">
-      <button class="btn btn-outline btn-sm" id="diagCloseBtn" onclick="closeDiagnostics()" style="font-family: inherit; font-size: 0.8rem; height: 34px;">Close</button>
-      <button class="btn btn-primary btn-sm" id="diagRunBtn" onclick="runDiagnostics()" style="font-family: inherit; font-size: 0.8rem; height: 34px;">
-        <i class="ti ti-play" style="font-size: 12px; margin-right: 4px;"></i> Run Diagnostics
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Crop Modal -->
-<div id="cropModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="cropTitle">
-  <div class="modal-card">
-    <div class="modal-header">
-      <h3 id="cropTitle" style="font-family:'DM Serif Display',serif; font-size:1.2rem; color:var(--text); margin-bottom: 4px;">Crop Profile Photo</h3>
-    </div>
-    <div class="modal-body">
-      <div class="crop-container">
-        <img id="cropImage" src="" alt="Upload preview">
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline btn-sm" onclick="closeCropModal()">Cancel</button>
-      <button class="btn btn-primary btn-sm" onclick="applyCrop()">Apply Crop</button>
-    </div>
-  </div>
-</div>
-
-<!-- Photo Preview Modal -->
-<div id="previewPhotoModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-label="Profile Photo Preview" onclick="closePhotoPreview()">
-  <div class="modal-card" style="background: transparent; border: none; box-shadow: none; max-width: 400px; padding: 0;" onclick="event.stopPropagation()">
-    <div class="modal-body" style="padding: 0; display: flex; justify-content: center; align-items: center;">
-      <img id="previewPhotoImage" src="" alt="Profile Photo Preview" style="width: 100%; height: auto; box-shadow: var(--sh2); transition: all 0.3s ease; border: 3px solid #fff;">
-    </div>
-  </div>
-</div>
-
-<!-- Color Picker Modal -->
-<div id="colorPickerModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="colorPickerTitle" onclick="closeColorPickerModal()">
-  <div class="modal-card" style="max-width: 320px;" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <h3 id="colorPickerTitle" style="font-family:'DM Serif Display',serif; font-size:1.2rem; color:var(--text); margin-bottom: 4px;">Custom Accent Color</h3>
-    </div>
-    <div class="modal-body" style="padding-top: 10px;">
-      <!-- Saturation/Lightness Pad -->
-      <div class="color-pad" id="colorPad" style="position: relative; height: 160px; border-radius: 12px; overflow: hidden; cursor: crosshair; background-color: rgb(255, 0, 0);">
-        <div style="position: absolute; inset: 0; background: linear-gradient(to right, #fff, rgba(255,255,255,0));"></div>
-        <div style="position: absolute; inset: 0; background: linear-gradient(to top, #000, rgba(0,0,0,0));"></div>
-        <div class="color-pad-pointer" id="colorPointer" style="position: absolute; width: 14px; height: 14px; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,0.4); transform: translate(-7px, -7px); pointer-events: none; left: 100%; top: 0%;"></div>
-      </div>
-      
-      <!-- Hue Slider -->
-      <div style="margin-top: 16px; display: flex; align-items: center;">
-        <input type="range" id="colorHueSlider" min="0" max="360" value="0" style="width: 100%; height: 12px; border-radius: 6px; cursor: pointer; -webkit-appearance: none; appearance: none; background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%); margin: 0;">
-      </div>
-
-      <!-- Color Preview & Hex Display -->
-      <div style="display: flex; align-items: center; gap: 12px; margin-top: 16px;">
-        <div id="pickerColorPreview" style="width: 44px; height: 44px; border-radius: 10px; border: 1.5px solid var(--border); box-shadow: inset 0 1px 3px rgba(0,0,0,0.08); background-color: var(--accent); flex-shrink: 0;"></div>
-        <div style="flex: 1;">
-          <label class="lbl" for="pickerHexValue" style="margin-bottom: 4px;">Hex Code</label>
-          <input type="text" id="pickerHexValue" placeholder="#E94560" style="text-transform: uppercase; padding: 8px 12px;" oninput="handlePickerHexInput(this.value)">
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-address-book"></i> Contact Info</div>
+          <div class="form-group"><label class="lbl" for="f_email"><i class="ti ti-mail" style="font-size:12px"></i>
+              Email</label><input type="email" id="f_email" placeholder="alex@email.com" oninput="render()" value="">
+          </div>
+          <div class="form-group"><label class="lbl" for="f_phone"><i class="ti ti-phone" style="font-size:12px"></i>
+              Phone</label><input type="tel" id="f_phone" placeholder="+1 234 567 890" oninput="render()" value="">
+          </div>
+          <div class="two-col">
+            <div class="form-group"><label class="lbl" for="f_city"><i class="ti ti-map-pin" style="font-size:12px"></i>
+                City</label><input type="text" id="f_city" placeholder="New York" oninput="render()" value=""></div>
+            <div class="form-group"><label class="lbl" for="f_country">Country</label><input type="text" id="f_country"
+                placeholder="USA" oninput="render()" value=""></div>
+          </div>
+          <div class="form-group"><label class="lbl" for="f_linkedin"><i class="ti ti-brand-linkedin"
+                style="font-size:12px"></i> LinkedIn</label><input type="url" id="f_linkedin"
+              placeholder="linkedin.com/in/alex" oninput="render()" value=""></div>
+          <div class="form-group"><label class="lbl" for="f_website"><i class="ti ti-world" style="font-size:12px"></i>
+              Website</label><input type="url" id="f_website" placeholder="alexjohnson.design" oninput="render()"
+              value=""></div>
+          <div class="form-group" style="margin-bottom:0"><label class="lbl" for="f_github"><i
+                class="ti ti-brand-github" style="font-size:12px"></i> GitHub</label><input type="url" id="f_github"
+              placeholder="github.com/alex" oninput="render()" value=""></div>
         </div>
       </div>
-    </div>
-    <div class="modal-footer" style="margin-top: 16px;">
-      <button class="btn btn-outline btn-sm" onclick="closeColorPickerModal()">Cancel</button>
-      <button class="btn btn-primary btn-sm" onclick="applyCustomColor()">Select Color</button>
-    </div>
-  </div>
-</div>
 
-<!-- Custom Confirm Modal -->
-<div id="confirmModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" onclick="document.getElementById('confirmCancelBtn').click()">
-  <div class="modal-card" style="max-width: 380px; width: 90%; background: rgba(28, 28, 28, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; overflow: hidden; padding: 0; gap: 0;" onclick="event.stopPropagation()">
-    <div style="padding: 24px 24px 18px; display: flex; flex-direction: column; gap: 14px;">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(233, 69, 96, 0.12); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;">
-          <i class="ti ti-help-circle" style="font-size: 20px;"></i>
+      <!-- WORK TAB -->
+      <div class="tab-body" id="tb-work">
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-briefcase"></i> Work Experience</div>
+          <div id="exp-list"></div>
+          <button class="add-btn" onclick="addEntry('exp')"><i class="ti ti-plus"></i> Add Experience</button>
         </div>
-        <h3 id="confirmTitle" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: #fff; margin: 0;">Confirm Action</h3>
       </div>
-      <div>
-        <p id="confirmMessage" style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.88rem; color: rgba(255, 255, 255, 0.7); line-height: 1.55; margin: 0;"></p>
-      </div>
-    </div>
-    <div style="background: rgba(0, 0, 0, 0.25); padding: 14px 24px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: 0;">
-      <button class="btn btn-outline btn-sm" id="confirmCancelBtn">Cancel</button>
-      <button class="btn btn-primary btn-sm" id="confirmConfirmBtn">Confirm</button>
-    </div>
-  </div>
-</div>
 
-<!-- Custom Download Modal -->
-<div id="downloadModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="downloadTitle" onclick="closeDownloadModal()">
-  <div class="modal-card" style="max-width: 380px; width: 90%; background: rgba(28, 28, 28, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; overflow: hidden; padding: 0; gap: 0;" onclick="event.stopPropagation()">
-    <div style="padding: 24px 24px 18px; display: flex; flex-direction: column; gap: 14px;">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(233, 69, 96, 0.12); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;">
-          <i class="ti ti-download" style="font-size: 20px;"></i>
+      <!-- EDU TAB -->
+      <div class="tab-body" id="tb-edu">
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-school"></i> Education</div>
+          <div id="edu-list"></div>
+          <button class="add-btn" onclick="addEntry('edu')"><i class="ti ti-plus"></i> Add Education</button>
         </div>
-        <h3 id="downloadTitle" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: #fff; margin: 0;">Download PDF</h3>
+
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-certificate"></i> Certifications</div>
+          <div id="cert-list"></div>
+          <button class="add-btn" onclick="addEntry('cert')"><i class="ti ti-plus"></i> Add Certification</button>
+        </div>
+
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-trophy"></i> Awards & Achievements</div>
+          <div id="award-list"></div>
+          <button class="add-btn" onclick="addEntry('award')"><i class="ti ti-plus"></i> Add Award</button>
+        </div>
       </div>
-      <div>
-        <label class="lbl" for="pdfFileNameInput" style="color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 6px; display: block;">File Name</label>
-        <input type="text" id="pdfFileNameInput" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #fff; outline: none; font-family: inherit; font-size: 0.9rem;" placeholder="my-resume">
+
+      <!-- SKILLS TAB -->
+      <div class="tab-body" id="tb-skills">
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-tools"></i> Skills</div>
+          <div style="font-size:.75rem;color:var(--muted);margin-bottom:8px">Type skill + press Enter to add</div>
+          <div class="skills-box" id="skills-area" onclick="document.getElementById('skill-input').focus()">
+            <input class="s-ghost" id="skill-input" placeholder="e.g. Figma, React…" onkeydown="handleSkillKey(event)">
+          </div>
+          <!-- Skill suggestions flex-box container -->
+          <div id="skills-suggestions-wrapper" style="margin-top: 12px; display: none;">
+            <span
+              style="font-size: 0.72rem; color: #535366; font-weight: 700; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Recommended
+              Skills</span>
+            <div id="skillsSuggestionsList" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+          </div>
+        </div>
+
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-language"></i> Languages</div>
+          <div id="lang-list"></div>
+          <button class="add-btn" onclick="addLang()"><i class="ti ti-plus"></i> Add Language</button>
+        </div>
+
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-heart"></i> Interests / Hobbies</div>
+          <div class="form-group" style="margin-bottom:0"><label class="sr-only" for="f_interests">Interests /
+              Hobbies</label><input type="text" id="f_interests" placeholder="Photography, Hiking, Open Source…"
+              oninput="render()" value="UX Research, Photography, Hiking"></div>
+        </div>
       </div>
-    </div>
-    <div style="background: rgba(0, 0, 0, 0.25); padding: 14px 24px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: 0;">
-      <button class="btn btn-outline btn-sm" onclick="closeDownloadModal()">Cancel</button>
-      <button class="btn btn-primary btn-sm" id="downloadConfirmBtn" onclick="generateAndSavePDF()">
-        <i class="ti ti-download" style="font-size: 14px; margin-right: 4px;"></i> Download
-      </button>
+
+      <!-- SECTIONS ORDER TAB -->
+      <div class="tab-body" id="tb-sections">
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-arrows-sort"></i> Drag to Reorder Sections</div>
+          <div style="font-size:.75rem;color:var(--muted);margin-bottom:12px">Drag items to change section order. Toggle
+            eye to show/hide.</div>
+          <div class="reorder-list" id="reorderList"></div>
+        </div>
+      </div>
+
+      <!-- DESIGN TAB -->
+      <div class="tab-body" id="tb-design">
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-brush"></i> Template Presets</div>
+          <div style="font-size:.74rem;color:var(--muted);margin-bottom:12px">Select a template preset. This updates
+            layout, font, accent, and spacing while keeping your content intact.</div>
+          <div class="template-presets-grid" id="templatePresetsGrid"></div>
+        </div>
+
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-color-swatch"></i> Accent Color</div>
+          <div class="color-grid" id="colorGrid"></div>
+          <div class="custom-color-trigger" onclick="openColorPickerModal()">
+            <div class="custom-color-swatch" id="customColorPreview" style="background: var(--accent);"></div>
+            <span style="font-size: .82rem; font-weight: 500; color: var(--text);">Choose Custom Color...</span>
+          </div>
+        </div>
+
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-layout-grid"></i> Layout</div>
+          <div class="layout-grid" id="layoutGrid"></div>
+        </div>
+
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-typography"></i> Font Family</div>
+          <div class="font-grid" id="fontGrid"></div>
+        </div>
+
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-text-size"></i> Typography</div>
+          <div class="range-row"><label class="lbl" for="fontSizeR">Base size</label><input type="range" min="80"
+              max="115" value="100" step="5" id="fontSizeR" oninput="setFontSize(this.value)"><span class="range-val"
+              id="fontSizeV">100%</span></div>
+          <div class="range-row" style="margin-bottom:0"><label class="lbl" for="lineHR">Line height</label><input
+              type="range" min="130" max="200" value="165" step="5" id="lineHR" oninput="setLineH(this.value)"><span
+              class="range-val" id="lineHV">1.65</span></div>
+        </div>
+
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-adjustments-horizontal"></i> Spacing</div>
+          <div class="range-row" style="margin-bottom:0"><label class="lbl" for="secGapR">Section gap</label><input
+              type="range" min="8" max="36" value="20" step="2" id="secGapR" oninput="setSecGap(this.value)"><span
+              class="range-val" id="secGapV">20px</span></div>
+        </div>
+      </div>
+
+      <!-- OPTIMIZER (ASSIST) TAB -->
+      <div class="tab-body" id="tb-assist">
+        <!-- Trust Positioning Disclaimer -->
+        <div
+          style="padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; font-size: 0.74rem; color: var(--muted); line-height: 1.4; margin-bottom: 14px;">
+          <div
+            style="display: flex; align-items: flex-start; gap: 6px; font-weight: 600; color: var(--text); margin-bottom: 3px;">
+            <i class="ti ti-info-circle" style="color: var(--accent); font-size: 14px; margin-top: 1.5px;"></i>
+            Recruiter Readability Assistant
+          </div>
+          Higher scores improve layout parsing and keyword matching in recruiter searches, but do not guarantee
+          interviews. We focus on realistic, data-safe optimization.
+        </div>
+
+        <!-- ATS Score Card -->
+        <div class="form-section-card" style="text-align: center; padding: 24px 16px;">
+          <div class="sec-label" style="justify-content: center; margin-bottom: 12px;"><i class="ti ti-chart-bar"></i>
+            ATS Optimization Score</div>
+          <div style="display: flex; justify-content: center; margin: 16px 0;">
+            <div style="position: relative; display: inline-block;">
+              <div id="atsScoreFill"
+                style="width: 110px; height: 110px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient(var(--accent) 0deg, rgba(0,0,0,0.06) 0deg); box-shadow: inset 0 2px 8px rgba(0,0,0,0.05); padding: 8px;">
+                <div
+                  style="width: 94px; height: 94px; border-radius: 50%; background: var(--surface); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.04);">
+                  <span id="atsScoreVal"
+                    style="font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--text); line-height: 1;">0%</span>
+                  <span
+                    style="font-size: 0.68rem; color: var(--muted); font-weight: 600; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px;">Score</span>
+                </div>
+              </div>
+              <div id="atsScoreDelta"
+                style="position: absolute; top: -5px; right: -15px; font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 800; opacity: 0; pointer-events: none; transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transform: translateY(8px); z-index: 10;">
+              </div>
+            </div>
+          </div>
+          <div id="atsBreakdownPanel"
+            style="display: flex; flex-direction: column; gap: 8px; text-align: left; margin-top: 14px; background: var(--surface2); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+            <!-- Live values rendered by core.js -->
+          </div>
+        </div>
+
+        <!-- Job Description Scanner -->
+        <div class="form-section-card">
+          <div class="sec-label"><i class="ti ti-briefcase"></i> Target Job Description</div>
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label class="lbl">Paste Job Requirements / Description</label>
+            <textarea id="jdInputText" placeholder="Paste the job description here to analyze missing keywords..."
+              style="height: 120px; font-family: inherit; font-size: 0.82rem; line-height: 1.5; resize: vertical;"
+              oninput="triggerJdAnalysis()"></textarea>
+          </div>
+          <div id="jdKeywordsPanel"
+            style="display: flex; flex-direction: column; gap: 8px; background: var(--surface2); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="text-align:center;padding:8px;color:#8896aa;font-size:0.8rem">Paste a Job Description above to
+              scan for missing keywords.</div>
+          </div>
+        </div>
+
+        <!-- Optimization Recommendations Checklist -->
+        <div class="form-section-card" style="margin-bottom: 16px;">
+          <div class="sec-label"><i class="ti ti-list-check"></i> Actionable Checklist</div>
+          <div id="recsListPanel" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- Checklist items rendered by core.js -->
+          </div>
+        </div>
+
+        <!-- ATS Parsing Preview -->
+        <div class="form-section-card" style="margin-bottom: 16px;">
+          <div class="sec-label"
+            style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <span style="display: flex; align-items: center; gap: 6px;"><i class="ti ti-binary"></i> ATS Parsing
+              Preview</span>
+            <button id="toggleParserPreviewBtn" class="btn btn-outline btn-sm"
+              style="padding: 2px 8px; font-size: 0.72rem; height: auto; border-radius: 4px;"
+              onclick="toggleParserPreview()">Show Preview</button>
+          </div>
+          <div style="font-size: 0.74rem; color: var(--muted); margin-bottom: 10px; line-height: 1.4;">
+            Inspect how standard parsing software interprets your layout structure. Real ATS databases read text in
+            chronological order.
+          </div>
+          <div id="parserPreviewContainer" style="display: none; transition: all 0.3s ease;">
+            <div id="parserWarningsPanel" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px;">
+            </div>
+
+            <div
+              style="position: relative; background: #0f172a; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); padding: 12px;">
+              <div
+                style="display: flex; justify-content: space-between; align-items: center; font-size: 0.62rem; color: rgba(255,255,255,0.4); font-family: monospace; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 6px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+                <span>Chronological Plain-Text Output</span>
+                <span>UTF-8 Readability: Stable</span>
+              </div>
+              <pre id="atsRawTextOutput"
+                style="margin: 0; white-space: pre-wrap; font-family: 'Space Mono', monospace; font-size: 0.7rem; color: #cbd5e1; max-height: 180px; overflow-y: auto; line-height: 1.6; text-align: left;"></pre>
+            </div>
+
+            <div style="margin-top: 12px;">
+              <div
+                style="font-size: 0.7rem; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
+                Detected Sections</div>
+              <div id="detectedSectionsFlex" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy Guard Footer -->
+        <div
+          style="text-align: center; font-size: 0.68rem; color: #8896aa; padding: 4px 0 10px 0; border-top: 1px dashed var(--border); margin-top: 12px;">
+          <i class="ti ti-shield-check"
+            style="color: #22c55e; vertical-align: middle; font-size: 12px; margin-right: 2px;"></i>
+          Privacy-First: Analysis runs 100% locally. No resume data is sent to external servers.
+        </div>
+      </div>
+
+      <!-- NAV FOOTER -->
+      <div class="form-nav">
+        <button class="btn btn-outline btn-sm" id="prevBtn" onclick="navStep(-1)"><i class="ti ti-arrow-left"></i>
+          Back</button>
+        <span class="step-label" id="stepLbl">Step 1 / 6</span>
+        <button class="btn btn-primary btn-sm" id="nextBtn" onclick="navStep(1)">Next <i
+            class="ti ti-arrow-right"></i></button>
+      </div>
+    </aside>
+
+    <!-- ══ PREVIEW PANEL ══ -->
+    <main class="preview-panel" role="main">
+      <div class="preview-toolbar">
+        <span class="pt-label"><i class="ti ti-eye" style="font-size:13px;margin-right:4px"></i>Live Preview</span>
+        <div class="zoom-group">
+          <button class="zoom-btn" onclick="zoom(-10)" title="Zoom Out"><i class="ti ti-zoom-out"></i></button>
+          <span class="zoom-label" id="zoomLabel">75%</span>
+          <button class="zoom-btn" onclick="zoom(10)" title="Zoom In"><i class="ti ti-zoom-in"></i></button>
+        </div>
+        <button class="fit-btn" onclick="zoomFit()" title="Fit to window"><i class="ti ti-maximize"
+            style="font-size:12px;margin-right:3px"></i>Fit</button>
+        <button class="fit-btn" onclick="zoomSet(100)"><i class="ti ti-zoom-reset"
+            style="font-size:12px;margin-right:3px"></i>100%</button>
+        <button class="btn btn-outline btn-sm" onclick="window.print()"><i class="ti ti-printer"></i></button>
+        <button class="btn btn-primary btn-sm" onclick="doDownload()"><i class="ti ti-download"></i> PDF</button>
+      </div>
+      <div class="preview-scroll" id="previewScroll">
+        <div class="cv-wrap" id="cvWrap">
+          <div class="cv-doc" id="cvDoc"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Diagnostics Modal -->
+  <div id="diagnosticsModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true"
+    aria-labelledby="diagnosticsTitle">
+    <div class="modal-card"
+      style="max-width: 520px; width: 95%; background: #121214; border: 1.5px solid rgba(255,255,255,0.08); border-radius: 14px; font-family: 'Space Mono', monospace; padding: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.6); overflow: hidden; display: flex; flex-direction: column; gap: 0;">
+      <div
+        style="background: #1c1c1f; padding: 14px 20px; border-bottom: 1.5px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center;">
+        <span id="diagnosticsTitle"
+          style="color: #fff; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i
+            class="ti ti-terminal" style="color: var(--accent); font-size: 16px;"></i> Automated QA Test Suite</span>
+        <button onclick="closeDiagnostics()"
+          style="background: transparent; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 1.1rem; padding: 2px; transition: color 0.2s;"
+          onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'"><i
+            class="ti ti-x"></i></button>
+      </div>
+      <div style="padding: 16px 20px; flex: 1;">
+        <div id="diagTerminal" class="diag-terminal"
+          style="height: 220px; background: #09090b; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 12px; overflow-y: auto; font-size: 0.76rem; line-height: 1.6; color: #a1a1aa; display: flex; flex-direction: column; gap: 6px; box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);">
+          <!-- Diagnostics logs printed here -->
+        </div>
+      </div>
+      <div
+        style="background: #1c1c1f; padding: 14px 20px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1.5px solid rgba(255,255,255,0.06);">
+        <button class="btn btn-outline btn-sm" id="diagCloseBtn" onclick="closeDiagnostics()"
+          style="font-family: inherit; font-size: 0.8rem; height: 34px;">Close</button>
+        <button class="btn btn-primary btn-sm" id="diagRunBtn" onclick="runDiagnostics()"
+          style="font-family: inherit; font-size: 0.8rem; height: 34px;">
+          <i class="ti ti-play" style="font-size: 12px; margin-right: 4px;"></i> Run Diagnostics
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
-<script src="js/templates.js?v=3"></script>
-<script src="js/template-engine.js?v=3"></script>
-<script src="js/state.js?v=3"></script>
-<script src="js/helpers.js?v=3"></script>
-<script src="js/validation.js?v=3"></script>
-<script src="js/intelligence/utils.js?v=3"></script>
-<script src="js/intelligence/lazy-loader.js?v=3"></script>
-<script src="js/intelligence/role-matcher.js?v=3"></script>
-<script src="js/intelligence/bullet-engine.js?v=3"></script>
-<script src="js/intelligence/metrics-detector.js?v=3"></script>
-<script src="js/intelligence/ats-engine.js?v=3"></script>
-<script src="js/intelligence/jd-analyzer.js?v=3"></script>
-<script src="js/intelligence/summary-generator.js?v=3"></script>
-<script src="js/intelligence/skill-engine.js?v=3"></script>
-<script src="js/intelligence/recommendations.js?v=3"></script>
-<script src="js/intelligence/core.js?v=3"></script>
-<script src="js/intelligence/diagnostics.js?v=3"></script>
-<script src="js/handlers.js?v=3"></script>
-<script src="js/ui.js?v=3"></script>
-<script src="js/render.js?v=3"></script>
+  <!-- Crop Modal -->
+  <div id="cropModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true"
+    aria-labelledby="cropTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="cropTitle"
+          style="font-family:'DM Serif Display',serif; font-size:1.2rem; color:var(--text); margin-bottom: 4px;">Crop
+          Profile Photo</h3>
+      </div>
+      <div class="modal-body">
+        <div class="crop-container">
+          <img id="cropImage" src="" alt="Upload preview">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="closeCropModal()">Cancel</button>
+        <button class="btn btn-primary btn-sm" onclick="applyCrop()">Apply Crop</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo Preview Modal -->
+  <div id="previewPhotoModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true"
+    aria-label="Profile Photo Preview" onclick="closePhotoPreview()">
+    <div class="modal-card"
+      style="background: transparent; border: none; box-shadow: none; max-width: 400px; padding: 0;"
+      onclick="event.stopPropagation()">
+      <div class="modal-body" style="padding: 0; display: flex; justify-content: center; align-items: center;">
+        <img id="previewPhotoImage" src="" alt="Profile Photo Preview"
+          style="width: 100%; height: auto; box-shadow: var(--sh2); transition: all 0.3s ease; border: 3px solid #fff;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Color Picker Modal -->
+  <div id="colorPickerModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true"
+    aria-labelledby="colorPickerTitle" onclick="closeColorPickerModal()">
+    <div class="modal-card" style="max-width: 320px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="colorPickerTitle"
+          style="font-family:'DM Serif Display',serif; font-size:1.2rem; color:var(--text); margin-bottom: 4px;">Custom
+          Accent Color</h3>
+      </div>
+      <div class="modal-body" style="padding-top: 10px;">
+        <!-- Saturation/Lightness Pad -->
+        <div class="color-pad" id="colorPad"
+          style="position: relative; height: 160px; border-radius: 12px; overflow: hidden; cursor: crosshair; background-color: rgb(255, 0, 0);">
+          <div style="position: absolute; inset: 0; background: linear-gradient(to right, #fff, rgba(255,255,255,0));">
+          </div>
+          <div style="position: absolute; inset: 0; background: linear-gradient(to top, #000, rgba(0,0,0,0));"></div>
+          <div class="color-pad-pointer" id="colorPointer"
+            style="position: absolute; width: 14px; height: 14px; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,0.4); transform: translate(-7px, -7px); pointer-events: none; left: 100%; top: 0%;">
+          </div>
+        </div>
+
+        <!-- Hue Slider -->
+        <div style="margin-top: 16px; display: flex; align-items: center;">
+          <input type="range" id="colorHueSlider" min="0" max="360" value="0"
+            style="width: 100%; height: 12px; border-radius: 6px; cursor: pointer; -webkit-appearance: none; appearance: none; background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%); margin: 0;">
+        </div>
+
+        <!-- Color Preview & Hex Display -->
+        <div style="display: flex; align-items: center; gap: 12px; margin-top: 16px;">
+          <div id="pickerColorPreview"
+            style="width: 44px; height: 44px; border-radius: 10px; border: 1.5px solid var(--border); box-shadow: inset 0 1px 3px rgba(0,0,0,0.08); background-color: var(--accent); flex-shrink: 0;">
+          </div>
+          <div style="flex: 1;">
+            <label class="lbl" for="pickerHexValue" style="margin-bottom: 4px;">Hex Code</label>
+            <input type="text" id="pickerHexValue" placeholder="#E94560"
+              style="text-transform: uppercase; padding: 8px 12px;" oninput="handlePickerHexInput(this.value)">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="margin-top: 16px;">
+        <button class="btn btn-outline btn-sm" onclick="closeColorPickerModal()">Cancel</button>
+        <button class="btn btn-primary btn-sm" onclick="applyCustomColor()">Select Color</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Confirm Modal -->
+  <div id="confirmModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true"
+    aria-labelledby="confirmTitle" onclick="document.getElementById('confirmCancelBtn').click()">
+    <div class="modal-card"
+      style="max-width: 380px; width: 90%; background: rgba(28, 28, 28, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; overflow: hidden; padding: 0; gap: 0;"
+      onclick="event.stopPropagation()">
+      <div style="padding: 24px 24px 18px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div
+            style="width: 36px; height: 36px; border-radius: 50%; background: rgba(233, 69, 96, 0.12); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;">
+            <i class="ti ti-help-circle" style="font-size: 20px;"></i>
+          </div>
+          <h3 id="confirmTitle"
+            style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: #fff; margin: 0;">
+            Confirm Action</h3>
+        </div>
+        <div>
+          <p id="confirmMessage"
+            style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.88rem; color: rgba(255, 255, 255, 0.7); line-height: 1.55; margin: 0;">
+          </p>
+        </div>
+      </div>
+      <div
+        style="background: rgba(0, 0, 0, 0.25); padding: 14px 24px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: 0;">
+        <button class="btn btn-outline btn-sm" id="confirmCancelBtn">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="confirmConfirmBtn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Download Modal -->
+  <div id="downloadModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true"
+    aria-labelledby="downloadTitle" onclick="closeDownloadModal()">
+    <div class="modal-card"
+      style="max-width: 380px; width: 90%; background: rgba(28, 28, 28, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; overflow: hidden; padding: 0; gap: 0;"
+      onclick="event.stopPropagation()">
+      <div style="padding: 24px 24px 18px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div
+            style="width: 36px; height: 36px; border-radius: 50%; background: rgba(233, 69, 96, 0.12); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;">
+            <i class="ti ti-download" style="font-size: 20px;"></i>
+          </div>
+          <h3 id="downloadTitle"
+            style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: #fff; margin: 0;">
+            Download PDF</h3>
+        </div>
+        <div>
+          <label class="lbl" for="pdfFileNameInput"
+            style="color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 6px; display: block;">File
+            Name</label>
+          <input type="text" id="pdfFileNameInput"
+            style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #fff; outline: none; font-family: inherit; font-size: 0.9rem;"
+            placeholder="my-resume">
+        </div>
+      </div>
+      <div
+        style="background: rgba(0, 0, 0, 0.25); padding: 14px 24px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: 0;">
+        <button class="btn btn-outline btn-sm" onclick="closeDownloadModal()">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="downloadConfirmBtn" onclick="generateAndSavePDF()">
+          <i class="ti ti-download" style="font-size: 14px; margin-right: 4px;"></i> Download
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+  <script src="js/templates.js?v=4"></script>
+  <script src="js/template-engine.js?v=4"></script>
+  <script src="js/state.js?v=4"></script>
+  <script src="js/helpers.js?v=4"></script>
+  <script src="js/validation.js?v=4"></script>
+  <script src="js/intelligence/utils.js?v=4"></script>
+  <script src="js/intelligence/lazy-loader.js?v=4"></script>
+  <script src="js/intelligence/role-matcher.js?v=4"></script>
+  <script src="js/intelligence/bullet-engine.js?v=4"></script>
+  <script src="js/intelligence/metrics-detector.js?v=4"></script>
+  <script src="js/intelligence/ats-engine.js?v=4"></script>
+  <script src="js/intelligence/jd-analyzer.js?v=4"></script>
+  <script src="js/intelligence/summary-generator.js?v=4"></script>
+  <script src="js/intelligence/skill-engine.js?v=4"></script>
+  <script src="js/intelligence/recommendations.js?v=4"></script>
+  <script src="js/intelligence/core.js?v=4"></script>
+  <script src="js/intelligence/diagnostics.js?v=4"></script>
+  <script src="js/handlers.js?v=4"></script>
+  <script src="js/ui.js?v=4"></script>
+  <script src="js/render.js?v=4"></script>
 </body>
+
 </html>
