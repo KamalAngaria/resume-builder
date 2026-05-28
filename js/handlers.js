@@ -31,21 +31,30 @@ function destroyCard(cardId) {
 window.destroyCard = destroyCard;
 
 function swapTemplate(newTemplateId) {
-  // Destroy all existing card instances cleanly
+  // ── Idempotency guard ─────────────────────────────────────────────────────
+  // If the same template is already active, only re-sync the UI highlight.
+  // Never wipe the preview DOM — that causes the blank-preview regression.
+  if (S.templateId === newTemplateId) {
+    if (typeof syncTemplateUI === 'function') syncTemplateUI();
+    return;
+  }
+
+  // ── Switching to a genuinely different template ────────────────────────────
+  // 1. Destroy all existing card autocomplete instances cleanly
   if (window.autocompleteInstances) {
     Object.keys(window.autocompleteInstances).forEach(destroyCard);
   }
-  // Also destroy all editor cards explicitly
+  // 2. Destroy all editor card DOM explicitly
   document.querySelectorAll('.entry-card[data-card-id]').forEach(el => {
     const cardId = el.getAttribute('data-card-id');
     if (cardId) destroyCard(cardId);
   });
 
-  // Clear the preview container explicitly
+  // 3. Clear the preview container (safe — we are loading a new template)
   const doc = document.getElementById('cvDoc');
   if (doc) doc.innerHTML = '';
 
-  // Then apply the new template and re-render
+  // 4. Apply the new template styles + re-render
   if (typeof applyTemplateStyles === 'function') {
     applyTemplateStyles(newTemplateId);
   } else {
@@ -59,6 +68,15 @@ const TAB_IDS = ['info','work','edu','skills','sections','design','assist'];
 let currentTab = 0;
 
 function switchTab(i){
+  // Cancel any pending autocomplete debounce timer to prevent race conditions
+  if (window.autocompleteDebounceTimer) {
+    clearTimeout(window.autocompleteDebounceTimer);
+    window.autocompleteDebounceTimer = null;
+  }
+  // Visually close the suggestions list immediately
+  const suggestionsBox = document.getElementById('role-suggestions');
+  if (suggestionsBox) suggestionsBox.style.display = 'none';
+
   currentTab = i; // Keep state in sync
   document.querySelectorAll('.tab').forEach((t,j)=>{
     const active = j===i;
@@ -559,8 +577,12 @@ function setupIntelligenceHandlers() {
       });
     };
 
-    const debouncedInput = window.ResumeIntel.Utils.debounce(handleInput, 200);
-    fTitle.addEventListener('input', debouncedInput);
+    fTitle.addEventListener('input', () => {
+      if (window.autocompleteDebounceTimer) {
+        clearTimeout(window.autocompleteDebounceTimer);
+      }
+      window.autocompleteDebounceTimer = setTimeout(handleInput, 200);
+    });
 
     fTitle.addEventListener('keydown', (e) => {
       const items = suggestionsBox.querySelectorAll('.role-suggestion-item');
@@ -640,7 +662,7 @@ function selectRole(match) {
   panel.innerHTML = `
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 6px; margin-bottom: 8px;">
       <span style="font-size: 0.78rem; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 4px;"><i class="ti ti-sparkles" style="color:var(--accent); font-size: 13px;"></i> Assistant: ${role.title}</span>
-      <button class="ic-btn" onclick="document.getElementById('smart-role-panel').style.display='none'" style="padding: 2px 6px; font-size: 0.65rem; background: rgba(0,0,0,0.03); border-radius: 4px; border: 1px solid rgba(0,0,0,0.08); color: #475569; cursor: pointer;"><i class="ti ti-x"></i> Hide</button>
+      <button class="ic-btn" onclick="hideAssistantPanel()" aria-label="Hide assistant panel" style="padding: 2px 6px; font-size: 0.65rem; background: rgba(0,0,0,0.03); border-radius: 4px; border: 1px solid rgba(0,0,0,0.08); color: #475569; cursor: pointer;"><i class="ti ti-chevron-up"></i> Hide</button>
     </div>
     <div>
       <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Recommended Skills</span>
@@ -653,7 +675,11 @@ function selectRole(match) {
       </div>
     </div>
   `;
+
+  // Mark visible and show panel; update the show-bar
+  window._assistantVisible = true;
   panel.style.display = 'block';
+  _updateAssistantShowBar(false);
 
   // Render skill suggestions
   renderSkillSuggestions();
@@ -739,3 +765,210 @@ function enhanceBulletPoint(index, event) {
   render();
   showToast("Bullet points improved!");
 }
+
+// ══════════════════════════════════════════════════════════
+// DISTRIBUTED HEARTBEAT & ACTIVE TAB CONFLICT REGISTRY (BUG-10)
+// ══════════════════════════════════════════════════════════
+let tabId = sessionStorage.getItem('cvcraft_tab_id');
+if (!tabId) {
+  tabId = 'tab-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+  sessionStorage.setItem('cvcraft_tab_id', tabId);
+}
+
+function updateTabHeartbeat() {
+  let activeTabs = {};
+  try {
+    activeTabs = JSON.parse(localStorage.getItem('cvcraft_active_tabs')) || {};
+  } catch (e) {}
+
+  const now = Date.now();
+  activeTabs[tabId] = {
+    timestamp: now,
+    activeResumeId: typeof activeResumeId !== 'undefined' ? activeResumeId : ''
+  };
+
+  // Prune dead tabs (older than 8 seconds)
+  for (const id in activeTabs) {
+    if (now - activeTabs[id].timestamp > 8000) {
+      delete activeTabs[id];
+    }
+  }
+
+  localStorage.setItem('cvcraft_active_tabs', JSON.stringify(activeTabs));
+  checkConflicts(activeTabs);
+}
+
+function checkConflicts(activeTabs) {
+  const now = Date.now();
+  let hasConflict = false;
+  const currentActiveId = typeof activeResumeId !== 'undefined' ? activeResumeId : '';
+  
+  for (const id in activeTabs) {
+    if (id !== tabId && activeTabs[id].activeResumeId === currentActiveId && (now - activeTabs[id].timestamp < 8000)) {
+      hasConflict = true;
+      break;
+    }
+  }
+  toggleConflictBanner(hasConflict);
+}
+
+function toggleConflictBanner(show) {
+  const banner = document.getElementById('conflictBanner');
+  if (banner) {
+    banner.style.display = show ? 'block' : 'none';
+  }
+}
+
+function initConflictBanner() {
+  const sidebar = document.getElementById('sidebar');
+  if (!sidebar || document.getElementById('conflictBanner')) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'conflictBanner';
+  banner.className = 'conflict-banner';
+  banner.innerHTML = `
+    <div class="conflict-banner-content">
+      <i class="ti ti-alert-triangle conflict-banner-icon"></i>
+      <span>Active edit in another tab. Changes may conflict!</span>
+    </div>
+  `;
+
+  if (!document.getElementById('conflictBannerStyles')) {
+    const style = document.createElement('style');
+    style.id = 'conflictBannerStyles';
+    style.textContent = `
+      .conflict-banner {
+        background: rgba(245, 158, 11, 0.12);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+        padding: 10px 16px;
+        display: none;
+        animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        z-index: 100;
+      }
+      .conflict-banner-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #f59e0b;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.76rem;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+      .conflict-banner-icon {
+        font-size: 15px;
+        flex-shrink: 0;
+      }
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+          max-height: 0;
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+          max-height: 60px;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  sidebar.insertBefore(banner, sidebar.firstChild);
+}
+
+// Clean up on beforeunload
+window.addEventListener('beforeunload', () => {
+  let activeTabs = {};
+  try {
+    activeTabs = JSON.parse(localStorage.getItem('cvcraft_active_tabs')) || {};
+  } catch (e) {}
+  delete activeTabs[tabId];
+  localStorage.setItem('cvcraft_active_tabs', JSON.stringify(activeTabs));
+});
+
+// ══════════════════════════════════════════════════════════
+// ASSISTANT PANEL — HIDE / SHOW
+// ══════════════════════════════════════════════════════════
+
+/**
+ * Collapses the assistant panel content while keeping the container in the DOM.
+ * Renders a "Show Assistant" restore bar below the panel.
+ */
+function hideAssistantPanel() {
+  const panel = document.getElementById('smart-role-panel');
+  if (!panel) return;
+
+  // Collapse only the content — keep the element in the DOM for layout stability
+  panel.style.display = 'none';
+  window._assistantVisible = false;
+  _updateAssistantShowBar(true);
+}
+
+/**
+ * Restores the assistant panel content that was previously hidden.
+ */
+function showAssistantPanel() {
+  const panel = document.getElementById('smart-role-panel');
+  if (!panel) return;
+
+  // Only show if there is actual content inside the panel
+  if (panel.innerHTML.trim() !== '') {
+    panel.style.display = 'block';
+    window._assistantVisible = true;
+    _updateAssistantShowBar(false);
+  }
+}
+
+/**
+ * Creates or updates the #smart-role-show-bar restore button.
+ * @param {boolean} visible  true = show the bar, false = hide it
+ */
+function _updateAssistantShowBar(visible) {
+  const panel = document.getElementById('smart-role-panel');
+  if (!panel || !panel.parentNode) return;
+
+  let bar = document.getElementById('smart-role-show-bar');
+  if (!bar) {
+    // Create the bar once and insert it as a sibling right after the panel
+    bar = document.createElement('div');
+    bar.id = 'smart-role-show-bar';
+    bar.style.cssText = [
+      'display:none',
+      'margin-top:8px',
+      'text-align:center',
+    ].join(';');
+    bar.innerHTML = `<button
+      onclick="showAssistantPanel()"
+      aria-label="Show assistant panel"
+      style="
+        display:inline-flex; align-items:center; gap:5px;
+        font-size:0.72rem; font-weight:600;
+        color:var(--accent,#535366);
+        background:rgba(83,83,102,0.06);
+        border:1px solid rgba(83,83,102,0.18);
+        border-radius:6px;
+        padding:4px 12px;
+        cursor:pointer;
+        transition:background 0.2s;
+      "
+      onmouseover="this.style.background='rgba(83,83,102,0.13)'"
+      onmouseout="this.style.background='rgba(83,83,102,0.06)'"
+    ><i class="ti ti-sparkles" style="font-size:11px"></i> Show Assistant</button>`;
+    panel.parentNode.insertBefore(bar, panel.nextSibling);
+  }
+
+  bar.style.display = visible ? 'block' : 'none';
+}
+
+// Expose functions to window
+window.updateTabHeartbeat = updateTabHeartbeat;
+window.checkConflicts = checkConflicts;
+window.initConflictBanner = initConflictBanner;
+window.hideAssistantPanel = hideAssistantPanel;
+window.showAssistantPanel = showAssistantPanel;
+window._updateAssistantShowBar = _updateAssistantShowBar;
+

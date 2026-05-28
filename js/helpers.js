@@ -24,10 +24,18 @@ function zoomFit(){
 // ══════════════════════════════════════════════════════════
 function debounce(func, wait) {
   let timeout;
-  return function(...args) {
+  const debounced = function(...args) {
     clearTimeout(timeout);
     timeout = setTimeout(() => func.apply(this, args), wait);
   };
+  debounced.cancel = () => {
+    clearTimeout(timeout);
+  };
+  debounced.flush = () => {
+    clearTimeout(timeout);
+    func.apply(this);
+  };
+  return debounced;
 }
 
 function gv(id){return(document.getElementById(id)||{}).value||'';}
@@ -211,3 +219,119 @@ window.addEventListener('keydown', (e) => {
     }
   }
 });
+
+// ══════════════════════════════════════════════════════════
+// QUOTA-SAFE STORAGE SYSTEM (BUG-07)
+// ══════════════════════════════════════════════════════════
+function getLocalStorageUsageKB() {
+  let total = 0;
+  for (const key in localStorage) {
+    if (localStorage.hasOwnProperty(key)) {
+      total += (localStorage[key].length + key.length) * 2; // UTF-16 bytes
+    }
+  }
+  return total / 1024;
+}
+
+function canDuplicateResume() {
+  const usageKB = getLocalStorageUsageKB();
+  return usageKB < 4500; // Warn/block duplication at 4.5 MB
+}
+
+function safeSave(key, value) {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch (e) {
+    const isQuotaError = e.name === 'QuotaExceededError' || 
+                         e.code === 22 || 
+                         e.name === 'NS_ERROR_DOM_QUOTA_REACHED' ||
+                         e.message.indexOf('quota') !== -1;
+    if (isQuotaError) {
+      showStorageWarning();
+      return false;
+    } else {
+      console.error('Storage error:', e);
+      throw e;
+    }
+  }
+}
+
+function showStorageWarning() {
+  let modal = document.getElementById('quotaModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'quotaModal';
+    modal.className = 'modal-overlay';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'quotaTitle');
+    modal.style.display = 'none';
+    modal.onclick = () => hideModal(modal);
+    modal.innerHTML = `
+      <div class="modal-card" style="max-width: 420px; width: 90%; background: rgba(28, 28, 28, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; overflow: hidden; padding: 0; gap: 0;" onclick="event.stopPropagation()">
+        <div style="padding: 24px 24px 18px; display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(245, 158, 11, 0.12); display: flex; align-items: center; justify-content: center; color: #f59e0b; flex-shrink: 0;">
+              <i class="ti ti-database-exclamation" style="font-size: 20px;"></i>
+            </div>
+            <h3 id="quotaTitle" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: #fff; margin: 0;">Storage Limit Warning</h3>
+          </div>
+          <div>
+            <p style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.88rem; color: rgba(255, 255, 255, 0.7); line-height: 1.55; margin: 0;">
+              Storage is nearly full. Export old resumes as <strong>.cvcraft</strong> files to free up space, then delete them from the list.
+            </p>
+          </div>
+        </div>
+        <div style="background: rgba(0, 0, 0, 0.25); padding: 14px 24px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: 0;">
+          <button class="btn btn-outline btn-sm" onclick="hideModal(document.getElementById('quotaModal'))">Close</button>
+          <button class="btn btn-primary btn-sm" id="quotaExportBtn">Export Active</button>
+          <button class="btn btn-primary btn-sm" id="quotaManageBtn">Manage Resumes</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    document.getElementById('quotaExportBtn').onclick = () => {
+      if (window.exportProject) {
+        window.exportProject();
+      }
+      hideModal(modal);
+    };
+
+    document.getElementById('quotaManageBtn').onclick = () => {
+      hideModal(modal);
+      const dropdown = document.getElementById('resumesDropdown');
+      if (dropdown && !dropdown.classList.contains('open') && window.toggleResumesMenu) {
+        window.toggleResumesMenu();
+      }
+    };
+  }
+  showModal(modal);
+}
+
+// Universal interception via safe monkey-patching
+const _origSetItem = localStorage.setItem;
+localStorage.setItem = function(key, value) {
+  try {
+    _origSetItem.call(localStorage, key, value);
+  } catch (e) {
+    const isQuotaError = e.name === 'QuotaExceededError' || 
+                         e.code === 22 || 
+                         e.name === 'NS_ERROR_DOM_QUOTA_REACHED' ||
+                         e.message.indexOf('quota') !== -1;
+    if (isQuotaError) {
+      showStorageWarning();
+    } else {
+      console.error('Storage error:', e);
+      throw e;
+    }
+  }
+};
+
+// Expose helpers globally
+window.getLocalStorageUsageKB = getLocalStorageUsageKB;
+window.canDuplicateResume = canDuplicateResume;
+window.safeSave = safeSave;
+window.showStorageWarning = showStorageWarning;
+

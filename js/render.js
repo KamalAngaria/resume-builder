@@ -186,8 +186,8 @@ function renderImmediate() {
     </div>`;
   }
   else if (S.layout === 'sidebar-l') {
-    const sideHTML = `
-      <div class="layout-sidebar-sidebar">
+    const headerHTML = `
+      <div class="layout-sidebar-header">
         ${photoHTML ? `<div class="layout-sidebar-photo">${photoHTML}</div>` : ''}
         <div class="layout-sidebar-name">${name}</div>
         ${title ? `<div class="layout-sidebar-title">${title}</div>` : ''}
@@ -195,13 +195,16 @@ function renderImmediate() {
         <div class="layout-sidebar-contacts">
           ${renderContacts('sidebar')}
         </div>
-        ${sideSecs.map(s => renderSidebarSection(s)).join('')}
       </div>`;
     const mainHTML = `
       <div class="layout-sidebar-main">
         ${S.sectionOrder.filter(s => !sideSecs.includes(s)).map(s => renderSection(s, { accent: a })).join('')}
       </div>`;
-    html = `<div class="layout-sidebar-container">${sideHTML + mainHTML}</div>`;
+    const sideHTML = `
+      <div class="layout-sidebar-sidebar">
+        ${sideSecs.map(s => renderSidebarSection(s)).join('')}
+      </div>`;
+    html = `<div class="layout-sidebar-container">${headerHTML + mainHTML + sideHTML}</div>`;
   }
   else if (S.layout === 'minimal') {
     const contacts = renderContacts('minimal');
@@ -547,8 +550,13 @@ function openDownloadModal() {
   const modal = document.getElementById('downloadModal');
   const input = document.getElementById('pdfFileNameInput');
   if (modal && input) {
-    const active = resumes.find(r => r.id === activeResumeId);
-    const defaultName = active ? active.name.replace(/\s+/g, '_') : 'My_Resume';
+    const fName = gv('f_name').trim();
+    let defaultName = 'CVcraft_Resume';
+    if (fName) {
+      defaultName = fName.replace(/\s+/g, '_') + '_Resume';
+    }
+    // Remove invalid filename symbols
+    defaultName = defaultName.replace(/[^a-zA-Z0-9_\-]/g, '');
     input.value = defaultName;
     showModal(modal);
   }
@@ -561,22 +569,129 @@ async function generateAndSavePDF() {
   const input = document.getElementById('pdfFileNameInput');
   if (!input) return;
 
-  const fileName = input.value.trim() || 'My_Resume';
+  let fileName = input.value.trim();
+  
+  // Strip duplicate .pdf suffixes first
+  while (fileName.toLowerCase().endsWith('.pdf')) {
+    fileName = fileName.substring(0, fileName.length - 4).trim();
+  }
+  
+  // Then sanitize invalid filename symbols
+  fileName = fileName.replace(/[^a-zA-Z0-9_\-]/g, '_');
+  fileName = fileName.trim() || 'CVcraft_Resume';
 
-  // Close the download modal to ensure it is hidden from printing
-  closeDownloadModal();
+  const downloadConfirmBtn = document.getElementById('downloadConfirmBtn');
+  const originalBtnText = downloadConfirmBtn ? downloadConfirmBtn.innerHTML : '';
 
-  // Temporarily set document title so the native save dialog suggests the selected file name
-  const originalTitle = document.title;
-  document.title = fileName;
+  // Show loading spinner immediately for instant user visual feedback
+  if (downloadConfirmBtn) {
+    downloadConfirmBtn.disabled = true;
+    downloadConfirmBtn.innerHTML = `<i class="ti ti-loader animate-spin" style="margin-right: 4px;"></i> Preparing ATS-safe PDF...`;
+  }
 
-  // Launch browser native print dialog
-  window.print();
+  const pickerOptions = {
+    suggestedName: fileName + '.pdf',
+    types: [{
+      description: 'PDF Document',
+      accept: {
+        'application/pdf': ['.pdf'],
+      },
+    }],
+  };
 
-  // Restore the original page title after print trigger
-  setTimeout(() => {
-    document.title = originalTitle;
-  }, 1000);
+  try {
+    // 1. Prompt user for save location and name on local OS
+    if (typeof window.showSaveFilePicker === 'function') {
+      const fileHandle = await window.showSaveFilePicker(pickerOptions);
+      
+      closeDownloadModal();
+      
+      const element = document.getElementById('cvDoc');
+      const opt = {
+        margin:       0,
+        filename:     fileName + '.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      const h2p = (typeof window.html2pdf !== 'undefined') ? window.html2pdf : ((typeof html2pdf !== 'undefined') ? html2pdf : null);
+      if (h2p) {
+        const blob = await h2p().set(opt).from(element).output('blob');
+        const writable = await fileHandle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        showToast('PDF Exported Successfully!');
+      } else {
+        throw new Error('html2pdf library not loaded');
+      }
+      
+      if (downloadConfirmBtn) {
+        downloadConfirmBtn.disabled = false;
+        downloadConfirmBtn.innerHTML = originalBtnText;
+      }
+    } else {
+      // Fallback for browsers that do not support showSaveFilePicker (like Firefox/Mobile)
+      closeDownloadModal();
+      
+      const element = document.getElementById('cvDoc');
+      const opt = {
+        margin:       0,
+        filename:     fileName + '.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      const h2p = (typeof window.html2pdf !== 'undefined') ? window.html2pdf : ((typeof html2pdf !== 'undefined') ? html2pdf : null);
+      if (h2p) {
+        await h2p().set(opt).from(element).save();
+      } else {
+        window.print();
+      }
+      
+      if (downloadConfirmBtn) {
+        downloadConfirmBtn.disabled = false;
+        downloadConfirmBtn.innerHTML = originalBtnText;
+      }
+    }
+  } catch (err) {
+    const isAbort = err.name === 'AbortError';
+    if (isAbort) {
+      console.log('User canceled the save location picker.');
+      // Restore button state so user can try again
+      if (downloadConfirmBtn) {
+        downloadConfirmBtn.disabled = false;
+        downloadConfirmBtn.innerHTML = originalBtnText;
+      }
+    } else {
+      console.error('File system write failed, falling back:', err);
+      try {
+        closeDownloadModal();
+        const element = document.getElementById('cvDoc');
+        const opt = {
+          margin:       0,
+          filename:     fileName + '.pdf',
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        const h2p = (typeof window.html2pdf !== 'undefined') ? window.html2pdf : ((typeof html2pdf !== 'undefined') ? html2pdf : null);
+        if (h2p) {
+          await h2p().set(opt).from(element).save();
+        } else {
+          window.print();
+        }
+      } catch (fallbackErr) {
+        console.error('Fallback print failed:', fallbackErr);
+      }
+      
+      if (downloadConfirmBtn) {
+        downloadConfirmBtn.disabled = false;
+        downloadConfirmBtn.innerHTML = originalBtnText;
+      }
+    }
+  }
 }
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -753,9 +868,29 @@ function loadResumeIntoDOM() {
   if (typeof renderSkillSuggestions === 'function') {
     renderSkillSuggestions();
   }
+
+  // ── Assistant panel visibility: respect user's hide/show choice ──────────
+  // Only reset the panel to hidden when switching resumes (panel has no content)
+  // or when the user explicitly hid it (_assistantVisible === false).
+  // Never unconditionally reset — that erases the user's hide/show state.
   const rolePanel = document.getElementById('smart-role-panel');
   if (rolePanel) {
-    rolePanel.style.display = 'none';
+    const hasContent = rolePanel.innerHTML.trim() !== '';
+    if (!hasContent) {
+      // No content: keep it hidden (initial / blank state)
+      rolePanel.style.display = 'none';
+      window._assistantVisible = false;
+      const bar = document.getElementById('smart-role-show-bar');
+      if (bar) bar.style.display = 'none';
+    } else if (window._assistantVisible === false) {
+      // User explicitly hid it — keep it hidden and make sure the show-bar is visible
+      rolePanel.style.display = 'none';
+      if (typeof _updateAssistantShowBar === 'function') _updateAssistantShowBar(true);
+    } else {
+      // User had it open (or it's newly populated) — keep it visible
+      rolePanel.style.display = 'block';
+      if (typeof _updateAssistantShowBar === 'function') _updateAssistantShowBar(false);
+    }
   }
 }
 
@@ -845,6 +980,11 @@ function switchResume(id) {
 
 function createNewResume(e) {
   if (e) e.stopPropagation();
+  if (window.canDuplicateResume && !window.canDuplicateResume()) {
+    if (window.showStorageWarning) window.showStorageWarning();
+    showToast('Creation blocked. Storage limit reached.');
+    return;
+  }
 
   document.querySelectorAll('.entry-card[data-card-id]').forEach(el => {
     const cardId = el.getAttribute('data-card-id');
@@ -961,6 +1101,11 @@ async function loadSampleData(e) {
 
 function duplicateResume(id, e) {
   if (e) e.stopPropagation();
+  if (window.canDuplicateResume && !window.canDuplicateResume()) {
+    if (window.showStorageWarning) window.showStorageWarning();
+    showToast('Duplication blocked. Storage limit reached.');
+    return;
+  }
   const target = resumes.find(r => r.id === id);
   if (!target) return;
 
@@ -1318,6 +1463,15 @@ async function resetActiveResume(e) {
 
 function generateShareLink(e) {
   if (e) e.stopPropagation();
+
+  // Synchronously persist latest state to active resume and clear debounce queue
+  if (typeof debouncedSaveActiveResume !== 'undefined' && typeof debouncedSaveActiveResume.cancel === 'function') {
+    debouncedSaveActiveResume.cancel();
+  }
+  if (typeof saveActiveResume === 'function') {
+    saveActiveResume();
+  }
+
   const active = resumes.find(r => r.id === activeResumeId);
   if (!active) return;
 
@@ -1389,14 +1543,88 @@ function checkUrlShareParam() {
 }
 
 // ══════════════════════════════════════════════════════════
-// INIT
+// CROSS-TAB STATE SYNCHRONIZATION MERGER (BUG-10)
 // ══════════════════════════════════════════════════════════
+function handleCrossTabResumesUpdate(newValue) {
+  let newResumes = [];
+  try {
+    newResumes = JSON.parse(newValue) || [];
+  } catch (e) {
+    return;
+  }
+
+  const incomingActive = newResumes.find(r => r.id === activeResumeId);
+  const localActive = resumes.find(r => r.id === activeResumeId);
+
+  if (!incomingActive || !localActive) {
+    resumes = newResumes;
+    renderResumesList();
+    return;
+  }
+
+  // Compare active resume data to detect conflict on the same resume
+  if (JSON.stringify(incomingActive.data) !== JSON.stringify(localActive.data)) {
+    resumes = newResumes;
+
+    // Load updated active resume state and refresh UI
+    loadState(incomingActive.data);
+    loadResumeIntoDOM();
+    renderImmediate();
+    renderResumesList();
+
+    showToast('Resume refreshed with updates from another tab.');
+  } else {
+    // Keep our unsaved changes in S, but update other resumes in memory
+    resumes = newResumes.map(r => {
+      if (r.id === activeResumeId) {
+        return { ...r, data: deepClone(S) };
+      }
+      return r;
+    });
+    renderResumesList();
+  }
+}
+window.handleCrossTabResumesUpdate = handleCrossTabResumesUpdate;
+
 function init() {
   initResumes();
   // Render the resume preview after loading state
   renderImmediate();
   checkUrlShareParam();
   buildStepBar();
+
+  // Print hooks to cleanly isolate states (BUG-02)
+  window.addEventListener('beforeprint', () => {
+    document.body.classList.add('print-mode');
+  });
+  window.addEventListener('afterprint', () => {
+    document.body.classList.remove('print-mode');
+  });
+
+  // Initialize cross-tab conflict banner & heartbeats (BUG-10)
+  if (typeof initConflictBanner === 'function') {
+    initConflictBanner();
+  }
+  if (typeof updateTabHeartbeat === 'function') {
+    updateTabHeartbeat();
+    setInterval(updateTabHeartbeat, 3000);
+  }
+
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'cvcraft_active_tabs') {
+      try {
+        const activeTabs = JSON.parse(e.newValue) || {};
+        if (typeof checkConflicts === 'function') {
+          checkConflicts(activeTabs);
+        }
+      } catch (err) {}
+    }
+    if (e.key === 'resumes' && e.newValue !== null) {
+      if (typeof handleCrossTabResumesUpdate === 'function') {
+        handleCrossTabResumesUpdate(e.newValue);
+      }
+    }
+  });
 
   // Keyboard navigation support for saved resumes menu dropdown
   const dropdown = document.getElementById('resumesDropdown');
