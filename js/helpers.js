@@ -152,14 +152,101 @@ function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
 let activeModalElements = [];
 let modalFocusBackups = new Map();
 
+function closeTransientUI() {
+  // 1. Close resumesDropdown
+  if (typeof window.closeResumesDropdown === 'function') {
+    window.closeResumesDropdown();
+  } else {
+    const dropdown = document.getElementById('resumesDropdown');
+    if (dropdown) {
+      dropdown.classList.remove('open');
+      const trigger = document.getElementById('resumesTrigger');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  // 2. Close mobile sidebar & overlay
+  if (typeof window.closeSidebar === 'function') {
+    window.closeSidebar();
+  } else {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
+    const mobToggle = document.getElementById('mobToggle');
+    if (mobToggle) {
+      mobToggle.innerHTML = '<i class="ti ti-edit"></i> Edit';
+    }
+  }
+
+  // 3. Close custom select dropdowns
+  document.querySelectorAll('.custom-select-container.open').forEach(c => {
+    c.classList.remove('open');
+    const trigger = c.querySelector('.custom-select-trigger');
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+  });
+
+  // 4. Close role suggestions & clear autocomplete timers
+  const suggestionsBox = document.getElementById('role-suggestions');
+  if (suggestionsBox) suggestionsBox.style.display = 'none';
+  const fTitle = document.getElementById('f_title');
+  if (fTitle) fTitle.setAttribute('aria-expanded', 'false');
+  if (window.autocompleteDebounceTimer) {
+    clearTimeout(window.autocompleteDebounceTimer);
+    window.autocompleteDebounceTimer = null;
+  }
+}
+
+function blockBackgroundTouch(e) {
+  const isCard = e.target.closest('.modal-card');
+  if (!isCard) {
+    e.preventDefault();
+  } else {
+    const card = e.target.closest('.modal-card');
+    if (card.scrollHeight <= card.clientHeight) {
+      e.preventDefault();
+    }
+  }
+}
+
 function showModal(modal) {
   if (!modal) return;
+
+  // 1. Close all transient UI elements first
+  closeTransientUI();
+
+  // 2. Track focus backup and active modal state
   modalFocusBackups.set(modal, document.activeElement);
   modal.style.display = 'flex';
   document.body.classList.add('modal-open');
   activeModalElements.push(modal);
 
-  // Set focus on first focusable input or button inside modal (skip backdrop if focused)
+  // 3. Block mobile touch scrolling leakage on background
+  modal.addEventListener('touchmove', blockBackgroundTouch, { passive: false });
+  modal._touchBlocker = blockBackgroundTouch;
+
+  // 4. Accessibility hook: hide non-modal content from screen readers
+  document.querySelectorAll('header, .app').forEach(el => {
+    el.setAttribute('aria-hidden', 'true');
+  });
+
+  // 5. Backport dynamic overlay click to close unless explicitly disabled
+  if (!modal._hasOverlayClickListener) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        if (modal.dataset.noOverlayClose === 'true') return;
+        const cancelBtn = modal.querySelector('.btn-outline, button[onclick*="close"], button[onclick*="Cancel"], #confirmCancelBtn');
+        if (cancelBtn) {
+          cancelBtn.click();
+        } else {
+          hideModal(modal);
+        }
+      }
+    });
+    modal._hasOverlayClickListener = true;
+  }
+
+  // 6. Set focus on first focusable element inside the modal
   const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
   if (focusable.length > 0) {
     const interactive = Array.from(focusable).find(el => !el.classList.contains('modal-overlay'));
@@ -171,10 +258,24 @@ function showModal(modal) {
 function hideModal(modal) {
   if (!modal) return;
   modal.style.display = 'none';
+
+  // 1. Clean up touch event block
+  if (modal._touchBlocker) {
+    modal.removeEventListener('touchmove', modal._touchBlocker);
+    delete modal._touchBlocker;
+  }
+
   activeModalElements = activeModalElements.filter(m => m !== modal);
+
+  // 2. Restore background and body scrolling when no active modals remain
   if (activeModalElements.length === 0) {
     document.body.classList.remove('modal-open');
+    document.querySelectorAll('header, .app').forEach(el => {
+      el.removeAttribute('aria-hidden');
+    });
   }
+
+  // 3. Restore focus
   const backup = modalFocusBackups.get(modal);
   if (backup) {
     backup.focus();
@@ -189,7 +290,7 @@ window.addEventListener('keydown', (e) => {
 
   if (e.key === 'Escape') {
     e.preventDefault();
-    const cancelBtn = activeModal.querySelector('.btn-outline, button[onclick*="close"], button[onclick*="Cancel"]');
+    const cancelBtn = activeModal.querySelector('.btn-outline, button[onclick*="close"], button[onclick*="Cancel"], #confirmCancelBtn');
     if (cancelBtn) cancelBtn.click();
     else hideModal(activeModal);
     return;
