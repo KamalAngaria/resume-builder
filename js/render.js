@@ -262,8 +262,8 @@ function renderImmediate() {
     <div class="layout-elegant-bottom-bar"></div>`;
   }
 
-  // Prevent redundant DOM updates
-  if (html && html !== lastRenderedHTML) {
+  // Prevent redundant DOM updates (but always render if DOM is empty to recover from any external wipe)
+  if (html && (html !== lastRenderedHTML || !doc.innerHTML || doc.innerHTML.trim() === '')) {
     doc.innerHTML = html;
     lastRenderedHTML = html;
   }

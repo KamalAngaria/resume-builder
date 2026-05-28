@@ -10,7 +10,7 @@ window.deepClone = deepClone;
 // CONFIGURATION CONSTANTS
 // ══════════════════════════════════════════════════════════
 const A4_WIDTH_PX = 794;
-const A4_HEIGHT_PX = 1123;
+const A4_HEIGHT_PX = 1120;
 const MIN_ZOOM = 30;
 const MAX_ZOOM = 150;
 const MAX_FIT_ZOOM = 120;

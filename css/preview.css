@@ -114,7 +114,7 @@
 /* ══ CV DOCUMENT ══ */
 .cv-doc {
   width: 794px;
-  height: 1123px;
+  height: 1120px;
   background: #fff;
   box-shadow: var(--sh2);
   position: relative;
@@ -691,7 +691,7 @@
     margin: 0 !important;
     padding: 0 !important;
     width: 210mm !important;
-    height: 297mm !important;
+    height: 100% !important;
   }
 
   .app,
@@ -700,7 +700,9 @@
   .cv-wrap {
     display: block !important;
     width: 210mm !important;
-    height: 297mm !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
     margin: 0 !important;
     padding: 0 !important;
     transform: none !important;
@@ -712,9 +714,9 @@
     border: none !important;
     margin: 0 !important;
     width: 210mm !important;
-    height: 297mm !important; /* Strict 1-page A4 height constraint */
-    max-height: 297mm !important;
-    min-height: 297mm !important;
+    height: 296.5mm !important; /* Strict 1-page A4 height constraint with 0.5mm subpixel safety margin */
+    max-height: 296.5mm !important;
+    min-height: 296.5mm !important;
     overflow: hidden !important; /* Suppresses page 2/3 overflows */
     box-sizing: border-box !important;
     page-break-after: avoid !important;

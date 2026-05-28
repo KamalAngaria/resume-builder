@@ -50,9 +50,9 @@ function swapTemplate(newTemplateId) {
     if (cardId) destroyCard(cardId);
   });
 
-  // 3. Clear the preview container (safe — we are loading a new template)
+  // 3. Do NOT clear the preview container — this prevents flashes and avoids the blank-preview bug 
+  // when the new template uses the same layout structure. The DOM will be updated synchronously by renderImmediate().
   const doc = document.getElementById('cvDoc');
-  if (doc) doc.innerHTML = '';
 
   // 4. Apply the new template styles + re-render
   if (typeof applyTemplateStyles === 'function') {
@@ -662,7 +662,7 @@ function selectRole(match) {
   panel.innerHTML = `
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 6px; margin-bottom: 8px;">
       <span style="font-size: 0.78rem; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 4px;"><i class="ti ti-sparkles" style="color:var(--accent); font-size: 13px;"></i> Assistant: ${role.title}</span>
-      <button class="ic-btn" onclick="hideAssistantPanel()" aria-label="Hide assistant panel" style="padding: 2px 6px; font-size: 0.65rem; background: rgba(0,0,0,0.03); border-radius: 4px; border: 1px solid rgba(0,0,0,0.08); color: #475569; cursor: pointer;"><i class="ti ti-chevron-up"></i> Hide</button>
+      <button onclick="hideAssistantPanel()" aria-label="Hide assistant panel" style="display: inline-flex; align-items: center; gap: 3px; padding: 3px 8px; font-size: 0.68rem; font-weight: 600; color: var(--accent, #535366); background: rgba(83, 83, 102, 0.06); border: 1px solid rgba(83, 83, 102, 0.18); border-radius: 6px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(83,83,102,0.13)'" onmouseout="this.style.background='rgba(83,83,102,0.06)'"><i class="ti ti-chevron-up" style="font-size: 11px;"></i> Hide</button>
     </div>
     <div>
       <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Recommended Skills</span>
