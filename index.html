@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-PC9NKQG7');</script>
+  <!-- End Google Tag Manager -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Premium ATS Resume Builder | CVcraft Pro</title>
-  <meta name="description" content="Build handcrafted, ATS-optimized, recruiter-grade resumes that actually get read. Zero signups, 100% private, runs entirely in your browser.">
+  <meta name="description"
+    content="Build handcrafted, ATS-optimized, recruiter-grade resumes that actually get read. Zero signups, 100% private, runs entirely in your browser.">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
   <link rel="stylesheet" href="css/landing.css">
 </head>
+
 <body>
+
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PC9NKQG7" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
   <!-- Sticky Navbar -->
   <header class="nav-wrapper" id="navbar">
@@ -16,7 +34,7 @@
       <a href="#" class="nav-logo">
         CV<span class="dot">.</span>craft <span class="tag">PRO</span>
       </a>
-      
+
       <ul class="nav-links" id="navMenu">
         <li><a href="#features" class="nav-link">Features</a></li>
         <li><a href="#fail" class="nav-link">Why ATS Fail</a></li>
@@ -39,16 +57,19 @@
     <div class="container hero-grid">
       <div class="hero-content scroll-reveal">
         <div class="hero-tagline">Recruiter-Grade CV System</div>
-        <h1 class="hero-headline">Build ATS-Friendly Resumes That <span class="text-gradient">Actually Get Read</span></h1>
+        <h1 class="hero-headline">Build ATS-Friendly Resumes That <span class="text-gradient">Actually Get Read</span>
+        </h1>
         <p class="hero-subheadline">
-          Stop getting filtered. CVcraft Pro formats your layout for standard ATS parsing algorithms, optimizes readability, and runs 100% locally in your browser. No signups, no tracking, just clean professional design.
+          Stop getting filtered. CVcraft Pro formats your layout for standard ATS parsing algorithms, optimizes
+          readability, and runs 100% locally in your browser. No signups, no tracking, just clean professional design.
         </p>
-        
+
         <div class="hero-ctas">
           <a href="resume.html" class="btn-premium primary"><i class="ti ti-plus"></i> Create Resume</a>
-          <a href="resume.html?import=1" class="btn-premium secondary"><i class="ti ti-upload"></i> Improve Existing Resume</a>
+          <a href="resume.html?import=1" class="btn-premium secondary"><i class="ti ti-upload"></i> Improve Existing
+            Resume</a>
         </div>
-        
+
         <div class="hero-trust-row">
           <div class="trust-item"><i class="ti ti-shield-check"></i> ATS Safe Layouts</div>
           <div class="trust-item"><i class="ti ti-lock"></i> Private & Offline</div>
@@ -56,7 +77,7 @@
           <div class="trust-item"><i class="ti ti-user-minus"></i> Zero Signup</div>
         </div>
       </div>
-      
+
       <!-- 3D Hero Experience -->
       <div class="hero-visual">
         <div class="parallax-container">
@@ -71,14 +92,15 @@
                 <span><i class="ti ti-brand-linkedin"></i> linkedin.com/in/sarah</span>
               </div>
             </div>
-            
+
             <div class="resume-section-mock">
               <div class="resume-section-title-mock">Professional Summary</div>
               <div class="resume-item-desc-mock">
-                Result-driven Systems Engineer with 8+ years of experience specializing in cloud architecture, Kubernetes container orchestration, and high-throughput server deployments.
+                Result-driven Systems Engineer with 8+ years of experience specializing in cloud architecture,
+                Kubernetes container orchestration, and high-throughput server deployments.
               </div>
             </div>
-            
+
             <div class="resume-section-mock">
               <div class="resume-section-title-mock">Work Experience</div>
               <div class="resume-item-mock">
@@ -87,7 +109,8 @@
                   <span>2022 - Present</span>
                 </div>
                 <div class="resume-item-desc-mock">
-                  • Led migration of 120+ microservices to Kubernetes clusters, reducing infrastructure costs by 34% and improving load times.
+                  • Led migration of 120+ microservices to Kubernetes clusters, reducing infrastructure costs by 34% and
+                  improving load times.
                 </div>
               </div>
               <div class="resume-item-mock">
@@ -96,12 +119,13 @@
                   <span>2018 - 2022</span>
                 </div>
                 <div class="resume-item-desc-mock">
-                  • Designed automated CI/CD deployment pipelines using Jenkins and Terraform, reducing release cycles from days to under 15 minutes.
+                  • Designed automated CI/CD deployment pipelines using Jenkins and Terraform, reducing release cycles
+                  from days to under 15 minutes.
                 </div>
               </div>
             </div>
           </div>
-          
+
           <!-- Layer 2: Parser Highlight Overlay -->
           <div class="resume-card card-overlay-parser animated-float-2">
             <div class="parser-status">
@@ -115,7 +139,7 @@
               <span>Parsing Style: Linear UTF-8</span>
             </div>
           </div>
-          
+
           <!-- Layer 3: ATS Score Badge -->
           <div class="resume-card card-overlay-score animated-float-3">
             <div class="score-circle-mock">98%</div>
@@ -139,15 +163,19 @@
               <button class="scan-toggle-btn" id="btnScanGood">ATS Linear Layout</button>
             </div>
           </div>
-          
+
           <div class="scan-content-container">
             <!-- Bad Resume Mockup -->
             <div class="mock-resume-bad" id="resumeBad">
               <div class="laser-line red" id="laserBad"></div>
               <div class="resume-col-left">
                 <div class="circle-avatar-mock"></div>
-                <div class="bar-skill-mock">Figma <span style="float:right">90%</span><div class="bar-fill" style="width:90%"></div></div>
-                <div class="bar-skill-mock">React <span style="float:right">70%</span><div class="bar-fill" style="width:70%"></div></div>
+                <div class="bar-skill-mock">Figma <span style="float:right">90%</span>
+                  <div class="bar-fill" style="width:90%"></div>
+                </div>
+                <div class="bar-skill-mock">React <span style="float:right">70%</span>
+                  <div class="bar-fill" style="width:70%"></div>
+                </div>
               </div>
               <div class="resume-col-right">
                 <div class="headline-mock-name">Johnathan Miller</div>
@@ -157,7 +185,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Good Resume Mockup (hidden initially) -->
             <div class="mock-resume-good" id="resumeGood" style="display:none">
               <div class="laser-line green" id="laserGood"></div>
@@ -171,7 +199,7 @@
               </div>
             </div>
           </div>
-          
+
           <!-- Live Scan Output Log -->
           <div class="scan-output-log">
             <div class="log-title"><i class="ti ti-terminal"></i> Parser Raw Output Stream</div>
@@ -179,34 +207,40 @@
           </div>
         </div>
       </div>
-      
+
       <div class="fail-text-content scroll-reveal stagger-1">
         <div class="editorial-eyebrow">The Hidden Gatekeeper</div>
-        <h2 class="section-headline">Why Designed Resumes <span class="text-gradient">Never Reach the Recruiter</span></h2>
+        <h2 class="section-headline">Why Designed Resumes <span class="text-gradient">Never Reach the Recruiter</span>
+        </h2>
         <p class="section-desc">
-          Modern Applicant Tracking Systems (ATS) don't read resumes like humans do. They convert documents into a single column of raw text. When templates use complex sidebars or graphical meters, the text is extracted in a jumbled reading order.
+          Modern Applicant Tracking Systems (ATS) don't read resumes like humans do. They convert documents into a
+          single column of raw text. When templates use complex sidebars or graphical meters, the text is extracted in a
+          jumbled reading order.
         </p>
-        
+
         <ul class="fail-bullet-list">
           <li>
             <div class="bullet-icon-wrapper"><i class="ti ti-columns-off"></i></div>
             <div>
               <h4 class="bullet-heading">Column Mismatch Parsing</h4>
-              <p class="bullet-text">When text reads left-to-right across two separate columns, dates get merged with wrong jobs, breaking chronological matching.</p>
+              <p class="bullet-text">When text reads left-to-right across two separate columns, dates get merged with
+                wrong jobs, breaking chronological matching.</p>
             </div>
           </li>
           <li>
             <div class="bullet-icon-wrapper"><i class="ti ti-chart-bar-off"></i></div>
             <div>
               <h4 class="bullet-heading">Skill Charts are Invisible</h4>
-              <p class="bullet-text">Graphic meters, progress bars, and icon indicators are ignored by parser algorithms. Your 5-star rating registers as 0 keywords.</p>
+              <p class="bullet-text">Graphic meters, progress bars, and icon indicators are ignored by parser
+                algorithms. Your 5-star rating registers as 0 keywords.</p>
             </div>
           </li>
           <li>
             <div class="bullet-icon-wrapper"><i class="ti ti-alert-triangle"></i></div>
             <div>
               <h4 class="bullet-heading">Unparseable Font Encodings</h4>
-              <p class="bullet-text">Exporting from template builders often encodes letters incorrectly, turning your text into gibberish in the recruiter's search index.</p>
+              <p class="bullet-text">Exporting from template builders often encodes letters incorrectly, turning your
+                text into gibberish in the recruiter's search index.</p>
             </div>
           </li>
         </ul>
@@ -220,7 +254,8 @@
         <div class="editorial-eyebrow">Interactive Sandbox</div>
         <h2 class="section-headline">Watch the Parser <span class="text-gradient">Deconstruct Your CV</span></h2>
         <p class="section-desc">
-          See exactly how a recruiter's parser extracts text and matches keywords in real time. Our builder layouts are designed from the ground up to prevent word jumbling, encoding failures, and section skips.
+          See exactly how a recruiter's parser extracts text and matches keywords in real time. Our builder layouts are
+          designed from the ground up to prevent word jumbling, encoding failures, and section skips.
         </p>
         <div class="demo-stats-row">
           <div class="demo-stat">
@@ -232,9 +267,10 @@
             <span class="stat-label">Server Delay (Local Processing)</span>
           </div>
         </div>
-        <button class="btn-premium secondary" id="btnRestartDemo"><i class="ti ti-rotate-clockwise"></i> Re-run Parser Simulation</button>
+        <button class="btn-premium secondary" id="btnRestartDemo"><i class="ti ti-rotate-clockwise"></i> Re-run Parser
+          Simulation</button>
       </div>
-      
+
       <div class="demo-visual-panel scroll-reveal stagger-1">
         <div class="parser-sandbox">
           <!-- Left side: Visual Document Mockup -->
@@ -249,20 +285,23 @@
                 <h4 class="paper-sec-title">EXPERIENCE</h4>
                 <div class="paper-job">
                   <div class="job-meta">Lead DevOps — CoreSolutions (2021-2025)</div>
-                  <div class="job-bullet">Deployed <span class="kw-hl" data-kw="docker">Docker</span> and Kubernetes microservices.</div>
-                  <div class="job-bullet">Built continuous <span class="kw-hl" data-kw="cicd">CI/CD</span> pipelines.</div>
+                  <div class="job-bullet">Deployed <span class="kw-hl" data-kw="docker">Docker</span> and Kubernetes
+                    microservices.</div>
+                  <div class="job-bullet">Built continuous <span class="kw-hl" data-kw="cicd">CI/CD</span> pipelines.
+                  </div>
                   <div class="job-bullet">Managed databases on AWS.</div>
                 </div>
               </div>
               <div class="paper-section" id="docSecSkills">
                 <h4 class="paper-sec-title">SKILLS</h4>
                 <p class="paper-skills-list">
-                  <span class="kw-hl" data-kw="docker">Docker</span>, Kubernetes, <span class="kw-hl" data-kw="cicd">CI/CD</span>, Python, AWS, PostgreSQL
+                  <span class="kw-hl" data-kw="docker">Docker</span>, Kubernetes, <span class="kw-hl"
+                    data-kw="cicd">CI/CD</span>, Python, AWS, PostgreSQL
                 </p>
               </div>
             </div>
           </div>
-          
+
           <!-- Right side: Extracted Text Terminal -->
           <div class="sandbox-terminal-side">
             <div class="sandbox-term-header">
@@ -291,9 +330,10 @@
         <div class="editorial-eyebrow">Recruiter-Vetted Blueprints</div>
         <h2 class="section-headline">Engineered for the <span class="text-gradient">Human Eye & Parsing Bots</span></h2>
         <p class="section-desc">
-          Select from five distinct structures engineered to pass ATS extraction while remaining visually striking to hiring managers.
+          Select from five distinct structures engineered to pass ATS extraction while remaining visually striking to
+          hiring managers.
         </p>
-        
+
         <!-- Vertical Tab List -->
         <div class="template-selector-list">
           <button class="template-selector-btn active" data-template="executive">
@@ -322,20 +362,22 @@
             <span class="sel-tag">Skill-First</span>
           </button>
         </div>
-        <div class="template-cta-wrap scroll-reveal" style="margin-top: 24px; display: flex; justify-content: flex-start;">
-          <button id="btnUseSelectedTemplate" class="btn-premium primary" style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px 28px; width: auto; min-height: 48px; border: none;">
+        <div class="template-cta-wrap scroll-reveal"
+          style="margin-top: 24px; display: flex; justify-content: flex-start;">
+          <button id="btnUseSelectedTemplate" class="btn-premium primary"
+            style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px 28px; width: auto; min-height: 48px; border: none;">
             <i class="ti ti-sparkles"></i> Customize Selected Template
           </button>
         </div>
       </div>
-      
+
       <div class="templates-right scroll-reveal stagger-1">
         <div class="template-preview-wrapper">
           <!-- Shadow glow behind card -->
           <div class="preview-glow"></div>
-          
+
           <!-- Interactive Mockup Cards (One active at a time) -->
-          
+
           <!-- Executive Minimal (tmplExecutive) -->
           <div class="tmpl-mockup-card active" id="tmplExecutive" data-template="executive">
             <div class="tmpl-doc executive-style">
@@ -344,24 +386,28 @@
                 <div class="exec-title">Managing Director, Strategy & Operations</div>
                 <div class="exec-contact">elizabeth.vance@consulting.com • +1 (555) 321-4567 • New York, NY</div>
               </div>
-              
+
               <div class="exec-section">
                 <div class="exec-summary">
-                  Enterprise strategist with 14+ years of experience leading cross-functional teams in digital transformation, organizational design, and market expansion. Proven track record driving $100M+ corporate initiatives.
+                  Enterprise strategist with 14+ years of experience leading cross-functional teams in digital
+                  transformation, organizational design, and market expansion. Proven track record driving $100M+
+                  corporate initiatives.
                 </div>
               </div>
-              
+
               <div class="exec-section">
                 <div class="exec-sec-title">Professional Experience</div>
-                
+
                 <div class="exec-item">
                   <div class="exec-item-header">
                     <span class="exec-role">Principal Consultant</span>
                     <span class="exec-company-date">McKinsey & Company | 2019 – Present</span>
                   </div>
                   <div class="exec-bullets">
-                    <div class="exec-bullet">• Formulated global supply chain strategy for Fortune 50 consumer goods group, realizing $35M in annual cost reductions.</div>
-                    <div class="exec-bullet">• Guided executive leadership through a $120M digital integration program across European business units.</div>
+                    <div class="exec-bullet">• Formulated global supply chain strategy for Fortune 50 consumer goods
+                      group, realizing $35M in annual cost reductions.</div>
+                    <div class="exec-bullet">• Guided executive leadership through a $120M digital integration program
+                      across European business units.</div>
                   </div>
                 </div>
 
@@ -371,11 +417,12 @@
                     <span class="exec-company-date">Accenture | 2015 – 2019</span>
                   </div>
                   <div class="exec-bullets">
-                    <div class="exec-bullet">• Designed market entry strategy for a high-growth SaaS enterprise, capturing 12% market share within 18 months.</div>
+                    <div class="exec-bullet">• Designed market entry strategy for a high-growth SaaS enterprise,
+                      capturing 12% market share within 18 months.</div>
                   </div>
                 </div>
               </div>
-              
+
               <div class="exec-footer-grid">
                 <div class="exec-section">
                   <div class="exec-sec-title">Education</div>
@@ -383,11 +430,12 @@
                     <strong>Master of Business Administration (MBA)</strong> — Harvard Business School
                   </div>
                 </div>
-                
+
                 <div class="exec-section">
                   <div class="exec-sec-title">Expertise</div>
                   <div class="exec-skills">
-                    Corporate Strategy, Digital Transformation, Executive Leadership, M&A Integration, Financial Modeling
+                    Corporate Strategy, Digital Transformation, Executive Leadership, M&A Integration, Financial
+                    Modeling
                   </div>
                 </div>
               </div>
@@ -396,7 +444,7 @@
               <span class="btn-premium primary"><i class="ti ti-sparkles"></i> Customize Template</span>
             </div>
           </div>
-          
+
           <!-- Modern Tech (tmplTech) -->
           <div class="tmpl-mockup-card" id="tmplTech" data-template="tech">
             <div class="tmpl-doc tech-style">
@@ -405,25 +453,28 @@
                 <div class="tech-title">Lead Infrastructure Architect</div>
                 <div class="tech-contact">alex.chen@infra.dev • github.com/alechen • San Francisco, CA</div>
               </div>
-              
+
               <div class="tech-section">
                 <div class="tech-sec-title">// Profile Summary</div>
                 <div class="tech-desc">
-                  Systems architect specializing in high-performance cloud networking, container orchestration, and real-time infrastructure automation. Passionate about developer tools and zero-downtime deployments.
+                  Systems architect specializing in high-performance cloud networking, container orchestration, and
+                  real-time infrastructure automation. Passionate about developer tools and zero-downtime deployments.
                 </div>
               </div>
-              
+
               <div class="tech-section">
                 <div class="tech-sec-title">// Technical Experience</div>
-                
+
                 <div class="tech-item">
                   <div class="tech-item-header">
                     <strong class="tech-role">Lead Systems Engineer</strong>
                     <span class="tech-meta">Vercel | 2022 – Present</span>
                   </div>
                   <div class="tech-bullets">
-                    <div class="tech-bullet">• Re-architected edge routing fabric handling 50B+ weekly requests, lowering average latency by 14ms.</div>
-                    <div class="tech-bullet">• Automated container provisioning workflows, reducing cold start deployment delays from 4s to 450ms.</div>
+                    <div class="tech-bullet">• Re-architected edge routing fabric handling 50B+ weekly requests,
+                      lowering average latency by 14ms.</div>
+                    <div class="tech-bullet">• Automated container provisioning workflows, reducing cold start
+                      deployment delays from 4s to 450ms.</div>
                   </div>
                 </div>
 
@@ -433,11 +484,12 @@
                     <span class="tech-meta">Stripe | 2018 – 2022</span>
                   </div>
                   <div class="tech-bullets">
-                    <div class="tech-bullet">• Spearheaded multi-region database replication over Kubernetes, maintaining 99.999% system uptime during peaks.</div>
+                    <div class="tech-bullet">• Spearheaded multi-region database replication over Kubernetes,
+                      maintaining 99.999% system uptime during peaks.</div>
                   </div>
                 </div>
               </div>
-              
+
               <div class="tech-section">
                 <div class="tech-sec-title">// Education & Competencies</div>
                 <div class="tech-grid">
@@ -460,7 +512,7 @@
               <span class="btn-premium primary"><i class="ti ti-sparkles"></i> Customize Template</span>
             </div>
           </div>
-          
+
           <!-- Creative Professional (tmplCreative) -->
           <div class="tmpl-mockup-card" id="tmplCreative" data-template="creative">
             <div class="tmpl-doc creative-style">
@@ -469,16 +521,17 @@
                 <div class="creat-title">Senior Product Designer</div>
                 <div class="creat-contact">elena.rostova@design.io • elena.design • Brooklyn, NY</div>
               </div>
-              
+
               <div class="creat-section">
                 <div class="creat-summary">
-                  Interface designer focused on interactive systems, custom design systems, and delightful user experiences. Bridging the gap between engineering efficiency and polished visual design.
+                  Interface designer focused on interactive systems, custom design systems, and delightful user
+                  experiences. Bridging the gap between engineering efficiency and polished visual design.
                 </div>
               </div>
-              
+
               <div class="creat-section">
                 <div class="creat-sec-title">Work Experience</div>
-                
+
                 <div class="creat-item">
                   <div class="creat-item-header">
                     <span class="creat-role">Lead Designer</span>
@@ -486,8 +539,10 @@
                     <span class="creat-date">2021 – Present</span>
                   </div>
                   <div class="creat-bullets">
-                    <div class="creat-bullet">• Led redesign of layout engine controls, increasing workspace retention metrics by 32%.</div>
-                    <div class="creat-bullet">• Developed and scaled internal component library used by 10,000+ creators.</div>
+                    <div class="creat-bullet">• Led redesign of layout engine controls, increasing workspace retention
+                      metrics by 32%.</div>
+                    <div class="creat-bullet">• Developed and scaled internal component library used by 10,000+
+                      creators.</div>
                   </div>
                 </div>
 
@@ -498,11 +553,12 @@
                     <span class="creat-date">2018 – 2021</span>
                   </div>
                   <div class="creat-bullets">
-                    <div class="creat-bullet">• Designed collaborative block templates, driving 15% growth in team onboarding cycles.</div>
+                    <div class="creat-bullet">• Designed collaborative block templates, driving 15% growth in team
+                      onboarding cycles.</div>
                   </div>
                 </div>
               </div>
-              
+
               <div class="creat-footer-row">
                 <div class="creat-footer-item">
                   <div class="creat-sec-title">Education</div>
@@ -518,7 +574,7 @@
               <span class="btn-premium primary"><i class="ti ti-sparkles"></i> Customize Template</span>
             </div>
           </div>
-          
+
           <!-- Corporate Classic (tmplClassic) -->
           <div class="tmpl-mockup-card" id="tmplClassic" data-template="classic">
             <div class="tmpl-doc classic-style">
@@ -527,24 +583,27 @@
                 <div class="class-title">Vice President, Financial Analysis</div>
                 <div class="class-contact">m.sterling@capital.com | +1 (555) 789-0123 | Chicago, IL</div>
               </div>
-              
+
               <div class="class-section">
                 <div class="class-summary">
-                  Analytical financial officer with 12+ years managing investment portfolios, corporate forecasting, and asset allocations. Expert in treasury management, risk mitigation, and SEC reporting.
+                  Analytical financial officer with 12+ years managing investment portfolios, corporate forecasting, and
+                  asset allocations. Expert in treasury management, risk mitigation, and SEC reporting.
                 </div>
               </div>
-              
+
               <div class="class-section">
                 <div class="class-sec-title">PROFESSIONAL EXPERIENCE</div>
-                
+
                 <div class="class-item">
                   <div class="class-item-header">
                     <strong>Vice President, Finance</strong> — Vanguard
                     <span style="float: right;">2020 – Present</span>
                   </div>
                   <div class="class-bullets">
-                    <div class="class-bullet">• Supervised financial modeling for a $450M equity portfolio, achieving a 14.8% annualized return.</div>
-                    <div class="class-bullet">• Standardized financial reporting templates across 6 departments, saving 40 hours of monthly manual entry.</div>
+                    <div class="class-bullet">• Supervised financial modeling for a $450M equity portfolio, achieving a
+                      14.8% annualized return.</div>
+                    <div class="class-bullet">• Standardized financial reporting templates across 6 departments, saving
+                      40 hours of monthly manual entry.</div>
                   </div>
                 </div>
 
@@ -554,11 +613,12 @@
                     <span style="float: right;">2015 – 2020</span>
                   </div>
                   <div class="class-bullets">
-                    <div class="class-bullet">• Led valuation research for 18 M&A transactions totaling $1.2B in volume.</div>
+                    <div class="class-bullet">• Led valuation research for 18 M&A transactions totaling $1.2B in volume.
+                    </div>
                   </div>
                 </div>
               </div>
-              
+
               <div class="class-section">
                 <div class="class-sec-title">EDUCATION</div>
                 <div class="class-edu">
@@ -577,7 +637,7 @@
               <span class="btn-premium primary"><i class="ti ti-sparkles"></i> Customize Template</span>
             </div>
           </div>
-          
+
           <!-- Fresher Smart (tmplFresher) -->
           <div class="tmpl-mockup-card" id="tmplFresher" data-template="fresher">
             <div class="tmpl-doc fresher-style">
@@ -586,13 +646,14 @@
                 <div class="fresh-title">Junior Software Developer</div>
                 <div class="fresh-contact">devon.martinez@edu.org • github.com/devonm • Austin, TX</div>
               </div>
-              
+
               <div class="fresh-section">
                 <div class="fresh-summary">
-                  Recent Computer Science honors graduate with experience building client-side tools, local file servers, and web automation scripts. Eager to contribute to high-scale infrastructure projects.
+                  Recent Computer Science honors graduate with experience building client-side tools, local file
+                  servers, and web automation scripts. Eager to contribute to high-scale infrastructure projects.
                 </div>
               </div>
-              
+
               <div class="fresh-section">
                 <div class="fresh-sec-title">Education</div>
                 <div class="fresh-edu-item">
@@ -603,16 +664,17 @@
                   <div class="fresh-edu-school">University of Texas at Austin</div>
                 </div>
               </div>
-              
+
               <div class="fresh-section">
                 <div class="fresh-sec-title">Academic Projects</div>
-                
+
                 <div class="fresh-item">
                   <div class="fresh-item-header">
                     <strong>Lead Developer</strong> — Open-Source Shell Engine
                   </div>
                   <div class="fresh-bullets">
-                    <div class="fresh-bullet">• Designed a custom Linux shell with pipeline redirection and background execution, utilized by 200+ students.</div>
+                    <div class="fresh-bullet">• Designed a custom Linux shell with pipeline redirection and background
+                      execution, utilized by 200+ students.</div>
                   </div>
                 </div>
 
@@ -621,11 +683,12 @@
                     <strong>Full Stack Developer</strong> — Client Task Scheduler
                   </div>
                   <div class="fresh-bullets">
-                    <div class="fresh-bullet">• Built a local offline-first task board utilizing local storage, reducing page weight to 12kb.</div>
+                    <div class="fresh-bullet">• Built a local offline-first task board utilizing local storage, reducing
+                      page weight to 12kb.</div>
                   </div>
                 </div>
               </div>
-              
+
               <div class="fresh-section">
                 <div class="fresh-sec-title">Core Competencies</div>
                 <div class="fresh-skills-grid">
@@ -644,7 +707,7 @@
               <span class="btn-premium primary"><i class="ti ti-sparkles"></i> Customize Template</span>
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>
@@ -654,12 +717,14 @@
     <div class="container">
       <div class="features-header scroll-reveal">
         <div class="editorial-eyebrow">Product Capabilities</div>
-        <h2 class="section-headline">Everything Engineered for <span class="text-gradient">Higher Response Rates</span></h2>
+        <h2 class="section-headline">Everything Engineered for <span class="text-gradient">Higher Response Rates</span>
+        </h2>
         <p class="section-desc">
-          A suite of local, browser-based diagnostic engines designed to optimize how recruiters discover and read your background.
+          A suite of local, browser-based diagnostic engines designed to optimize how recruiters discover and read your
+          background.
         </p>
       </div>
-      
+
       <!-- Asymmetrical Grid Layout -->
       <div class="features-grid">
         <!-- Feature 1: Large (ATS Optimization & Keyword Scanner) -->
@@ -667,7 +732,8 @@
           <div class="feat-badge"><i class="ti ti-scan-eye"></i> Layout Parsing</div>
           <h3 class="feat-title">ATS Optimization & Local Keyword Scanner</h3>
           <p class="feat-text">
-            Automatically maps headings, work experience, and educational intervals using parser-friendly UTF-8 encoding. Instantly scan your resume against job requirements to detect missing core competencies.
+            Automatically maps headings, work experience, and educational intervals using parser-friendly UTF-8
+            encoding. Instantly scan your resume against job requirements to detect missing core competencies.
           </p>
           <div class="feat-visual keyword-diag-mock">
             <div class="mock-kw-tag found"><i class="ti ti-check"></i> Kubernetes</div>
@@ -676,13 +742,14 @@
             <div class="mock-kw-tag found"><i class="ti ti-check"></i> Python</div>
           </div>
         </div>
-        
+
         <!-- Feature 2: Medium (Privacy First & Offline Support) -->
         <div class="feat-card feat-medium scroll-reveal stagger-1">
           <div class="feat-badge"><i class="ti ti-shield-lock"></i> Security</div>
           <h3 class="feat-title">100% Client-Side. Private by Design.</h3>
           <p class="feat-text">
-            Your data never exits your browser. No cloud storage, no account tracking, and 100% offline support. Zero telemetry means your personal information remains strictly personal.
+            Your data never exits your browser. No cloud storage, no account tracking, and 100% offline support. Zero
+            telemetry means your personal information remains strictly personal.
           </p>
           <div class="feat-visual privacy-badge-mock">
             <div class="shield-mock-circle">
@@ -691,26 +758,28 @@
             <span class="privacy-mock-label">Local Memory Only</span>
           </div>
         </div>
-        
+
         <!-- Feature 3: Medium (Real-time Preview & PDF Export) -->
         <div class="feat-card feat-medium scroll-reveal">
           <div class="feat-badge"><i class="ti ti-file-export"></i> Document Engine</div>
           <h3 class="feat-title">Vector PDF Export & Instant Previews</h3>
           <p class="feat-text">
-            Outputs perfectly structured single or multi-page PDFs using clean system typography. Previews update instantly with every keystroke, showing exactly what gets printed.
+            Outputs perfectly structured single or multi-page PDFs using clean system typography. Previews update
+            instantly with every keystroke, showing exactly what gets printed.
           </p>
           <div class="feat-visual pdf-preview-mock">
             <div class="pdf-file-icon"><i class="ti ti-file-type-pdf"></i></div>
             <div class="pdf-line-bars"><span></span><span></span><span></span></div>
           </div>
         </div>
-        
+
         <!-- Feature 4: Large (Scoring & Recruiter Formatting) -->
         <div class="feat-card feat-large scroll-reveal stagger-1">
           <div class="feat-badge"><i class="ti ti-square-rounded-check"></i> Diagnostics</div>
           <h3 class="feat-title">Live Resume Scoring & Recruiter Formatting</h3>
           <p class="feat-text">
-            An automated checklist validates that your formatting aligns with recruiter layout expectations: standard typography sizes, chronological experience layout, clear contact information, and no unreadable symbols.
+            An automated checklist validates that your formatting aligns with recruiter layout expectations: standard
+            typography sizes, chronological experience layout, clear contact information, and no unreadable symbols.
           </p>
           <div class="feat-visual scoring-diag-mock">
             <div class="score-dial-mock">98</div>
@@ -731,10 +800,11 @@
         <div class="editorial-eyebrow">The Hiring Pipeline</div>
         <h2 class="section-headline">From Layout Setup to <span class="text-gradient">Shortlisted Candidate</span></h2>
         <p class="section-desc">
-          How CVcraft Pro guarantees your credentials route successfully from browser compilation to recruiter evaluation.
+          How CVcraft Pro guarantees your credentials route successfully from browser compilation to recruiter
+          evaluation.
         </p>
       </div>
-      
+
       <div class="timeline-container">
         <!-- Step 1 -->
         <div class="timeline-step scroll-reveal">
@@ -746,14 +816,15 @@
             <div class="step-card-meta">STAGE 01 — DRAFTING & DIAGNOSTICS</div>
             <h4 class="step-card-title">Compiling with Parser Integrity</h4>
             <p class="step-card-text">
-              You assemble your background in the builder. Our interface enforces strict structural rules, ensuring zero unparseable elements or layout loops.
+              You assemble your background in the builder. Our interface enforces strict structural rules, ensuring zero
+              unparseable elements or layout loops.
             </p>
             <div class="step-card-visual">
               <span class="vis-indicator active"><i class="ti ti-checklist"></i> Format Compliant</span>
             </div>
           </div>
         </div>
-        
+
         <!-- Step 2 -->
         <div class="timeline-step scroll-reveal stagger-1">
           <div class="step-progress">
@@ -764,14 +835,15 @@
             <div class="step-card-meta">STAGE 02 — THE INITIAL SCAN</div>
             <h4 class="step-card-title">Passing the Tracking Gatekeeper</h4>
             <p class="step-card-text">
-              The ATS parser splits your PDF into raw bytes. Because CVcraft compiles linear text, the machine reads sections in chronological, clean order.
+              The ATS parser splits your PDF into raw bytes. Because CVcraft compiles linear text, the machine reads
+              sections in chronological, clean order.
             </p>
             <div class="step-card-visual">
               <span class="vis-indicator success"><i class="ti ti-binary"></i> 100% Parsing Accuracy</span>
             </div>
           </div>
         </div>
-        
+
         <!-- Step 3 -->
         <div class="timeline-step scroll-reveal stagger-2">
           <div class="step-progress">
@@ -782,14 +854,15 @@
             <div class="step-card-meta">STAGE 03 — RECRUITER SEARCH</div>
             <h4 class="step-card-title">Surfacing in Talent Queries</h4>
             <p class="step-card-text">
-              The recruiter searches their database for specific skills. Your keyword-dense, clean-profile resume ranks at the top of active screening queries.
+              The recruiter searches their database for specific skills. Your keyword-dense, clean-profile resume ranks
+              at the top of active screening queries.
             </p>
             <div class="step-card-visual">
               <span class="vis-indicator active"><i class="ti ti-trending-up"></i> Top Candidate Match</span>
             </div>
           </div>
         </div>
-        
+
         <!-- Step 4 -->
         <div class="timeline-step scroll-reveal stagger-3">
           <div class="step-progress">
@@ -799,7 +872,8 @@
             <div class="step-card-meta">STAGE 04 — EVALUATION</div>
             <h4 class="step-card-title">Recruiter Read & Interview Invitation</h4>
             <p class="step-card-text">
-              A human manager opens your document. They see a premium, highly-polished editorial layout with clean whitespace, and invite you for an interview.
+              A human manager opens your document. They see a premium, highly-polished editorial layout with clean
+              whitespace, and invite you for an interview.
             </p>
             <div class="step-card-visual">
               <span class="vis-indicator call"><i class="ti ti-phone-call"></i> Shortlisted for Call</span>
@@ -816,9 +890,10 @@
         <div class="editorial-eyebrow">Zero Database. Zero Clouds.</div>
         <h2 class="section-headline">Your Professional Data <span class="text-gradient">Stays in Your Hands</span></h2>
         <p class="section-desc">
-          Unlike standard resume builders that store your employment details, phone numbers, and home addresses on external cloud servers, CVcraft Pro operates entirely inside your browser's sandboxed environment.
+          Unlike standard resume builders that store your employment details, phone numbers, and home addresses on
+          external cloud servers, CVcraft Pro operates entirely inside your browser's sandboxed environment.
         </p>
-        
+
         <div class="privacy-metrics">
           <div class="metric-item">
             <span class="metric-num"><i class="ti ti-network-off"></i> 100%</span>
@@ -830,7 +905,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="privacy-visual-panel scroll-reveal stagger-1">
         <div class="privacy-terminal">
           <div class="terminal-bar">
@@ -854,9 +929,9 @@
               <span class="lbl-term">PDF Rendering Layer:</span>
               <span class="val-term ok">Offline Canvas API</span>
             </div>
-            
+
             <div class="term-divider"></div>
-            
+
             <div class="term-graph-container">
               <span class="graph-title">Network Database Sync Latency</span>
               <div class="graph-bars">
@@ -881,11 +956,12 @@
       <div class="cta-card scroll-reveal">
         <h2 class="cta-headline">Stop Sending Resumes<br>Recruiters Ignore</h2>
         <p class="cta-text">
-          Join thousands of engineers, managers, and designers who build search-compliant, professional resumes using CVcraft Pro. No signup required, completely free.
+          Join thousands of engineers, managers, and designers who build search-compliant, professional resumes using
+          CVcraft Pro. No signup required, completely free.
         </p>
         <a href="resume.html" class="btn-premium primary cta-btn">Create Resume — It's Free</a>
       </div>
-      
+
       <!-- Footer -->
       <footer class="footer">
         <div class="footer-left">
@@ -908,4 +984,5 @@
 
   <script src="js/landing.js"></script>
 </body>
+
 </html>
